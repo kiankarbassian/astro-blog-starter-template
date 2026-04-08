@@ -1,0 +1,146 @@
+---
+---
+
+<section id="contact" class="contact section">
+  <div class="container">
+    <div class="contact-wrapper">
+      <div class="contact-bg">
+        <div class="contact-blob"></div>
+      </div>
+      <div class="contact-content animate-on-scroll">
+        <p class="section-subtitle">Get in Touch</p>
+        <h2 class="section-title">Let's Create Something Amazing</h2>
+        <p class="contact-text">
+          Have a project in mind? I'd love to hear about it. Let's collaborate 
+          and bring your ideas to life with beautiful design and smooth animations.
+        </p>
+        <a href="mailto:hello@example.com" class="btn-contact">
+          <span class="btn-text">Say Hello</span>
+          <span class="btn-icon">👋</span>
+        </a>
+      </div>
+      <div class="contact-shapes animate-on-scroll delay-2">
+        <div class="shape-float shape-1">💜</div>
+        <div class="shape-float shape-2">🚀</div>
+        <div class="shape-float shape-3">⚡</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-wrapper {
+    position: relative;
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .contact-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .contact-blob {
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--purple) 0%, transparent 60%);
+    opacity: 0.4;
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.1); opacity: 0.3; }
+  }
+
+  .contact-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-content .section-subtitle,
+  .contact-content .section-title {
+    text-align: center;
+  }
+
+  .contact-text {
+    color: var(--gray);
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .btn-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 3rem;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 60px;
+    transition: all 0.4s var(--ease-out-expo);
+    box-shadow: 0 4px 30px rgba(255, 46, 147, 0.3);
+  }
+
+  .btn-contact:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(255, 46, 147, 0.5);
+  }
+
+  .btn-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .btn-contact:hover .btn-icon {
+    transform: rotate(20deg) scale(1.2);
+  }
+
+  .contact-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .shape-float {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.6;
+  }
+
+  .shape-1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: -1s;
+  }
+
+  .shape-2 {
+    top: 30%;
+    right: 15%;
+    animation-delay: -3s;
+  }
+
+  .shape-3 {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -5s;
+  }
+
+  @media (max-width: 768px) {
+    .shape-float {
+      display: none;
+    }
+  }
+</style>

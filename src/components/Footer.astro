@@ -1,0 +1,129 @@
+---
+const socialLinks = [
+  { name: "Twitter", icon: "𝕏", href: "#" },
+  { name: "GitHub", icon: "⌘", href: "#" },
+  { name: "LinkedIn", icon: "in", href: "#" },
+  { name: "Dribbble", icon: "◉", href: "#" }
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Creative<span class="accent">.</span></h3>
+        <p>Crafting bold digital experiences</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#projects">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer-social">
+        {socialLinks.map(link => (
+          <a href={link.href} class="social-link" aria-label={link.name}>
+            {link.icon}
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Creative. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--dark);
+    padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand h3 {
+    font-size: 1.75rem;
+    color: var(--white);
+  }
+
+  .footer-brand .accent {
+    color: var(--pink);
+  }
+
+  .footer-brand p {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .footer-nav a {
+    color: var(--gray);
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+
+  .footer-nav a:hover {
+    color: var(--pink);
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social-link {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--gray);
+    font-size: 1.1rem;
+    transition: all 0.3s var(--ease-out-expo);
+  }
+
+  .social-link:hover {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--white);
+    transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .footer-bottom p {
+    color: var(--gray);
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-nav {
+      justify-content: center;
+    }
+  }
+</style>

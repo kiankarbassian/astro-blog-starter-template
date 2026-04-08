@@ -1,0 +1,213 @@
+---
+const skills = [
+  { name: "Creative Design", level: 95 },
+  { name: "Frontend Dev", level: 90 },
+  { name: "Animation", level: 92 },
+  { name: "UI/UX", level: 88 }
+];
+---
+
+<section id="about" class="about section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual animate-on-scroll">
+        <div class="about-card">
+          <div class="about-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+          </div>
+          <div class="about-image">
+            <span class="about-emoji">🎨</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="section-subtitle animate-on-scroll">About Me</p>
+        <h2 class="section-title animate-on-scroll">Crafting Digital Experiences</h2>
+        <p class="about-text animate-on-scroll">
+          I'm a creative designer & developer with a passion for building bold, 
+          immersive digital experiences. I believe great design should feel effortless, 
+          with smooth animations that delight users.
+        </p>
+        <p class="about-text animate-on-scroll">
+          With 5+ years of experience, I've worked with startups and brands to create 
+          websites that not only look beautiful but drive results.
+        </p>
+        <div class="skills animate-on-scroll">
+          {skills.map(skill => (
+            <div class="skill">
+              <div class="skill-header">
+                <span class="skill-name">{skill.name}</span>
+                <span class="skill-level">{skill.level}%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style={`width: ${skill.level}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--dark-card);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+    opacity: 0.3;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-card {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .about-shapes {
+    position: absolute;
+    inset: 0;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .shape-1 {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    opacity: 0.2;
+  }
+
+  .shape-2 {
+    width: 70%;
+    height: 70%;
+    top: 15%;
+    left: 15%;
+    background: linear-gradient(135deg, var(--yellow), var(--pink));
+    opacity: 0.3;
+    animation-delay: -2s;
+  }
+
+  .shape-3 {
+    width: 40%;
+    height: 40%;
+    top: 30%;
+    left: 30%;
+    background: var(--yellow);
+    opacity: 0.5;
+    animation-delay: -4s;
+  }
+
+  .about-image {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-emoji {
+    font-size: 8rem;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+  }
+
+  .about-content .section-subtitle,
+  .about-content .section-title {
+    text-align: left;
+  }
+
+  .about-text {
+    color: var(--gray);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    max-width: 550px;
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 500px;
+  }
+
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-name {
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .skill-level {
+    color: var(--pink);
+    font-weight: 600;
+  }
+
+  .skill-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--yellow));
+    border-radius: 4px;
+    transition: width 1s var(--ease-out-expo);
+  }
+
+  @media (max-width: 968px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-visual {
+      order: -1;
+    }
+
+    .about-card {
+      max-width: 280px;
+    }
+
+    .skills {
+      grid-template-columns: 1fr;
+    }
+
+    .about-text {
+      text-align: left;
+    }
+  }
+</style>
