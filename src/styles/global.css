@@ -1,21 +1,57 @@
+/* ============================================
+   RETRO WALKMAN PORTFOLIO — Global Styles
+   ============================================ */
+
 :root {
-  --purple: #2D1B69;
-  --purple-light: #4A3B8C;
-  --pink: #FF2E93;
-  --pink-light: #FF6BB8;
-  --yellow: #FFE066;
-  --yellow-light: #FFF0B3;
-  --dark: #0F0A1A;
-  --dark-card: #1A1429;
-  --white: #FFFFFF;
-  --gray: #9D8FB5;
-  
-  --font-heading: 'Clash Display', 'SF Pro Display', system-ui, sans-serif;
-  --font-body: 'Satoshi', 'SF Pro Text', system-ui, sans-serif;
-  
+  /* Surfaces */
+  --dark: #1A1A1E;
+  --dark-card: #242428;
+  --dark-surface: #2E2E34;
+  --walkman-body: #2C2C2C;
+  --walkman-body-light: #3D3D3D;
+
+  /* Cassette */
+  --cassette-tan: #C4A265;
+  --cassette-dark: #8B6914;
+  --cassette-cream: #F5E6C8;
+  --cassette-brown: #5C3D1E;
+
+  /* Neon accents */
+  --neon-cyan: #00F5FF;
+  --neon-magenta: #FF2E93;
+  --neon-orange: #FF6B2C;
+  --mustard: #E8A917;
+  --burnt-orange: #D4631D;
+
+  /* LCD */
+  --lcd-green: #39FF14;
+  --lcd-amber: #FFB300;
+  --lcd-bg: #0D1A0D;
+
+  /* Text */
+  --white: #F0ECE3;
+  --gray: #9B9B8F;
+  --gray-light: #CDCDC4;
+
+  /* Tape */
+  --tape-reel: #1A1A1A;
+
+  /* Fonts */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-lcd: 'VT323', monospace;
+
+  /* Easing */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -25,20 +61,57 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
 }
 
 body {
-  font-family: var(--font-body);
-  background: var(--dark);
+  background-color: var(--dark);
   color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
+  cursor: none;
 }
+
+a, button, [role="button"] {
+  cursor: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* ============================================
+   CRT SCANLINES OVERLAY
+   ============================================ */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.2;
+  color: var(--white);
 }
 
 a {
@@ -46,48 +119,80 @@ a {
   text-decoration: none;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
 img {
   max-width: 100%;
   display: block;
 }
 
+/* ============================================
+   LAYOUT UTILITIES
+   ============================================ */
+
 .container {
+  width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.container--narrow {
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
 .section {
   padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.section-title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  margin-bottom: 1rem;
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes spinReel {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.section-subtitle {
-  font-size: 1.125rem;
-  color: var(--gray);
-  margin-bottom: 3rem;
+@keyframes eqPulse {
+  0%, 100% { transform: scaleY(0.2); opacity: 0.4; }
+  25% { transform: scaleY(0.7); opacity: 0.8; }
+  50% { transform: scaleY(1); opacity: 1; }
+  75% { transform: scaleY(0.5); opacity: 0.7; }
+}
+
+@keyframes lcdBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes vhsTracking {
+  0% { top: -2%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes recBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -95,37 +200,39 @@ img {
   to { opacity: 1; }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@keyframes walkmanRise {
+  from { opacity: 0; transform: translateY(80px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@keyframes lcdFlicker {
+  0% { opacity: 0; }
+  10% { opacity: 0.8; }
+  15% { opacity: 0.3; }
+  20% { opacity: 1; }
+  25% { opacity: 0.6; }
+  30% { opacity: 1; }
+  100% { opacity: 1; }
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: var(--progress-width, 75%); }
+}
+
+@keyframes needleSwing {
+  from { transform: rotate(-60deg); }
+  to { transform: rotate(var(--needle-end, 20deg)); }
+}
+
+@keyframes cursorPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes float {
@@ -133,10 +240,14 @@ img {
   50% { transform: translateY(-20px); }
 }
 
+/* ============================================
+   SCROLL REVEAL SYSTEM
+   ============================================ */
+
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-spring);
 }
 
 .animate-on-scroll.visible {
@@ -144,8 +255,201 @@ img {
   transform: translateY(0);
 }
 
+.animate-on-scroll.from-left {
+  transform: translateX(-60px);
+}
+
+.animate-on-scroll.from-left.visible {
+  transform: translateX(0);
+}
+
+.animate-on-scroll.from-right {
+  transform: translateX(60px);
+}
+
+.animate-on-scroll.from-right.visible {
+  transform: translateX(0);
+}
+
+.animate-on-scroll.scale-in {
+  transform: scale(0.85);
+}
+
+.animate-on-scroll.scale-in.visible {
+  transform: scale(1);
+}
+
 .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
 .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
 .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
 .animate-on-scroll.delay-4 { transition-delay: 0.4s; }
 .animate-on-scroll.delay-5 { transition-delay: 0.5s; }
+.animate-on-scroll.delay-6 { transition-delay: 0.6s; }
+
+/* ============================================
+   RETRO BUTTON COMPONENT
+   ============================================ */
+
+.retro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(180deg, #4a4a4a 0%, #2c2c2c 100%);
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: var(--white);
+  font-family: var(--font-lcd);
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  box-shadow:
+    0 4px 0 0 #111,
+    0 6px 12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.08s ease;
+  position: relative;
+}
+
+.retro-btn:hover {
+  background: linear-gradient(180deg, #555 0%, #333 100%);
+}
+
+.retro-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0px 0 0 #111,
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.retro-btn--primary {
+  background: linear-gradient(180deg, var(--neon-cyan) 0%, #00b8c0 100%);
+  border-color: #00d4dc;
+  color: #000;
+  font-weight: 700;
+  box-shadow:
+    0 4px 0 0 #006670,
+    0 6px 16px rgba(0, 245, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.retro-btn--primary:active {
+  box-shadow:
+    0 0px 0 0 #006670,
+    0 2px 6px rgba(0, 245, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.retro-btn--danger {
+  background: linear-gradient(180deg, #ff4444 0%, #cc0000 100%);
+  border-color: #ff6666;
+  color: var(--white);
+  box-shadow:
+    0 4px 0 0 #660000,
+    0 6px 16px rgba(255, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.retro-btn--danger:active {
+  box-shadow:
+    0 0px 0 0 #660000,
+    0 2px 6px rgba(255, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   LCD DISPLAY
+   ============================================ */
+
+.lcd-display {
+  background: var(--lcd-bg);
+  border: 2px solid #1a2e1a;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(57, 255, 20, 0.05);
+  font-family: var(--font-lcd);
+  color: var(--lcd-green);
+  text-shadow: 0 0 8px var(--lcd-green), 0 0 16px rgba(57, 255, 20, 0.3);
+}
+
+/* ============================================
+   CHROME TEXT
+   ============================================ */
+
+.chrome-text {
+  background: linear-gradient(180deg, #ffffff 0%, #cccccc 35%, #888888 65%, #cccccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+/* ============================================
+   NEON GLOW TEXT
+   ============================================ */
+
+.glow-cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(0, 245, 255, 0.4);
+}
+
+.glow-magenta {
+  color: var(--neon-magenta);
+  text-shadow: 0 0 8px var(--neon-magenta), 0 0 20px rgba(255, 46, 147, 0.4);
+}
+
+/* ============================================
+   SECTION HEADINGS
+   ============================================ */
+
+.section-eyebrow {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(0, 245, 255, 0.3);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--walkman-body-light); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background: rgba(0, 245, 255, 0.25);
+  color: var(--white);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

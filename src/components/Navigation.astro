@@ -1,0 +1,213 @@
+---
+---
+
+<nav class="floating-nav" id="floating-nav" role="navigation" aria-label="Site navigation">
+  <div class="nav-inner">
+    <span class="nav-now-playing">
+      <span class="nav-dot"></span>
+      <span class="nav-track" id="nav-track">SIDE A</span>
+    </span>
+
+    <div class="nav-controls">
+      <a href="#hero" class="nav-btn magnetic" data-section="hero" aria-label="Top">
+        <span class="nav-icon">⏮</span>
+      </a>
+      <a href="#about" class="nav-btn magnetic" data-section="about" aria-label="About">
+        <span class="nav-icon">⏪</span>
+        <span class="nav-label">About</span>
+      </a>
+      <a href="#projects" class="nav-btn nav-btn--play magnetic" data-section="projects" aria-label="Projects">
+        <span class="nav-icon">▶</span>
+        <span class="nav-label">Work</span>
+      </a>
+      <a href="#contact" class="nav-btn magnetic" data-section="contact" aria-label="Contact">
+        <span class="nav-icon">⏩</span>
+        <span class="nav-label">Contact</span>
+      </a>
+    </div>
+
+    <a href="mailto:hello@example.com" class="nav-hire magnetic">
+      <span class="hire-dot"></span>
+      HIRE ME
+    </a>
+  </div>
+</nav>
+
+<script>
+  // Track which section is active
+  const sections = ['hero', 'projects', 'about', 'contact'];
+  const navTrack = document.getElementById('nav-track');
+  const sectionLabels: Record<string, string> = {
+    hero: 'SIDE A — INTRO',
+    projects: 'SIDE A — TRACK 01',
+    about: 'SIDE A — TRACK 02',
+    contact: 'SIDE A — TRACK 03',
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const btn = document.querySelector(`.nav-btn[data-section="${id}"]`);
+      if (entry.isIntersecting) {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-btn--active'));
+        btn?.classList.add('nav-btn--active');
+        if (navTrack && sectionLabels[id]) navTrack.textContent = sectionLabels[id];
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sectionObserver.observe(el);
+  });
+</script>
+
+<style>
+  .floating-nav {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    z-index: 1000;
+    transition: transform 0.6s var(--ease-spring);
+    pointer-events: none;
+  }
+
+  .floating-nav.nav--visible {
+    transform: translateX(-50%) translateY(0);
+    pointer-events: all;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1.25rem;
+    background: rgba(30, 30, 36, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(0, 245, 255, 0.06),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  /* Chrome top edge */
+  .nav-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    border-radius: 50%;
+  }
+
+  /* Now playing */
+  .nav-now-playing {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-right: 0.75rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--neon-cyan);
+    animation: recBlink 1.8s ease-in-out infinite;
+  }
+
+  .nav-track {
+    font-family: var(--font-lcd);
+    font-size: 0.8rem;
+    color: var(--lcd-green);
+    text-shadow: 0 0 6px var(--lcd-green);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  /* Controls */
+  .nav-controls {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 0.75rem;
+    background: linear-gradient(180deg, #444 0%, #2a2a2a 100%);
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: var(--gray-light);
+    text-decoration: none;
+    font-family: var(--font-lcd);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 3px 0 #111, inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-btn:hover, .nav-btn--active {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 6px var(--neon-cyan);
+  }
+
+  .nav-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #111, inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .nav-btn--play {
+    background: linear-gradient(180deg, #1a7a1a 0%, #0d4d0d 100%);
+    border-color: #2a9a2a;
+    color: #4aff4a;
+  }
+
+  .nav-icon { font-size: 0.75rem; }
+  .nav-label { font-size: 0.7rem; opacity: 0.8; }
+
+  /* Hire button */
+  .nav-hire {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.875rem;
+    background: linear-gradient(180deg, var(--neon-cyan) 0%, #00b8c0 100%);
+    border-radius: 4px;
+    color: #000;
+    font-family: var(--font-lcd);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    box-shadow: 0 3px 0 #006670, 0 4px 12px rgba(0,245,255,0.25);
+    transition: all 0.1s;
+  }
+
+  .nav-hire:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #006670, 0 1px 6px rgba(0,245,255,0.15);
+  }
+
+  .hire-dot {
+    width: 5px;
+    height: 5px;
+    background: #000;
+    border-radius: 50%;
+    animation: recBlink 1.5s ease-in-out infinite;
+  }
+
+  @media (max-width: 520px) {
+    .nav-label { display: none; }
+    .nav-now-playing { display: none; }
+    .nav-inner { gap: 0.5rem; padding: 0.6rem 1rem; }
+  }
+</style>

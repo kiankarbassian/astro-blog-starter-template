@@ -1,280 +1,606 @@
 ---
 ---
 
-<section class="hero">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+<section class="hero" id="hero">
+  <!-- Ambient background glows -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
   </div>
-  <div class="container">
-    <div class="hero-content">
-      <p class="hero-greeting animate-fade-in-up">Hello, I'm</p>
-      <h1 class="hero-name animate-fade-in-up delay-1">
-        <span class="name-main">Creative</span>
-        <span class="name-accent">Designer</span>
-      </h1>
-      <p class="hero-tagline animate-fade-in-up delay-2">I craft bold digital experiences with beautiful animations</p>
-      <div class="hero-cta animate-fade-in-up delay-3">
-        <a href="#projects" class="btn btn-primary">View Work</a>
-        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+
+  <div class="hero-inner">
+    <!-- Walkman Device -->
+    <div class="walkman" id="walkman">
+
+      <!-- Brand strip -->
+      <div class="walkman-brand">
+        <span class="brand-name chrome-text">CREATIVE</span>
+        <span class="brand-model">MODEL WM-X01</span>
       </div>
-    </div>
-    <div class="hero-visual animate-scale-in delay-4">
-      <div class="hero-card">
-        <div class="card-glow"></div>
-        <div class="card-content">
-          <div class="card-icon">✨</div>
-          <h3>Design</h3>
-          <p>Bold & Beautiful</p>
+
+      <!-- LCD Panel -->
+      <div class="lcd-panel lcd-display">
+        <div class="lcd-top-row">
+          <span class="lcd-label">NOW PLAYING</span>
+          <span class="lcd-batt">▮▮▮</span>
+        </div>
+        <div class="lcd-track-name">
+          <span class="lcd-scroll-text">CREATIVE DEVELOPER &amp; DESIGNER &nbsp;&nbsp;◆&nbsp;&nbsp; CREATIVE DEVELOPER &amp; DESIGNER</span>
+        </div>
+        <div class="lcd-meta">
+          <span>PORTFOLIO — SIDE A</span>
+          <span class="lcd-time">01:26</span>
+        </div>
+        <div class="lcd-progress-track">
+          <div class="lcd-progress-fill"></div>
+        </div>
+        <span class="lcd-cursor">█</span>
+      </div>
+
+      <!-- Cassette Window -->
+      <div class="cassette-window">
+        <div class="cassette-tape">
+          <!-- Label -->
+          <div class="tape-label">
+            <div class="tape-label-stripe stripe-top"></div>
+            <div class="tape-label-content">
+              <span class="tape-artist">YOUR NAME</span>
+              <span class="tape-title">Bold Digital Experiences</span>
+              <span class="tape-runtime">SIDE A &nbsp;·&nbsp; 45 MIN</span>
+            </div>
+            <div class="tape-label-stripe stripe-bottom"></div>
+          </div>
+
+          <!-- Left Reel -->
+          <div class="tape-reel reel-left" aria-hidden="true">
+            <div class="reel-hub"></div>
+          </div>
+
+          <!-- Right Reel -->
+          <div class="tape-reel reel-right" aria-hidden="true">
+            <div class="reel-hub"></div>
+          </div>
+
+          <!-- Tape strip -->
+          <div class="tape-strip"></div>
         </div>
       </div>
-    </div>
+
+      <!-- Transport Controls -->
+      <nav class="transport-controls" aria-label="Portfolio navigation">
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="transport-btn magnetic" aria-label="Home" title="Top">
+          <span class="t-icon">⏮</span>
+          <span class="t-label">Top</span>
+        </a>
+        <a href="#about" class="transport-btn magnetic" aria-label="About">
+          <span class="t-icon">⏪</span>
+          <span class="t-label">About</span>
+        </a>
+        <a href="#projects" class="transport-btn transport-btn--play magnetic" aria-label="Projects">
+          <span class="t-icon">▶</span>
+          <span class="t-label">Work</span>
+        </a>
+        <a href="#contact" class="transport-btn magnetic" aria-label="Contact">
+          <span class="t-icon">⏩</span>
+          <span class="t-label">Contact</span>
+        </a>
+        <a href="mailto:hello@example.com" class="transport-btn transport-btn--rec magnetic" aria-label="Hire me">
+          <span class="t-icon">●</span>
+          <span class="t-label">Hire</span>
+        </a>
+      </nav>
+
+      <!-- Volume Slider -->
+      <div class="volume-row" aria-hidden="true">
+        <span class="vol-label">VOL</span>
+        <div class="vol-track">
+          <div class="vol-fill"></div>
+          <div class="vol-knob"></div>
+        </div>
+        <span class="vol-label">MAX</span>
+      </div>
+
+    </div><!-- /walkman -->
   </div>
-  <div class="scroll-indicator animate-fade-in-up delay-5">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
+
+  <!-- Scroll cue -->
+  <div class="scroll-cue" aria-hidden="true">
+    <span class="eject-label">⏏ EJECT TO SCROLL</span>
+    <div class="scroll-dot"></div>
   </div>
 </section>
 
 <style>
+  /* ── Hero shell ────────────────────────────── */
   .hero {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: relative;
     overflow: hidden;
-    padding-top: 6rem;
+    padding: 4rem 1.5rem 6rem;
   }
 
+  /* ── Ambient glows ─────────────────────────── */
   .hero-bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
   }
 
-  .blob {
+  .glow {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.5;
+    filter: blur(100px);
   }
 
-  .blob-1 {
-    width: 600px;
-    height: 600px;
-    background: var(--purple);
-    top: -200px;
-    right: -100px;
-    animation: float 8s ease-in-out infinite;
+  .glow-1 {
+    width: 500px; height: 500px;
+    background: rgba(0, 245, 255, 0.06);
+    top: -100px; right: -80px;
+    animation: floatGentle 9s ease-in-out infinite;
   }
 
-  .blob-2 {
-    width: 400px;
-    height: 400px;
-    background: var(--pink);
-    bottom: -100px;
-    left: -100px;
-    animation: float 10s ease-in-out infinite reverse;
+  .glow-2 {
+    width: 400px; height: 400px;
+    background: rgba(255, 46, 147, 0.06);
+    bottom: -80px; left: -60px;
+    animation: floatGentle 11s ease-in-out infinite reverse;
   }
 
-  .blob-3 {
-    width: 300px;
-    height: 300px;
-    background: var(--yellow);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: float 12s ease-in-out infinite;
+  .glow-3 {
+    width: 300px; height: 300px;
+    background: rgba(232, 169, 23, 0.05);
+    top: 40%; left: 40%;
+    animation: floatGentle 13s ease-in-out infinite;
   }
 
-  .hero .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
+  /* ── Hero inner layout ─────────────────────── */
+  .hero-inner {
     position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  /* ══════════════════════════════════════════════
+     WALKMAN DEVICE
+     ══════════════════════════════════════════════ */
+  .walkman {
+    background: linear-gradient(160deg, #3a3a3a 0%, #282828 60%, #222222 100%);
+    border-radius: 22px;
+    border: 2px solid #4a4a4a;
+    border-bottom-color: #1a1a1a;
+    padding: 1.5rem 1.75rem 1.25rem;
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.7),
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+      inset 2px 0 0 rgba(255, 255, 255, 0.03),
+      inset -2px 0 0 rgba(0, 0, 0, 0.2);
+    animation: walkmanRise 1s var(--ease-spring) 0.2s both;
+  }
+
+  /* ── Brand ─────────────────────────────────── */
+  .walkman-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+
+  .brand-name {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+
+  .brand-model {
+    font-family: var(--font-lcd);
+    font-size: 0.85rem;
+    color: #666;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── LCD Panel ─────────────────────────────── */
+  .lcd-panel {
+    margin-bottom: 1.25rem;
+    animation: lcdFlicker 1.5s ease 0.8s both;
+  }
+
+  .lcd-top-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+    opacity: 0.7;
+  }
+
+  .lcd-batt {
+    letter-spacing: 2px;
+    color: var(--lcd-green);
+    text-shadow: 0 0 6px var(--lcd-green);
+  }
+
+  .lcd-track-name {
+    overflow: hidden;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .lcd-scroll-text {
+    display: inline-block;
+    animation: lcdScroll 14s linear infinite;
+  }
+
+  .lcd-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin-bottom: 0.6rem;
+  }
+
+  .lcd-progress-track {
+    height: 4px;
+    background: rgba(57, 255, 20, 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+  }
+
+  .lcd-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--lcd-green);
+    box-shadow: 0 0 6px var(--lcd-green);
+    border-radius: 2px;
+    animation: progressFill 2s var(--ease-out) 1.5s forwards;
+    --progress-width: 32%;
+  }
+
+  .lcd-cursor {
+    font-size: 0.8rem;
+    animation: lcdBlink 1s step-end infinite;
+  }
+
+  /* ── Cassette Window ───────────────────────── */
+  .cassette-window {
+    background: #0e0e0e;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8);
+    position: relative;
+  }
+
+  /* ── Cassette Tape ─────────────────────────── */
+  .cassette-tape {
+    background: linear-gradient(170deg, #C8A86A 0%, #B8944A 50%, #A87B2E 100%);
+    border-radius: 8px;
+    border: 1px solid #7a5a1a;
+    padding: 0.875rem 1rem;
+    position: relative;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      0 2px 6px rgba(0, 0, 0, 0.4);
+    min-height: 110px;
+  }
+
+  /* ── Tape Label ────────────────────────────── */
+  .tape-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 52%;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .tape-label-stripe {
+    height: 5px;
+    border-radius: 1px;
+    margin: 0 0 0.3rem;
+  }
+
+  .stripe-top {
+    background: var(--neon-magenta);
+    box-shadow: 0 0 4px var(--neon-magenta);
+    margin-bottom: 0.5rem;
+  }
+
+  .stripe-bottom {
+    background: var(--mustard);
+    box-shadow: 0 0 4px var(--mustard);
+    margin-top: 0.5rem;
+  }
+
+  .tape-label-content {
+    background: var(--cassette-cream);
+    padding: 0.4rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .tape-artist {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2a1a00;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .tape-title {
+    display: block;
+    font-family: var(--font-lcd);
+    font-size: 0.85rem;
+    color: #5c3d1e;
+    letter-spacing: 0.03em;
+  }
+
+  .tape-runtime {
+    display: block;
+    font-family: var(--font-lcd);
+    font-size: 0.7rem;
+    color: #8b6914;
+    margin-top: 0.2rem;
+  }
+
+  /* ── Tape Reels ────────────────────────────── */
+  .tape-reel {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50%, #1a1a1a 0%, #2a2a2a 40%, #1a1a1a 100%);
+    border: 2px solid #333;
+    box-shadow:
+      inset 0 2px 4px rgba(255,255,255,0.05),
+      0 2px 6px rgba(0,0,0,0.6);
+    animation: spinReel 3s linear infinite;
     z-index: 1;
   }
 
-  .hero-content {
-    max-width: 600px;
+  .reel-left { left: 0.75rem; }
+  .reel-right { right: 0.75rem; }
+
+  /* Spoke pattern via conic-gradient */
+  .tape-reel::after {
+    content: '';
+    position: absolute;
+    inset: 15%;
+    border-radius: 50%;
+    background: conic-gradient(
+      transparent 0deg, transparent 52deg,
+      rgba(255,255,255,0.12) 52deg, rgba(255,255,255,0.12) 68deg,
+      transparent 68deg, transparent 172deg,
+      rgba(255,255,255,0.12) 172deg, rgba(255,255,255,0.12) 188deg,
+      transparent 188deg, transparent 292deg,
+      rgba(255,255,255,0.12) 292deg, rgba(255,255,255,0.12) 308deg,
+      transparent 308deg
+    );
   }
 
-  .hero-greeting {
-    font-size: 1.25rem;
-    color: var(--pink);
-    margin-bottom: 1rem;
-    font-weight: 500;
+  .reel-hub {
+    position: absolute;
+    inset: 32%;
+    border-radius: 50%;
+    background: #3a3a3a;
+    border: 1px solid #555;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
   }
 
-  .hero-name {
-    font-size: clamp(3rem, 10vw, 6rem);
-    line-height: 1;
-    margin-bottom: 1.5rem;
+  /* ── Tape Strip ────────────────────────────── */
+  .tape-strip {
+    position: absolute;
+    left: calc(0.75rem + 48px - 2px);
+    right: calc(0.75rem + 48px - 2px);
+    height: 2px;
+    background: #1a1a1a;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
   }
 
-  .name-main {
-    display: block;
-    color: var(--white);
+  /* Screw corners on cassette */
+  .cassette-tape::before,
+  .cassette-tape::after {
+    content: '⊕';
+    position: absolute;
+    font-size: 0.65rem;
+    color: rgba(0,0,0,0.4);
+    top: 0.35rem;
   }
 
-  .name-accent {
-    display: block;
-    background: linear-gradient(135deg, var(--pink), var(--yellow));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  .cassette-tape::before { left: 0.35rem; }
+  .cassette-tape::after { right: 0.35rem; }
 
-  .hero-tagline {
-    font-size: 1.25rem;
-    color: var(--gray);
-    margin-bottom: 2.5rem;
-    max-width: 450px;
-  }
-
-  .hero-cta {
+  /* ── Transport Controls ────────────────────── */
+  .transport-controls {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+    list-style: none;
   }
 
-  .btn {
-    display: inline-flex;
+  .transport-btn {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 1rem 2rem;
+    gap: 0.25rem;
+    padding: 0.6rem 0.75rem;
+    background: linear-gradient(180deg, #484848 0%, #2e2e2e 100%);
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: var(--gray-light);
+    text-decoration: none;
+    box-shadow:
+      0 4px 0 #111,
+      0 5px 10px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: color 0.2s, background 0.2s;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .transport-btn:hover {
+    color: var(--white);
+    background: linear-gradient(180deg, #555 0%, #383838 100%);
+  }
+
+  .transport-btn:active {
+    transform: translateY(4px);
+    box-shadow:
+      0 0px 0 #111,
+      0 1px 4px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  .transport-btn--play {
+    background: linear-gradient(180deg, #1a8a1a 0%, #0d5c0d 100%);
+    border-color: #2aaa2a;
+    color: var(--white);
+    box-shadow:
+      0 4px 0 #041804,
+      0 5px 14px rgba(0, 200, 0, 0.2),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .transport-btn--play:hover {
+    background: linear-gradient(180deg, #22aa22 0%, #157015 100%);
+    box-shadow:
+      0 4px 0 #041804,
+      0 5px 18px rgba(0, 245, 0, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .transport-btn--rec {
+    background: linear-gradient(180deg, #aa1a1a 0%, #6e0000 100%);
+    border-color: #cc3333;
+    color: var(--white);
+    box-shadow:
+      0 4px 0 #300000,
+      0 5px 14px rgba(200, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  .transport-btn--rec .t-icon {
+    color: #ff4444;
+    text-shadow: 0 0 8px #ff4444;
+    animation: recBlink 1.5s ease-in-out infinite;
+  }
+
+  .t-icon {
     font-size: 1rem;
-    font-weight: 600;
-    border-radius: 50px;
-    transition: all 0.4s var(--ease-out-expo);
+    line-height: 1;
   }
 
-  .btn-primary {
-    background: linear-gradient(135deg, var(--pink), var(--pink-light));
-    color: var(--white);
-    box-shadow: 0 4px 30px rgba(255, 46, 147, 0.4);
+  .t-label {
+    font-family: var(--font-lcd);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
   }
 
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 40px rgba(255, 46, 147, 0.6);
-  }
-
-  .btn-outline {
-    border: 2px solid var(--purple-light);
-    color: var(--white);
-  }
-
-  .btn-outline:hover {
-    border-color: var(--pink);
-    background: rgba(255, 46, 147, 0.1);
-  }
-
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-card {
-    position: relative;
-    background: var(--dark-card);
-    border: 1px solid var(--purple-light);
-    border-radius: 24px;
-    padding: 3rem;
-    width: 300px;
-    height: 300px;
+  /* ── Volume Slider ─────────────────────────── */
+  .volume-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 0.25rem;
   }
 
-  .card-glow {
+  .vol-label {
+    font-family: var(--font-lcd);
+    font-size: 0.7rem;
+    color: #666;
+    letter-spacing: 0.08em;
+  }
+
+  .vol-track {
+    flex: 1;
+    height: 6px;
+    background: #1a1a1a;
+    border-radius: 3px;
+    border: 1px solid #333;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+    position: relative;
+  }
+
+  .vol-fill {
+    height: 100%;
+    width: 80%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--mustard));
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0, 245, 255, 0.4);
+  }
+
+  .vol-knob {
     position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, var(--pink), var(--purple), var(--yellow));
-    border-radius: 24px;
-    opacity: 0.5;
-    filter: blur(20px);
-    z-index: -1;
+    right: 18%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 16px;
+    background: linear-gradient(180deg, #aaa 0%, #666 100%);
+    border-radius: 3px;
+    border: 1px solid #888;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
 
-  .card-content {
-    text-align: center;
-  }
-
-  .card-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-  }
-
-  .card-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--white);
-  }
-
-  .card-content p {
-    color: var(--gray);
-  }
-
-  .scroll-indicator {
+  /* ── Scroll cue ────────────────────────────── */
+  .scroll-cue {
     position: absolute;
-    bottom: 3rem;
+    bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    animation: fadeInUp 0.8s var(--ease-out) 1.8s both;
+  }
+
+  .eject-label {
+    font-family: var(--font-lcd);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
     color: var(--gray);
-    font-size: 0.875rem;
+    animation: glowPulse 2.5s ease-in-out infinite;
   }
 
-  .scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--pink), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
+  .scroll-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 6px var(--neon-cyan);
+    animation: floatGentle 2s ease-in-out infinite;
   }
 
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 1; transform: scaleY(1); }
-    50% { opacity: 0.5; transform: scaleY(0.8); }
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
-    opacity: 0;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 1s var(--ease-out-expo) forwards;
-    opacity: 0;
-  }
-
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-  .delay-4 { animation-delay: 0.4s; }
-  .delay-5 { animation-delay: 0.5s; }
-
-  @media (max-width: 968px) {
-    .hero .container {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-
-    .hero-content {
-      margin: 0 auto;
-    }
-
-    .hero-cta {
-      justify-content: center;
-    }
-
-    .hero-visual {
-      display: none;
-    }
+  /* ── Responsive ────────────────────────────── */
+  @media (max-width: 520px) {
+    .walkman { padding: 1.25rem 1.25rem 1rem; }
+    .t-label { display: none; }
+    .transport-btn { padding: 0.6rem 0.6rem; }
+    .tape-reel { width: 38px; height: 38px; }
+    .cassette-tape { min-height: 90px; }
   }
 </style>
