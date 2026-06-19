@@ -33,64 +33,41 @@ const { title } = Astro.props;
       // ── Scroll reveal ───────────────────────────────────────
       const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible');
         });
       }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-      document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        revealObserver.observe(el);
-      });
+      document.querySelectorAll('.animate-on-scroll').forEach(el => revealObserver.observe(el));
 
       // ── Custom cursor ───────────────────────────────────────
       const cursor = document.getElementById('cursor');
       const follower = document.getElementById('cursor-follower');
-
-      let mouseX = 0, mouseY = 0;
-      let followerX = 0, followerY = 0;
+      let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
 
       document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        if (cursor) {
-          cursor.style.left = mouseX + 'px';
-          cursor.style.top = mouseY + 'px';
-        }
+        if (cursor) { cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px'; }
       });
 
       function animateFollower() {
         followerX += (mouseX - followerX) * 0.12;
         followerY += (mouseY - followerY) * 0.12;
-        if (follower) {
-          follower.style.left = followerX + 'px';
-          follower.style.top = followerY + 'px';
-        }
+        if (follower) { follower.style.left = followerX + 'px'; follower.style.top = followerY + 'px'; }
         requestAnimationFrame(animateFollower);
       }
       animateFollower();
 
-      // Cursor states on interactive elements
-      const interactiveEls = document.querySelectorAll('a, button, [role="button"], .cassette-card, .transport-btn');
-      interactiveEls.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          cursor?.classList.add('cursor--hover');
-          follower?.classList.add('follower--hover');
-        });
-        el.addEventListener('mouseleave', () => {
-          cursor?.classList.remove('cursor--hover');
-          follower?.classList.remove('follower--hover');
-        });
+      document.querySelectorAll('a, button, [role="button"], .cassette-card, .transport-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => { cursor?.classList.add('cursor--hover'); follower?.classList.add('follower--hover'); });
+        el.addEventListener('mouseleave', () => { cursor?.classList.remove('cursor--hover'); follower?.classList.remove('follower--hover'); });
       });
 
-      // ── Magnetic hover effect ───────────────────────────────
+      // ── Magnetic hover ──────────────────────────────────────
       document.querySelectorAll('.magnetic').forEach(el => {
         el.addEventListener('mousemove', (e) => {
           const rect = (el as HTMLElement).getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dx = (e as MouseEvent).clientX - cx;
-          const dy = (e as MouseEvent).clientY - cy;
+          const dx = (e as MouseEvent).clientX - (rect.left + rect.width / 2);
+          const dy = (e as MouseEvent).clientY - (rect.top + rect.height / 2);
           (el as HTMLElement).style.transform = `translate(${dx * 0.22}px, ${dy * 0.22}px)`;
         });
         el.addEventListener('mouseleave', () => {
@@ -100,46 +77,80 @@ const { title } = Astro.props;
         });
       });
 
+      // ── Walkman 3D tilt on mousemove ───────────────────────
+      const walkman = document.getElementById('walkman');
+      const heroEl = document.querySelector('.hero') as HTMLElement;
+
+      if (walkman && heroEl) {
+        heroEl.addEventListener('mousemove', (e) => {
+          const rect = heroEl.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = ((e as MouseEvent).clientX - cx) / (rect.width / 2);
+          const dy = ((e as MouseEvent).clientY - cy) / (rect.height / 2);
+          const rotY = dx * 12;
+          const rotX = -dy * 8;
+          (walkman as HTMLElement).style.transform = `perspective(900px) rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(10px)`;
+        });
+        heroEl.addEventListener('mouseleave', () => {
+          (walkman as HTMLElement).style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
+        });
+      }
+
+      // ── Parallax ambient glows follow mouse ─────────────────
+      document.addEventListener('mousemove', (e) => {
+        const pct = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight };
+        const glows = document.querySelectorAll('.glow');
+        glows.forEach((g, i) => {
+          const depth = 0.02 + i * 0.015;
+          const offsetX = (pct.x - 0.5) * 120 * depth * (i % 2 === 0 ? 1 : -1);
+          const offsetY = (pct.y - 0.5) * 80 * depth * (i % 2 === 0 ? 1 : -1);
+          (g as HTMLElement).style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        });
+      });
+
+      // ── Real scroll progress on LCD ─────────────────────────
+      const lcdFill = document.querySelector('.lcd-progress-fill') as HTMLElement;
+      const lcdTime = document.querySelector('.lcd-time') as HTMLElement;
+
+      function updateLCDProgress() {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollable > 0 ? Math.round((window.scrollY / scrollable) * 100) : 0;
+        if (lcdFill) lcdFill.style.width = pct + '%';
+        if (lcdTime) {
+          const mins = Math.floor(pct * 0.45);
+          const secs = Math.floor((pct * 0.45 % 1) * 60);
+          lcdTime.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+      }
+      window.addEventListener('scroll', updateLCDProgress, { passive: true });
+
       // ── Scroll-linked reel speed ────────────────────────────
       let lastScrollY = window.scrollY;
-      let scrollVelocity = 0;
-      let reelAnimDuration = 3;
-
       window.addEventListener('scroll', () => {
-        const currentY = window.scrollY;
-        scrollVelocity = Math.abs(currentY - lastScrollY);
-        lastScrollY = currentY;
-
-        // Speed up reels while scrolling
-        const newDuration = Math.max(0.3, 3 - scrollVelocity * 0.08);
-        document.querySelectorAll('.tape-reel, .mini-reel').forEach(reel => {
-          (reel as HTMLElement).style.animationDuration = newDuration + 's';
+        const vel = Math.abs(window.scrollY - lastScrollY);
+        lastScrollY = window.scrollY;
+        const dur = Math.max(0.3, 3 - vel * 0.08) + 's';
+        document.querySelectorAll('.tape-reel, .mini-reel').forEach(r => {
+          (r as HTMLElement).style.animationDuration = dur;
         });
-
-        // Slow back down after scroll stops
         clearTimeout((window as any)._reelTimeout);
         (window as any)._reelTimeout = setTimeout(() => {
-          document.querySelectorAll('.tape-reel, .mini-reel').forEach(reel => {
-            (reel as HTMLElement).style.animationDuration = '3s';
+          document.querySelectorAll('.tape-reel, .mini-reel').forEach(r => {
+            (r as HTMLElement).style.animationDuration = '3s';
           });
         }, 300);
-      });
+      }, { passive: true });
 
       // ── Floating nav visibility ─────────────────────────────
       const heroSection = document.querySelector('.hero');
       const floatingNav = document.getElementById('floating-nav');
-
       if (heroSection && floatingNav) {
-        const navObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-              floatingNav.classList.add('nav--visible');
-            } else {
-              floatingNav.classList.remove('nav--visible');
-            }
+        new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            floatingNav.classList.toggle('nav--visible', !e.isIntersecting);
           });
-        }, { threshold: 0.1 });
-        navObserver.observe(heroSection);
+        }, { threshold: 0.1 }).observe(heroSection);
       }
     </script>
   </body>
