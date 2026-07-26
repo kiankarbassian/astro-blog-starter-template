@@ -8,10 +8,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/react": "^6.0.1",
     "astro": "^6.1.5",
     "framer-motion": "^12.42.2",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "wrangler": "^4.114.0"
   }
 }
