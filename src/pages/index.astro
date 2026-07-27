@@ -1,12 +1,39 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import InterestWall from "../components/InterestWall.astro";
-import Journey from "../components/Journey.astro";
+import F1Centerpiece from "../components/f1/F1Centerpiece.astro";
 ---
 
 <Layout title="Kian Karbassian">
-  <Hero />
-  <InterestWall />
-  <Journey />
+  <main>
+    <F1Centerpiece />
+
+    <section class="portfolio-story-section">
+      <div class="story-inner">
+        <p class="section-kicker">ABOUT</p>
+
+        <h2>
+          AI systems, multimodal models, and engineering experiences built to
+          scale.
+        </h2>
+
+        <p>
+          Computer Engineering student at UIUC and AI Engineering Intern at CCC
+          Intelligent Solutions.
+        </p>
+      </div>
+    </section>
+
+    <section class="portfolio-contact-section">
+      <div>
+        <p class="section-kicker">CONTACT</p>
+
+        <h2>Let's build something ambitious.</h2>
+
+        <p>
+          Interested in AI agents, multimodal systems, developer tools, and
+          full-stack products.
+        </p>
+      </div>
+    </section>
+  </main>
 </Layout>
