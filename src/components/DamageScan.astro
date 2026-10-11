@@ -1,4 +1,4 @@
-<figure class="damage-demo" aria-label="Illustrative vehicle assessment: zoom into a door, inspect damage in three passes, and compile a report.">
+<figure class="damage-demo" aria-label="Illustrative vehicle assessment: inspect a damaged door and compare it with a pristine reference car of the same make and model.">
   <div class="demo-top"><span>Illustrative workflow</span><button type="button" class="demo-play">Pause</button></div>
   <div class="demo-stage" aria-hidden="true">
     <span class="zoom-label">Area of interest · door panel · 4×</span>
@@ -15,11 +15,35 @@
     </svg>
     <div class="scan-status"><span class="status-dot"></span><span class="status-copy">Locating vehicle</span></div>
   </div>
+  <div class="reference-comparison">
+    <div class="reference-heading"><strong>Same make. Same model. Different condition.</strong><p>The agent checks the matching panel against a pristine reference.</p></div>
+    <div class="reference-pair">
+      {['Assessment vehicle', 'Pristine reference'].map((label, index) => (
+        <div class={`reference-view ${index === 0 ? 'reference-damaged' : 'reference-pristine'}`}>
+          <span class="reference-label">{label}</span>
+          <div class="reference-window">
+            <svg viewBox="0 0 560 240" role="img" aria-label={index === 0 ? 'Assessment car with marks on the door panel' : 'Identical reference car with an undamaged door panel'}>
+              <g class="reference-camera" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M65 148L76 121 137 107 179 67H327L390 111 467 123 491 147V169H454M392 169H173M111 169H65Z"/>
+                <circle cx="142" cy="166" r="31"/><circle cx="423" cy="166" r="31"/>
+                <circle cx="142" cy="166" r="15"/><circle cx="423" cy="166" r="15"/>
+                <path d="M156 108L190 80H248V108ZM260 80H320L364 108H260ZM253 113V155M371 114L386 155M185 114L174 155M185 155H377M274 121H292"/>
+                {index === 0 && <path class="reference-scratch" d="M292 134L306 139 299 144 318 148M310 130L321 135 315 141"/>}
+                <rect class="reference-crop" x="275" y="119" width="58" height="38" rx="2"/>
+              </g>
+            </svg>
+          </div>
+          <span class="reference-condition">{index === 0 ? 'Surface marks on door' : 'Clean, undamaged panel'}</span>
+        </div>
+      ))}
+    </div>
+    <p class="reference-verdict">Panel geometry matches. Surface marks appear only on the assessment vehicle.</p>
+  </div>
   <div class="demo-bottom">
     <ol class="demo-passes" aria-label="Inspection passes"><li>Locate</li><li>Inspect</li><li>Compare</li></ol>
-    <div class="demo-report"><span class="report-title">Assessment report</span><p class="report-line">Door panel · surface damage</p><p class="report-line">Reference comparison · complete</p><p class="report-line">Three passes · finding retained</p></div>
+    <div class="demo-report"><span class="report-title">Assessment report</span><p class="report-line">Door panel · surface damage</p><p class="report-line">Same make &amp; model · pristine reference checked</p><p class="report-line">Marks absent from reference · finding retained</p></div>
   </div>
-  <figcaption>Simulated findings · no live vehicle analysis</figcaption>
+  <figcaption>Illustrative matching vehicles and simulated findings · no live vehicle analysis</figcaption>
 </figure>
 
 <style>
@@ -41,6 +65,20 @@
   @keyframes scan{from{transform:translateX(0)}to{transform:translateX(60px)}}
   .scan-status{position:absolute;bottom:6px;left:0;display:flex;gap:8px;align-items:center;font-size:12px;background:var(--bg);padding:4px 8px 4px 0}
   .status-dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+  .reference-comparison{border-top:1px solid var(--line);padding:20px 0 16px}
+  .reference-heading strong{font-size:13px;font-weight:500;color:var(--text)}
+  .reference-heading p{font-size:12px;line-height:1.6;margin:6px 0 18px}
+  .reference-pair{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .reference-view{min-width:0}.reference-label{font-size:11px;color:var(--text)}
+  .reference-window{overflow:hidden;margin-top:8px;background:var(--surface);border-radius:6px;aspect-ratio:2.1}
+  .reference-window svg{display:block;width:100%;height:100%}
+  .reference-camera{transform-origin:304px 138px;transition:transform 1s cubic-bezier(.16,1,.3,1)}
+  .reference-scratch{stroke:var(--accent);stroke-width:2}
+  .reference-crop{stroke:var(--accent);stroke-dasharray:4 4;opacity:.5}
+  .damage-demo[data-step="3"] .reference-camera,.damage-demo[data-step="4"] .reference-camera{transform:translate(-24px,-18px) scale(4)}
+  .reference-condition{display:block;font-size:10px;margin-top:9px}
+  .reference-verdict{font-size:12px;line-height:1.6;color:var(--accent);margin:16px 0 0;opacity:0;transition:opacity .4s}
+  .damage-demo[data-step="3"] .reference-verdict,.damage-demo[data-step="4"] .reference-verdict{opacity:1}
   .demo-bottom{display:grid;grid-template-columns:100px 1fr;gap:20px;border-top:1px solid var(--line);padding-top:16px}
   .demo-passes{list-style:none;margin:0;padding:0;font-size:12px;display:grid;gap:8px;align-content:start}
   .demo-passes li{opacity:.4;transition:opacity .4s,color .4s}
@@ -52,7 +90,7 @@
   figcaption{font-size:11px;margin-top:18px}
   .damage-demo[data-paused="true"] .scan-line{animation-play-state:paused}
   @media(max-width:767px){.demo-stage{height:180px}.demo-bottom{grid-template-columns:75px 1fr;gap:15px}}
-  @media(prefers-reduced-motion:reduce){.car-camera,.report-line{transition:none}.scan-line{animation:none!important}}
+  @media(prefers-reduced-motion:reduce){.car-camera,.reference-camera,.reference-verdict,.report-line{transition:none}.scan-line{animation:none!important}}
 </style>
 
 <script>
@@ -68,7 +106,7 @@
       const step = t < 2000 ? 0 : t < 4500 ? 1 : t < 7000 ? 2 : t < 9500 ? 3 : 4;
       demo.dataset.step = String(step);
       demo.dataset.paused = String(paused);
-      status.textContent = ['Locating vehicle', 'Pass 1 · zooming into area of interest', 'Pass 2 · inspecting damage', 'Pass 3 · comparing references', 'Compiling assessment'][step];
+      status.textContent = ['Locating vehicle', 'Pass 1 · zooming into area of interest', 'Pass 2 · inspecting damage', 'Pass 3 · checking pristine same-model reference', 'Compiling reference-backed assessment'][step];
       passes.forEach((p,i) => { p.classList.toggle('active', step === i+1); p.classList.toggle('done', step > i+1); });
       lines.forEach((line,i) => line.classList.toggle('shown', t >= 10000+i*700));
       button.textContent = paused ? 'Replay' : 'Pause';

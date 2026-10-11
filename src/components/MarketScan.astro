@@ -1,0 +1,99 @@
+<figure class="market-demo" data-step="3" aria-labelledby="market-title">
+  <header class="market-header"><h4 id="market-title">Insider knowledge. Suspicious activity.</h4><button class="market-toggle" type="button">Play demo</button></header>
+  <p class="market-example">Illustrative market · Will the stadium’s opening performance last more than 12 minutes?</p>
+  <div class="insider-context">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L22 21H2Z"/><path d="M12 9V14M12 17V18"/></svg>
+    <p><strong>Possible information advantage</strong>A stadium worker could time a closed rehearsal and learn the likely duration before the audience does.</p>
+  </div>
+  <div class="market-sources">
+    <div><span class="venue">Kalshi</span><span class="quote">54¢ <small>YES</small></span><span class="price-track"><i style="--price:.54"></i></span></div>
+    <div><span class="venue">Polymarket</span><span class="quote">68¢ <small>YES</small></span><span class="price-track"><i style="--price:.68"></i></span></div>
+  </div>
+  <div class="market-analysis">
+    <svg class="activity-chart" viewBox="0 0 480 130" role="img" aria-label="Simulated trading activity rises after a closed rehearsal and before the public performance">
+      <path class="chart-guide" d="M12 105H468M12 65H468M12 25H468" />
+      <path class="activity-trace" d="M12 101L45 98 75 102 110 94 144 96 175 89 206 92 237 86 264 90 286 82 303 84 319 38 337 46 351 23 366 32 381 19 397 28 416 16 440 25 468 20" />
+      <path class="public-marker" d="M440 10V108"/>
+      <g class="chart-warning"><path d="M316 14L327 34H305Z"/><path d="M316 21V26M316 29V30"/></g>
+    </svg>
+    <div class="chart-labels"><span>Closed rehearsal</span><span>Public performance</span></div>
+    <div class="analysis-caption"><span class="scan-indicator"></span><span class="market-status">Insider risk and suspicious activity flagged</span></div>
+  </div>
+  <ol class="market-steps"><li>Match markets</li><li>Analyze signals</li><li>Flag both risks</li></ol>
+  <div class="market-findings">
+    <div class="market-flag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L22 21H2Z"/><path d="M12 9V14M12 17V18"/></svg><div><strong>Possible insider knowledge</strong><p>Rehearsal staff may already know the likely outcome. The AI assessment flags this market for possible insider influence.</p></div></div>
+    <div class="market-flag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L22 21H2Z"/><path d="M12 9V14M12 17V18"/></svg><div><strong>Suspicious trading activity</strong><p>A sudden activity spike after rehearsal, before the public performance, triggers a timing warning.</p></div></div>
+    <div class="market-flag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L22 21H2Z"/><path d="M12 9V14M12 17V18"/></svg><div><strong>Cross-market price divergence</strong><p>Kalshi at 54¢ versus Polymarket at 68¢: a 14¢ gap to review alongside activity, liquidity, and market rules.</p></div></div>
+  </div>
+  <figcaption>Fictional scenario · simulated prices and activity. Flags highlight possible insider influence and suspicious activity; they do not prove insider trading or manipulation.</figcaption>
+</figure>
+
+<style>
+  .market-demo{margin:28px 0 0;padding-top:20px;border-top:1px solid var(--line);color:var(--text)}
+  .market-header{display:flex;justify-content:space-between;align-items:center;gap:16px}
+  h4{font-size:16px;font-weight:500;line-height:1.4;margin:0;letter-spacing:-.02em}
+  .market-toggle{flex-shrink:0;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 6px;min-height:44px;font-size:12px}
+  .market-toggle:hover{color:var(--accent)}
+  .market-example{font-size:12px;line-height:1.6;color:var(--muted);margin:14px 0 20px}
+  .insider-context{display:flex;gap:12px;margin:0 0 24px}
+  .insider-context svg{width:22px;height:22px;flex-shrink:0;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:3px}
+  .insider-context p{font-size:12px;line-height:1.7;color:var(--muted);margin:0}
+  .insider-context strong{display:block;color:var(--text);font-weight:500;margin-bottom:5px}
+  .public-marker{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 4}
+  .market-sources{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .market-sources>div{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:12px}
+  .venue{font-size:13px}.quote{font:20px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}.quote small{font:9px var(--mono);color:var(--muted)}
+  .price-track{grid-column:1/-1;height:3px;background:var(--line);overflow:hidden}
+  .price-track i{display:block;height:100%;background:var(--accent);transform-origin:left;transform:scaleX(var(--price));transition:transform .8s cubic-bezier(.16,1,.3,1)}
+  .market-demo[data-step="0"] .price-track i{transform:scaleX(0)}
+  .market-analysis{margin-top:24px}.activity-chart{width:100%;display:block;overflow:visible}
+  .chart-guide{fill:none;stroke:var(--line);stroke-width:.6}.activity-trace{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-dasharray:650;stroke-dashoffset:0;transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1)}
+  .market-demo[data-step="0"] .activity-trace,.market-demo[data-step="1"] .activity-trace{stroke-dashoffset:650}
+  .chart-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+  .chart-warning{fill:var(--bg);stroke:var(--accent);stroke-width:1.5;opacity:1;transition:opacity .3s}
+  .analysis-caption{display:flex;gap:8px;align-items:center;font-size:12px;margin-top:12px;color:var(--accent);min-height:38px}
+  .scan-indicator{width:6px;height:6px;background:currentColor;border-radius:50%}
+  .market-steps{display:flex;justify-content:space-between;gap:12px;list-style:none;padding:14px 0;margin:0;border-block:1px solid var(--line);font-size:11px;color:var(--muted)}
+  .market-steps .active{color:var(--accent)}.market-steps .done{color:var(--text)}
+  .market-findings{padding-top:18px;display:grid;gap:16px;min-height:240px}
+  .market-flag{display:flex;gap:12px;opacity:1;transition:opacity .4s}
+  .market-flag svg{width:20px;height:20px;flex-shrink:0;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+  .market-flag strong{font-size:12px;font-weight:500}.market-flag p{color:var(--muted);font-size:12px;line-height:1.6;margin:4px 0 0}
+  .market-demo[data-step="0"] .market-flag,.market-demo[data-step="1"] .market-flag,.market-demo[data-step="2"] .market-flag,.market-demo[data-step="0"] .chart-warning,.market-demo[data-step="1"] .chart-warning,.market-demo[data-step="2"] .chart-warning{opacity:.15}
+  figcaption{font-size:11px;color:var(--muted);line-height:1.7;margin-top:18px}
+  @media(max-width:767px){.market-sources{gap:18px}.market-sources>div{gap:8px}.quote{font-size:18px}.venue{font-size:12px}.market-header{align-items:flex-start}.market-steps{font-size:10px}.market-findings{min-height:300px}}
+  @media(prefers-reduced-motion:reduce){.activity-trace,.price-track i,.market-flag,.chart-warning{transition:none}}
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.market-demo').forEach(demo => {
+    const button = demo.querySelector<HTMLButtonElement>('.market-toggle')!;
+    const status = demo.querySelector<HTMLElement>('.market-status')!;
+    const steps = demo.querySelectorAll('.market-steps li');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let elapsed = reduced.matches ? 10000 : 0;
+    let paused = reduced.matches, visible = false, last = 0, frame = 0;
+    const render = () => {
+      const step = elapsed < 900 ? 0 : elapsed < 3500 ? 1 : elapsed < 6500 ? 2 : 3;
+      demo.dataset.step = String(step);
+      status.textContent = ['Matching the performance-duration markets', 'AI review: rehearsal staff could know the duration', 'Activity spike and 14¢ price gap detected', 'Insider risk and suspicious activity flagged'][step];
+      steps.forEach((item, i) => {item.classList.toggle('active', step === i + 1); item.classList.toggle('done', step > i + 1);});
+      button.textContent = elapsed >= 10000 ? 'Replay' : paused ? 'Resume' : 'Pause';
+      button.setAttribute('aria-label', `${button.textContent} market analysis demonstration`);
+    };
+    const tick = (time: number) => {
+      if (paused || !visible || document.hidden) return;
+      if (last) elapsed += Math.min(time - last, 100);
+      last = time;
+      if (elapsed >= 10000) {elapsed = 10000; paused = true;}
+      render();
+      if (!paused) frame = requestAnimationFrame(tick);
+    };
+    const start = () => {cancelAnimationFrame(frame);last = 0;if (!paused && visible && !document.hidden) frame = requestAnimationFrame(tick);};
+    button.addEventListener('click', () => {if (elapsed >= 10000) {elapsed = 0;paused = false;} else paused = !paused;render();start();});
+    new IntersectionObserver(([entry]) => {visible = entry.isIntersecting;start();}, {threshold: .2}).observe(demo);
+    document.addEventListener('visibilitychange', start);
+    reduced.addEventListener('change', () => {paused = reduced.matches;if (paused) elapsed = 10000;render();start();});
+    render();
+  });
+</script>
