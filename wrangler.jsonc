@@ -3,11 +3,9 @@
 	"compatibility_flags": [
 		"global_fetch_strictly_public"
 	],
-	"name": "creative-portfolio",
-	"main": "@astrojs/cloudflare/entrypoints/server",
+	"name": "little-shape-ea8c",
 	"assets": {
-		"directory": "./dist",
-		"binding": "ASSETS"
+		"directory": "./dist"
 	},
 	"observability": {
 		"enabled": true
