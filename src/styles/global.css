@@ -363,6 +363,12 @@ section{
   line-height:1.8;
   margin:0
 }
+.experience-summary{
+  padding-left:20px
+}
+.experience-summary li+li{
+  margin-top:12px
+}
 .experience-impact{
   align-self:center;
   display:flex;
