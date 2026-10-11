@@ -1,397 +1,227 @@
 ---
 const projects = [
-  {
-    title: "Multi-Agent Trading System",
-    description: "LangGraph-powered multi-agent system analyzing risk tolerance and investment portfolios to surface actionable strategy insights.",
-    tags: ["LangGraph", "Python", "LLM"],
-    stripe: "#00F5FF",
-    side: "A",
-    track: "01",
-    href: "#"
+  { 
+    name: "Ultrasonic Measuring Tool", 
+    description: "Precision distance measurement using ultrasonic sensors with real-time data visualization",
+    tag: "Embedded Systems"
   },
-  {
-    title: "Crypto Quote Pipeline",
-    description: "High-throughput NATS-based quote distribution system processing 1,000+ quotes/sec with sub-50ms latency for real-time trading dashboards.",
-    tags: ["NATS", "Go", "PostgreSQL"],
-    stripe: "#FF2E93",
-    side: "A",
-    track: "02",
-    href: "#"
+  { 
+    name: "Environmental Weather Monitor", 
+    description: "IoT-based temperature, humidity, and weather tracking with predictive analytics",
+    tag: "IoT"
   },
-  {
-    title: "Neurify — BCI × Spotify",
-    description: "EEG-driven BCI research project classifying cognitive states with supervised ML models to adapt Spotify playback in real time.",
-    tags: ["Python", "Spotipy", "EEG/ML"],
-    stripe: "#E8A917",
-    side: "B",
-    track: "01",
-    href: "#"
-  },
-  {
-    title: "Admin & MCP Platform",
-    description: "Full-stack admin application with MCP-integrated LLM assistance, reducing manual data management tasks for 12 internal users.",
-    tags: ["Go", "React Admin", "MCP"],
-    stripe: "#FF6B2C",
-    side: "B",
-    track: "02",
-    href: "#"
+  { 
+    name: "Autonomous Vehicle Prototype", 
+    description: "Self-driving vehicle with obstacle avoidance and path planning algorithms",
+    tag: "Robotics"
   }
 ];
 ---
 
-<section id="projects" class="projects section">
+<section id="projects" class="projects section-dark">
+  <div class="float-layer project-float"></div>
   <div class="container">
-
-    <!-- Section Header -->
-    <div class="section-header animate-on-scroll">
-      <span class="section-eyebrow">Featured Work</span>
-      <h2 class="section-title">Mixtape Collection</h2>
-      <p class="section-sub">Hover to flip — press play to explore</p>
+    <div class="projects-header">
+      <p class="eyebrow">Projects</p>
+      <h2 class="headline-large">Built with purpose.</h2>
+      <p class="projects-subtitle">
+        From embedded systems to machine learning, each project pushes the boundaries of what's possible.
+      </p>
     </div>
-
-    <!-- Cassette Grid -->
-    <div class="cassettes-grid">
-      {projects.map((project, i) => (
-        <div class="cassette-card animate-on-scroll scale-in" style={`--stripe: ${project.stripe}; transition-delay: ${i * 0.12}s`}>
-          <div class="cassette-inner">
-
-            <!-- FRONT -->
-            <a href={project.href} class="cassette-front">
-              <!-- Corner screws -->
-              <span class="screw screw-tl" aria-hidden="true">⊕</span>
-              <span class="screw screw-tr" aria-hidden="true">⊕</span>
-              <span class="screw screw-bl" aria-hidden="true">⊕</span>
-              <span class="screw screw-br" aria-hidden="true">⊕</span>
-
-              <!-- Top stripe -->
-              <div class="front-stripe"></div>
-
-              <!-- Label area -->
-              <div class="front-label">
-                <span class="label-side">SIDE {project.side}</span>
-                <span class="label-track">TRACK {project.track}</span>
-                <h3 class="label-title">{project.title}</h3>
-                <div class="label-tags">
-                  {project.tags.map(tag => (
-                    <span class="label-tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              <!-- Bottom stripe -->
-              <div class="front-stripe-bottom"></div>
-
-              <!-- Mini Reels -->
-              <div class="mini-reels" aria-hidden="true">
-                <div class="mini-reel"></div>
-                <div class="mini-reel"></div>
-              </div>
-
-              <!-- Tape slot row -->
-              <div class="tape-slots" aria-hidden="true">
-                <div class="slot"></div><div class="slot"></div><div class="slot"></div>
-              </div>
-
-              <!-- Now playing indicator -->
-              <span class="now-playing-front">▶ SIDE {project.side} — TRACK {project.track}</span>
-            </a>
-
-            <!-- BACK -->
-            <div class="cassette-back">
-              <span class="back-eyebrow">TRACK LISTING</span>
-              <p class="back-desc">{project.description}</p>
-              <div class="back-tags">
-                {project.tags.map(tag => (
-                  <span class="back-tag">{tag}</span>
-                ))}
-              </div>
-              <a href={project.href} class="back-play-btn retro-btn retro-btn--primary">
-                ▶ PLAY TRACK
-              </a>
+    
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <div class="project-card">
+          <div class="project-visual">
+            <div class="project-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2" stroke-opacity="0.3"/>
+                <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="2" stroke-opacity="0.5"/>
+                <circle cx="24" cy="24" r="4" fill="currentColor"/>
+              </svg>
             </div>
-
+          </div>
+          <div class="project-content">
+            <p class="project-tag">{project.tag}</p>
+            <h3 class="project-name">{project.name}</h3>
+            <p class="project-description">{project.description}</p>
+            <div class="project-links">
+              <a href="#" class="link-learn-more link-learn-more-dark">Learn more</a>
+              <a href="#" class="link-shop">View code</a>
+            </div>
           </div>
         </div>
       ))}
     </div>
-
   </div>
 </section>
 
 <style>
-  /* ── Section ────────────────────────────────── */
   .projects {
-    background: linear-gradient(180deg, var(--dark) 0%, #1e1c20 100%);
+    padding: 100px 0;
   }
 
-  .section-header {
+  .projects-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 60px;
   }
 
-  .section-sub {
-    font-family: var(--font-lcd);
-    font-size: 1rem;
-    color: var(--gray);
-    letter-spacing: 0.05em;
-    margin-top: 0.5rem;
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.12px;
+    text-transform: uppercase;
+    color: var(--bright-blue);
+    margin-bottom: 8px;
   }
 
-  /* ── Grid ───────────────────────────────────── */
-  .cassettes-grid {
+  .headline-large {
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .projects-subtitle {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: var(--text-on-dark);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .projects-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
 
-  /* ── Card flip wrapper ──────────────────────── */
-  .cassette-card {
-    perspective: 1000px;
-    height: 260px;
-  }
-
-  .cassette-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.65s var(--ease-smooth);
-  }
-
-  .cassette-card:hover .cassette-inner {
-    transform: rotateY(180deg);
-  }
-
-  /* ── Shared front/back ──────────────────────── */
-  .cassette-front,
-  .cassette-back {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: 10px;
+  .project-card {
+    background: var(--dark-surface-1);
+    border-radius: 12px;
     overflow: hidden;
-  }
-
-  /* ── FRONT ──────────────────────────────────── */
-  .cassette-front {
-    background: linear-gradient(165deg, #CBA96E 0%, #B8944A 55%, #A67A2A 100%);
-    border: 2px solid #7a5a1a;
-    box-shadow:
-      0 8px 24px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(255,255,255,0.25),
-      inset 0 -1px 0 rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
-    text-decoration: none;
-    color: inherit;
-    cursor: none;
+    min-height: 380px;
   }
 
-  .screw {
-    position: absolute;
-    font-size: 0.7rem;
-    color: rgba(0,0,0,0.35);
-    line-height: 1;
-  }
-  .screw-tl { top: 0.4rem; left: 0.4rem; }
-  .screw-tr { top: 0.4rem; right: 0.4rem; }
-  .screw-bl { bottom: 2.5rem; left: 0.4rem; }
-  .screw-br { bottom: 2.5rem; right: 0.4rem; }
-
-  .front-stripe {
-    height: 8px;
-    background: var(--stripe);
-    border-radius: 2px;
-    box-shadow: 0 0 8px var(--stripe);
-    margin: 0.25rem 0 0.5rem;
-  }
-
-  .front-stripe-bottom {
-    height: 4px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 2px;
-    margin: 0.3rem 0;
-  }
-
-  /* Label */
-  .front-label {
-    flex: 1;
-    background: var(--cassette-cream);
-    border-radius: 4px;
-    padding: 0.625rem 0.75rem;
+  .project-visual {
+    height: 180px;
     display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
-  }
-
-  .label-side, .label-track {
-    font-family: var(--font-lcd);
-    font-size: 0.7rem;
-    color: var(--cassette-brown);
-    letter-spacing: 0.1em;
-  }
-
-  .label-track { color: rgba(92,61,30,0.6); font-size: 0.65rem; }
-
-  .label-title {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 700;
-    color: #1a0f00;
-    line-height: 1.2;
-    margin: 0.15rem 0;
-  }
-
-  .label-tags {
-    display: flex;
-    gap: 0.3rem;
-    flex-wrap: wrap;
-    margin-top: 0.2rem;
-  }
-
-  .label-tag {
-    font-family: var(--font-lcd);
-    font-size: 0.65rem;
-    padding: 0.1rem 0.4rem;
-    background: rgba(0,0,0,0.1);
-    border-radius: 2px;
-    color: var(--cassette-brown);
-    letter-spacing: 0.05em;
-  }
-
-  /* Mini reels */
-  .mini-reels {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.25rem 1.5rem;
-    gap: 0.5rem;
-  }
-
-  .mini-reel {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50%, #111 0%, #222 50%, #111 100%);
-    border: 2px solid #333;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.05);
-    animation: spinReel 3s linear infinite;
-  }
-
-  .mini-reel::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: conic-gradient(
-      transparent 0deg, transparent 55deg,
-      rgba(255,255,255,0.1) 55deg, rgba(255,255,255,0.1) 65deg,
-      transparent 65deg, transparent 175deg,
-      rgba(255,255,255,0.1) 175deg, rgba(255,255,255,0.1) 185deg,
-      transparent 185deg, transparent 295deg,
-      rgba(255,255,255,0.1) 295deg, rgba(255,255,255,0.1) 305deg,
-      transparent 305deg
-    );
-  }
-
-  /* Only spin reels on hover */
-  .cassette-card:not(:hover) .mini-reel { animation-play-state: paused; }
-
-  /* Tape slots */
-  .tape-slots {
-    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 0.35rem;
-    padding-bottom: 0.35rem;
+    background: linear-gradient(135deg, var(--dark-surface-2) 0%, var(--dark-surface-4) 100%);
   }
 
-  .slot {
-    width: 18px;
-    height: 6px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 2px;
+  .project-icon {
+    color: var(--white);
+    opacity: 0.6;
   }
 
-  /* Now playing */
-  .now-playing-front {
-    position: absolute;
-    bottom: 0.4rem;
-    right: 0.6rem;
-    font-family: var(--font-lcd);
-    font-size: 0.6rem;
-    color: rgba(0,0,0,0.4);
-    letter-spacing: 0.05em;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .cassette-card:hover .now-playing-front { opacity: 1; }
-
-  /* ── BACK ───────────────────────────────────── */
-  .cassette-back {
-    transform: rotateY(180deg);
-    background: var(--dark-card);
-    border: 2px solid rgba(255,255,255,0.08);
-    padding: 1.5rem;
+  .project-content {
+    padding: 24px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   }
 
-  /* Stripe accent on left edge */
-  .cassette-back::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--stripe);
-    box-shadow: 0 0 8px var(--stripe);
+  .project-tag {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.12px;
+    text-transform: uppercase;
+    color: var(--bright-blue);
+    margin-bottom: 8px;
   }
 
-  .back-eyebrow {
-    font-family: var(--font-pixel);
-    font-size: 0.45rem;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 6px var(--neon-cyan);
-    letter-spacing: 0.15em;
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: var(--white);
+    margin-bottom: 8px;
   }
 
-  .back-desc {
-    font-size: 0.9rem;
-    color: var(--gray-light);
-    line-height: 1.5;
+  .project-description {
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+    color: var(--text-on-dark);
+    margin-bottom: 16px;
     flex: 1;
   }
 
-  .back-tags {
+  .project-links {
     display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
+    gap: 20px;
   }
 
-  .back-tag {
-    font-family: var(--font-lcd);
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid rgba(0,245,255,0.2);
-    border-radius: 3px;
-    color: var(--neon-cyan);
-    letter-spacing: 0.05em;
+  .float-layer.project-float {
+    position: absolute;
+    top: 20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.08) 0%, transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: projectFloat 15s ease-in-out infinite;
   }
 
-  .back-play-btn {
-    align-self: flex-start;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+  @keyframes projectFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-40px, 30px) rotate(10deg); }
   }
 
-  /* ── Responsive ─────────────────────────────── */
+  .project-card {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 113, 227, 0.15);
+  }
+
+  .project-card:hover .project-visual {
+    background: linear-gradient(135deg, var(--dark-surface-3) 0%, var(--dark-surface-4) 100%);
+  }
+
+  .project-card:hover .project-icon {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  .project-icon {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+  }
+
+  @media (max-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
-    .cassettes-grid { grid-template-columns: 1fr; }
-    .cassette-card { height: 240px; }
+    .projects {
+      padding: 60px 0;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card {
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .project-visual {
+      height: 140px;
+    }
   }
 </style>

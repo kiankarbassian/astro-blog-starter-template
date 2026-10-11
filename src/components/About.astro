@@ -1,348 +1,330 @@
 ---
+const education = {
+  school: "University of Illinois Urbana-Champaign",
+  degree: "Bachelor of Science in Computer Engineering",
+  expected: "Expected December 2027"
+};
+
 const skills = [
-  { name: "LangGraph", bars: 8, peak: 8 },
-  { name: "Go", bars: 8, peak: 7 },
-  { name: "React", bars: 8, peak: 7 },
-  { name: "Python", bars: 8, peak: 8 },
-  { name: "NATS", bars: 8, peak: 7 },
-  { name: "MCP", bars: 8, peak: 7 },
+  { name: "Python", level: 95 },
+  { name: "C++", level: 90 },
+  { name: "Go", level: 85 },
+  { name: "TypeScript", level: 80 }
+];
+
+const awards = [
+  "Harvard Book Prize",
+  "Duke of Edinburgh Silver Award",
+  "Climate Science Olympiad Semi-finalist"
 ];
 ---
 
-<section id="about" class="about section">
+<section id="about" class="about section-light">
+  <div class="section-bg-gradient"></div>
   <div class="container">
-
-    <div class="about-header animate-on-scroll">
-      <span class="section-eyebrow">About Me</span>
-      <h2 class="section-title">Liner Notes</h2>
+    <div class="about-grid">
+      <div class="about-header">
+        <p class="eyebrow">About Me</p>
+        <h2 class="headline-medium">Engineering the future.</h2>
+        <p class="about-intro">
+          I'm a Computer Engineering student at UIUC with a passion for building scalable software systems and exploring emerging technologies. My experience spans full-stack development, embedded systems, and machine learning integration.
+        </p>
+      </div>
+      <div class="about-visual">
+        <div class="about-icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="56" height="56" rx="12" fill="#1d1d1f" fill-opacity="0.05"/>
+            <path d="M32 18C24.268 18 18 24.268 18 32C18 39.732 24.268 46 32 46C39.732 46 46 39.732 46 32C46 24.268 39.732 18 32 18ZM32 20C38.627 20 44 25.373 44 32C44 38.627 38.627 44 32 44C25.373 44 20 38.627 20 32C20 25.373 25.373 20 32 20Z" fill="#1d1d1f" fill-opacity="0.3"/>
+            <path d="M32 22C26.477 22 22 26.477 22 32C22 37.523 26.477 42 32 42C37.523 42 42 37.523 42 32C42 26.477 37.523 22 32 22ZM30 28L34 32L30 36V28Z" fill="#0071e3"/>
+          </svg>
+        </div>
+      </div>
     </div>
 
-    <div class="about-grid">
-
-      <!-- LEFT: J-Card / Liner Notes -->
-      <div class="liner-notes animate-on-scroll from-left">
-        <div class="jcard">
-          <div class="jcard-header">
-            <span class="jcard-label">LINER NOTES</span>
-            <span class="jcard-catalog">CAT. NO. WM-001</span>
-          </div>
-          <div class="jcard-divider"></div>
-          <div class="jcard-body">
-            <p class="jcard-text">
-              Computer Engineering junior at UIUC with a passion for building
-              autonomous multi-agent systems and real-time data pipelines. Currently
-              designing AI workflows at CCC Intelligent Solutions.
-            </p>
-            <p class="jcard-text">
-              From EEG-powered Spotify queues to crypto trading dashboards hitting
-              1,000+ quotes/sec, I blend AI orchestration with full-stack depth
-              to make ambitious ideas ship.
-            </p>
-          </div>
-          <div class="jcard-divider"></div>
-          <div class="jcard-credits">
-            <div class="credit-row">
-              <span class="credit-key">Studying at</span>
-              <span class="credit-val">UIUC · Comp. Eng.</span>
-            </div>
-            <div class="credit-row">
-              <span class="credit-key">Currently at</span>
-              <span class="credit-val">CCC Intelligent Solutions</span>
-            </div>
-            <div class="credit-row">
-              <span class="credit-key">All rights</span>
-              <span class="credit-val">Reserved © 2026</span>
-            </div>
-          </div>
-          <div class="jcard-fold" aria-hidden="true"></div>
-        </div>
+    <div class="education-card">
+      <div class="education-content">
+        <h3 class="education-school">{education.school}</h3>
+        <p class="education-degree">{education.degree}</p>
+        <p class="education-date">{education.expected}</p>
       </div>
+      <a href="#contact" class="link-learn-more">Learn more</a>
+    </div>
 
-      <!-- RIGHT: Equalizer -->
-      <div class="eq-panel animate-on-scroll from-right">
-        <div class="eq-header">
-          <span class="eq-label lcd-display">SKILL FREQ. ANALYZER</span>
-          <span class="eq-mode">AUTO • STEREO</span>
-        </div>
-        <div class="eq-display">
-          {skills.map((skill, si) => (
-            <div class="eq-column">
-              <div class="eq-bars">
-                {Array.from({ length: skill.bars }).map((_, bi) => {
-                  const isActive = bi < skill.peak;
-                  const delay = (si * 0.15 + bi * 0.05).toFixed(2);
-                  const dur = (1.8 + (si * 0.3 + bi * 0.1) % 1.2).toFixed(2);
-                  return (
-                    <div
-                      class={`eq-bar${isActive ? ' eq-bar--active' : ''}`}
-                      style={`animation-delay: ${delay}s; animation-duration: ${dur}s; --bar-index: ${bi}; --peak: ${skill.peak}`}
-                    ></div>
-                  );
-                })}
-              </div>
-              <span class="eq-skill-name">{skill.name}</span>
+    <div class="skills-section">
+      <h3 class="skills-title">Technical Skills</h3>
+      <div class="skills-grid">
+        {skills.map((skill) => (
+          <div class="skill-card">
+            <div class="skill-header">
+              <span class="skill-name">{skill.name}</span>
+              <span class="skill-level">{skill.level}%</span>
             </div>
-          ))}
-        </div>
-        <div class="eq-footer">
-          <span class="eq-indicator">
-            <span class="eq-dot"></span>
-            LIVE
-          </span>
-          <span class="eq-db">0 dB</span>
-        </div>
+            <div class="skill-bar">
+              <div class="skill-fill" style={`width: ${skill.level}%`}></div>
+            </div>
+          </div>
+        ))}
       </div>
+    </div>
 
+    <div class="awards-section">
+      <h3 class="awards-title">Recognition</h3>
+      <div class="awards-grid">
+        {awards.map((award) => (
+          <div class="award-card">
+            <span class="award-text">{award}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* ── Section ────────────────────────────────── */
   .about {
-    background: linear-gradient(180deg, #1e1c20 0%, #1A1A1E 100%);
+    padding: 100px 0;
+    position: relative;
   }
 
-  .about-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
+  .section-bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, rgba(0, 113, 227, 0.03), transparent);
+    pointer-events: none;
   }
 
   .about-grid {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 3rem;
-    align-items: stretch;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 60px;
   }
 
-  /* ── J-Card / Liner Notes ───────────────────── */
-  .liner-notes { display: flex; }
-
-  .jcard {
-    background: var(--cassette-cream);
-    border-radius: 4px;
-    padding: 2rem;
-    position: relative;
-    box-shadow:
-      4px 4px 0 rgba(0,0,0,0.4),
-      8px 8px 0 rgba(0,0,0,0.2),
-      0 20px 40px rgba(0,0,0,0.3);
-    width: 100%;
-    /* Subtle paper texture via repeating gradient */
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 22px,
-        rgba(0,0,0,0.03) 22px,
-        rgba(0,0,0,0.03) 23px
-      ),
-      linear-gradient(180deg, #F8E8C0 0%, #F2DDB0 100%);
+  .about-header {
+    max-width: 600px;
   }
 
-  /* Fold crease on right edge */
-  .jcard-fold {
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.08) 70%, transparent);
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.12px;
+    text-transform: uppercase;
+    color: var(--apple-blue);
+    margin-bottom: 8px;
   }
 
-  .jcard-header {
+  .headline-medium {
+    color: var(--near-black);
+    margin-bottom: 16px;
+  }
+
+  .about-intro {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: var(--text-secondary);
+    max-width: 520px;
+  }
+
+  .about-visual {
+    flex-shrink: 0;
+  }
+
+  .about-icon {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .about-icon:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: rgba(0, 0, 0, 0.22) 5px 8px 40px 0px;
+  }
+
+  .education-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px 28px;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.75rem;
+    align-items: center;
+    margin-bottom: 60px;
+    box-shadow: var(--shadow-card);
   }
 
-  .jcard-label {
-    font-family: var(--font-heading);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--cassette-brown);
-    letter-spacing: 0.2em;
+  .education-content {
+    flex: 1;
+  }
+
+  .education-school {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: var(--near-black);
+    margin-bottom: 4px;
+  }
+
+  .education-degree {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .education-date {
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  .skills-section {
+    margin-bottom: 60px;
+  }
+
+  .skills-title, .awards-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--near-black);
+    margin-bottom: 20px;
     text-transform: uppercase;
   }
 
-  .jcard-catalog {
-    font-family: var(--font-lcd);
-    font-size: 0.75rem;
-    color: rgba(92,61,30,0.5);
-    letter-spacing: 0.1em;
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 40px;
+    max-width: 600px;
   }
 
-  .jcard-divider {
-    height: 2px;
-    background: linear-gradient(90deg, var(--neon-magenta), var(--mustard));
-    border-radius: 1px;
-    margin: 0.75rem 0;
-    box-shadow: 0 0 4px rgba(232,169,23,0.3);
+  .skill-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 16px 20px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .jcard-body { margin: 1rem 0; }
-
-  .jcard-text {
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    color: var(--cassette-brown);
-    line-height: 1.7;
-    margin-bottom: 1rem;
+  .skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
   }
 
-  .jcard-credits { display: flex; flex-direction: column; gap: 0.35rem; }
-
-  .credit-row {
+  .skill-header {
     display: flex;
     justify-content: space-between;
-    font-family: var(--font-lcd);
-    font-size: 0.8rem;
+    margin-bottom: 8px;
   }
 
-  .credit-key { color: rgba(92,61,30,0.6); }
-  .credit-val { color: var(--cassette-brown); font-weight: 500; }
-
-  /* ── Equalizer Panel ────────────────────────── */
-  .eq-panel {
-    background: var(--dark-card);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+  .skill-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--near-black);
   }
 
-  .eq-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .skill-level {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-tertiary);
   }
 
-  .eq-label {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.6rem;
-    font-family: var(--font-lcd);
+  .skill-bar {
+    height: 4px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
   }
 
-  .eq-mode {
-    font-family: var(--font-lcd);
-    font-size: 0.75rem;
-    color: var(--gray);
-    letter-spacing: 0.08em;
-  }
-
-  .eq-display {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-end;
-    height: 160px;
-    padding: 0.5rem;
-    background: #0e0e12;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.04);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
-    flex: 1;
-  }
-
-  .eq-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+  .skill-fill {
     height: 100%;
+    background: var(--apple-blue);
+    border-radius: 2px;
   }
 
-  .eq-bars {
-    flex: 1;
-    width: 100%;
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .award-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 16px 20px;
     display: flex;
-    flex-direction: column-reverse;
-    gap: 2px;
     align-items: center;
-    justify-content: flex-start;
-  }
-
-  .eq-bar {
-    width: 100%;
-    max-width: 22px;
-    height: 10px;
-    border-radius: 1px;
-    background: rgba(255,255,255,0.04);
-    transition: background 0.3s;
-  }
-
-  .eq-bar--active {
-    background: var(--neon-cyan);
-    box-shadow: 0 0 4px var(--neon-cyan);
-    animation: eqPulse var(--dur, 2s) ease-in-out infinite;
-  }
-
-  /* Color shift as bars go higher */
-  .eq-bar--active:nth-child(1),
-  .eq-bar--active:nth-child(2) {
-    background: var(--neon-cyan);
-    box-shadow: 0 0 4px var(--neon-cyan);
-  }
-
-  .eq-bar--active:nth-child(3),
-  .eq-bar--active:nth-child(4),
-  .eq-bar--active:nth-child(5) {
-    background: var(--mustard);
-    box-shadow: 0 0 4px var(--mustard);
-  }
-
-  .eq-bar--active:nth-child(6),
-  .eq-bar--active:nth-child(7),
-  .eq-bar--active:nth-child(8) {
-    background: var(--neon-magenta);
-    box-shadow: 0 0 6px var(--neon-magenta);
-  }
-
-  .eq-skill-name {
-    font-family: var(--font-lcd);
-    font-size: 0.65rem;
-    color: var(--gray);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
+    justify-content: center;
     text-align: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .eq-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .award-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
   }
 
-  .eq-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-lcd);
-    font-size: 0.75rem;
-    color: var(--neon-magenta);
-    text-shadow: 0 0 6px var(--neon-magenta);
+  .award-text {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: var(--near-black);
   }
 
-  .eq-dot {
-    width: 6px; height: 6px;
-    background: var(--neon-magenta);
-    border-radius: 50%;
-    box-shadow: 0 0 6px var(--neon-magenta);
-    animation: recBlink 1.5s ease-in-out infinite;
+  @media (max-width: 834px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .about-visual {
+      order: -1;
+    }
+
+    .about-icon {
+      margin: 0 auto;
+    }
+
+    .education-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .awards-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
-  .eq-db {
-    font-family: var(--font-lcd);
-    font-size: 0.75rem;
-    color: var(--gray);
-    letter-spacing: 0.05em;
-  }
+  @media (max-width: 480px) {
+    .about {
+      padding: 60px 0;
+    }
 
-  /* ── Responsive ─────────────────────────────── */
-  @media (max-width: 968px) {
-    .about-grid { grid-template-columns: 1fr; }
-    .eq-display { height: 120px; }
+    .about-icon {
+      width: 80px;
+      height: 80px;
+    }
+
+    .about-icon svg {
+      width: 40px;
+      height: 40px;
+    }
   }
 </style>

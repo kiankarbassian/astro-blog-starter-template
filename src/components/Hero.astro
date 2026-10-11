@@ -1,9 +1,218 @@
 ---
-import HeroMotion from "./HeroMotion";
-import FloatingOrbs from "./FloatingOrbs";
-import ScrollProgress from "./ScrollProgress";
 ---
 
-<ScrollProgress client:load />
-<FloatingOrbs client:load />
-<HeroMotion client:load />
+<section class="hero section-dark">
+  <div class="float-layer float-1"></div>
+  <div class="float-layer float-2"></div>
+  <div class="float-layer float-3"></div>
+  
+  <div class="hero-content">
+    <p class="hero-eyebrow">Computer Engineering</p>
+    <h1 class="hero-title">Kian Karbassian</h1>
+    <p class="hero-subtitle">Building the future at UIUC</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-pill magnetic">Explore Projects</a>
+      <a href="#contact" class="btn btn-primary magnetic">Get in Touch</a>
+    </div>
+  </div>
+  
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding-top: calc(var(--nav-height) + 80px);
+    overflow: hidden;
+  }
+
+  .float-layer {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .float-1 {
+    width: 400px;
+    height: 400px;
+    top: 10%;
+    right: 10%;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.15) 0%, transparent 70%);
+    animation: float1 8s ease-in-out infinite;
+  }
+
+  .float-2 {
+    width: 300px;
+    height: 300px;
+    bottom: 20%;
+    left: 5%;
+    background: radial-gradient(circle, rgba(41, 151, 255, 0.1) 0%, transparent 70%);
+    animation: float2 10s ease-in-out infinite;
+  }
+
+  .float-3 {
+    width: 200px;
+    height: 200px;
+    top: 40%;
+    left: 30%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    animation: float3 12s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-30px, 20px) scale(1.1); }
+  }
+
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -30px) scale(1.05); }
+  }
+
+  @keyframes float3 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-20px, -20px); }
+  }
+
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero-eyebrow {
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.374px;
+    color: var(--bright-blue);
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 10vw, 80px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.28px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(21px, 4vw, 28px);
+    font-weight: 400;
+    line-height: 1.19;
+    letter-spacing: 0.196px;
+    color: var(--text-on-dark);
+    margin-bottom: 32px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-cta .btn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-cta .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+  }
+
+  .hero-cta .btn:hover::before {
+    width: 250px;
+    height: 250px;
+  }
+
+  .hero-cta .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero-cta .btn-primary:hover {
+    box-shadow: 0 8px 30px rgba(0, 113, 227, 0.4);
+  }
+
+  .hero-cta .btn-pill:hover {
+    box-shadow: 0 4px 20px rgba(41, 151, 255, 0.3);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--white), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { 
+      opacity: 0.3;
+      transform: scaleY(1);
+    }
+    50% { 
+      opacity: 1;
+      transform: scaleY(1.2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: calc(var(--nav-height) + 60px);
+    }
+
+    .float-1 {
+      width: 250px;
+      height: 250px;
+    }
+
+    .float-2 {
+      width: 200px;
+      height: 200px;
+    }
+
+    .float-3 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-cta {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .scroll-indicator {
+      bottom: 20px;
+    }
+  }
+</style>

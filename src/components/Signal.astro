@@ -1,0 +1,53 @@
+<figure class="signal-art reveal">
+  <canvas class="signal-canvas" role="img" aria-label="Interactive three-dimensional network of connected points"></canvas>
+  <figcaption><span>Interactive network visualization</span><button class="signal-toggle" aria-pressed="false">Pause motion</button></figcaption>
+</figure>
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('.signal-canvas');
+  const button = document.querySelector<HTMLButtonElement>('.signal-toggle');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let paused = reduced.matches, visible = true, angle = .4, frame = 0, width = 0, height = 0;
+      const points = Array.from({ length: 160 }, (_, i) => {
+        const y = 1 - 2 * (i + .5) / 160;
+        const r = Math.sqrt(1 - y * y), phi = i * Math.PI * (3 - Math.sqrt(5));
+        return { x: Math.cos(phi) * r, y, z: Math.sin(phi) * r };
+      });
+      const draw = () => {
+        ctx.clearRect(0, 0, width, height);
+        const light = document.documentElement.dataset.theme === 'light';
+        const size = Math.min(width, height) * .38;
+        const projected = points.map(p => {
+          const x = p.x * Math.cos(angle) - p.z * Math.sin(angle);
+          const z = p.x * Math.sin(angle) + p.z * Math.cos(angle);
+          const tilt = -.22;
+          return { x: width / 2 + x * size, y: height / 2 + (p.y * Math.cos(tilt) - z * Math.sin(tilt)) * size, z };
+        });
+        for (let i = 0; i < points.length; i++) {
+          for (let j = i + 1; j < points.length; j++) {
+            const a = points[i], b = points[j];
+            if (Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z) < .34) {
+              const depth = (projected[i].z + projected[j].z + 2) / 4;
+              ctx.strokeStyle = light ? `rgba(155,64,32,${.1 + depth * .4})` : `rgba(245,139,99,${.07 + depth * .48})`;
+              ctx.lineWidth = .7;
+              ctx.beginPath(); ctx.moveTo(projected[i].x, projected[i].y); ctx.lineTo(projected[j].x, projected[j].y); ctx.stroke();
+            }
+          }
+        }
+        projected.forEach(p => { ctx.fillStyle = light ? '#a74625' : '#f58b63'; ctx.globalAlpha = .25 + (p.z + 1) * .375; ctx.beginPath(); ctx.arc(p.x, p.y, 1.2 + (p.z + 1) * .6, 0, Math.PI * 2); ctx.fill(); });
+        ctx.globalAlpha = 1;
+      };
+      const animate = () => { if (!paused && visible) { angle += .0025; draw(); frame = requestAnimationFrame(animate); } };
+      const syncButton = () => { if (button) { button.textContent = paused ? 'Play motion' : 'Pause motion'; button.setAttribute('aria-pressed', String(paused)); } };
+      new ResizeObserver(() => { width = canvas.clientWidth; height = canvas.clientHeight; const dpr = Math.min(devicePixelRatio, 2); canvas.width = width * dpr; canvas.height = height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(); }).observe(canvas);
+      new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; cancelAnimationFrame(frame); if (visible) animate(); }).observe(canvas);
+      new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      button?.addEventListener('click', () => { paused = !paused; syncButton(); cancelAnimationFrame(frame); animate(); });
+      reduced.addEventListener('change', () => { paused = reduced.matches; syncButton(); cancelAnimationFrame(frame); draw(); animate(); });
+      canvas.addEventListener('pointermove', event => { if (paused) { angle = (event.offsetX / width) * Math.PI * 2; draw(); } });
+      syncButton();
+    }
+  }
+</script>
