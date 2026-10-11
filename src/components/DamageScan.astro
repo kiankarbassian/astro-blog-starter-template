@@ -1,0 +1,85 @@
+<figure class="damage-demo" aria-label="Illustrative vehicle assessment: zoom into a door, inspect damage in three passes, and compile a report.">
+  <div class="demo-top"><span>Illustrative workflow</span><button type="button" class="demo-play">Pause</button></div>
+  <div class="demo-stage" aria-hidden="true">
+    <span class="zoom-label">Area of interest · door panel · 4×</span>
+    <svg viewBox="0 0 560 240" class="demo-car">
+      <g class="car-camera" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M65 148L76 121 137 107 179 67H327L390 111 467 123 491 147V169H454M392 169H173M111 169H65Z" />
+        <circle cx="142" cy="166" r="31"/><circle cx="423" cy="166" r="31"/>
+        <circle cx="142" cy="166" r="15"/><circle cx="423" cy="166" r="15"/>
+        <path d="M156 108L190 80H248V108ZM260 80H320L364 108H260ZM253 113V155M371 114L386 155M185 114L174 155M185 155H377M274 121H292"/>
+        <path class="damage-mark" d="M292 134L306 139 299 144 318 148M310 130L321 135 315 141"/>
+        <rect class="crop-box" x="275" y="119" width="58" height="38" rx="2"/>
+        <path class="scan-line" d="M274 118V158"/>
+      </g>
+    </svg>
+    <div class="scan-status"><span class="status-dot"></span><span class="status-copy">Locating vehicle</span></div>
+  </div>
+  <div class="demo-bottom">
+    <ol class="demo-passes" aria-label="Inspection passes"><li>Locate</li><li>Inspect</li><li>Compare</li></ol>
+    <div class="demo-report"><span class="report-title">Assessment report</span><p class="report-line">Door panel · surface damage</p><p class="report-line">Reference comparison · complete</p><p class="report-line">Three passes · finding retained</p></div>
+  </div>
+  <figcaption>Simulated findings · no live vehicle analysis</figcaption>
+</figure>
+
+<style>
+  .damage-demo{margin:28px 0 0;padding:20px 0 0;border-top:1px solid var(--line);color:var(--muted)}
+  .demo-top{display:flex;align-items:center;justify-content:space-between;font-size:12px}
+  .demo-play{background:none;border:0;border-bottom:1px solid var(--line);padding:10px 8px;min-height:44px;font-size:12px}
+  .demo-stage{position:relative;overflow:hidden;height:210px}
+  .demo-car{width:100%;height:100%;overflow:visible}
+  .car-camera{transform-origin:304px 138px;transition:transform 1.3s cubic-bezier(.16,1,.3,1)}
+  .damage-demo[data-step="1"] .car-camera,.damage-demo[data-step="2"] .car-camera,.damage-demo[data-step="3"] .car-camera{transform:translate(-24px,-18px) scale(4)}
+  .zoom-label{position:absolute;top:8px;left:0;z-index:1;font-size:11px;color:var(--accent);opacity:0;transition:opacity .5s;background:var(--bg);padding:4px 8px 4px 0}
+  .damage-demo[data-step="1"] .zoom-label,.damage-demo[data-step="2"] .zoom-label,.damage-demo[data-step="3"] .zoom-label{opacity:1}
+  .damage-mark{stroke:var(--accent);opacity:0;transition:opacity .6s}
+  .crop-box{stroke:var(--accent);stroke-dasharray:4 4;opacity:0;transition:opacity .6s}
+  .scan-line{stroke:var(--accent);opacity:0}
+  .damage-demo[data-step="1"] .crop-box,.damage-demo[data-step="2"] .crop-box,.damage-demo[data-step="3"] .crop-box{opacity:.6}
+  .damage-demo[data-step="2"] .damage-mark,.damage-demo[data-step="3"] .damage-mark,.damage-demo[data-step="4"] .damage-mark{opacity:1}
+  .damage-demo[data-step="1"] .scan-line,.damage-demo[data-step="2"] .scan-line,.damage-demo[data-step="3"] .scan-line{opacity:.7;animation:scan 1.6s ease-in-out infinite}
+  @keyframes scan{from{transform:translateX(0)}to{transform:translateX(60px)}}
+  .scan-status{position:absolute;bottom:6px;left:0;display:flex;gap:8px;align-items:center;font-size:12px;background:var(--bg);padding:4px 8px 4px 0}
+  .status-dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+  .demo-bottom{display:grid;grid-template-columns:100px 1fr;gap:20px;border-top:1px solid var(--line);padding-top:16px}
+  .demo-passes{list-style:none;margin:0;padding:0;font-size:12px;display:grid;gap:8px;align-content:start}
+  .demo-passes li{opacity:.4;transition:opacity .4s,color .4s}
+  .demo-passes li.done{opacity:1;color:var(--text)}
+  .demo-passes li.active{opacity:1;color:var(--accent)}
+  .report-title{font-size:12px;color:var(--text)}
+  .report-line{font-size:12px;margin:7px 0 0;opacity:0;transform:translateY(4px);transition:opacity .5s,transform .5s}
+  .report-line.shown{opacity:1;transform:none}
+  figcaption{font-size:11px;margin-top:18px}
+  .damage-demo[data-paused="true"] .scan-line{animation-play-state:paused}
+  @media(max-width:767px){.demo-stage{height:180px}.demo-bottom{grid-template-columns:75px 1fr;gap:15px}}
+  @media(prefers-reduced-motion:reduce){.car-camera,.report-line{transition:none}.scan-line{animation:none!important}}
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.damage-demo').forEach(demo => {
+    const button = demo.querySelector<HTMLButtonElement>('.demo-play')!;
+    const status = demo.querySelector<HTMLElement>('.status-copy')!;
+    const passes = demo.querySelectorAll('li');
+    const lines = demo.querySelectorAll('.report-line');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = reduced.matches, visible = false, elapsed = reduced.matches ? 12000 : 0, last = 0, frame = 0;
+    const render = () => {
+      const t = elapsed % 16000;
+      const step = t < 2000 ? 0 : t < 4500 ? 1 : t < 7000 ? 2 : t < 9500 ? 3 : 4;
+      demo.dataset.step = String(step);
+      demo.dataset.paused = String(paused);
+      status.textContent = ['Locating vehicle', 'Pass 1 · zooming into area of interest', 'Pass 2 · inspecting damage', 'Pass 3 · comparing references', 'Compiling assessment'][step];
+      passes.forEach((p,i) => { p.classList.toggle('active', step === i+1); p.classList.toggle('done', step > i+1); });
+      lines.forEach((line,i) => line.classList.toggle('shown', t >= 10000+i*700));
+      button.textContent = paused ? 'Replay' : 'Pause';
+      button.setAttribute('aria-label', paused ? 'Replay illustrative assessment animation' : 'Pause illustrative assessment animation');
+    };
+    const tick = (time:number) => { if(paused || !visible) return; if(last) elapsed += Math.min(time-last,100); last=time; render(); frame=requestAnimationFrame(tick); };
+    const start = () => { cancelAnimationFrame(frame); last=0; if(!paused && visible) frame=requestAnimationFrame(tick); };
+    button.addEventListener('click', () => { if(paused){elapsed=0;paused=false;}else paused=true; render();start(); });
+    new IntersectionObserver(([entry]) => {visible=entry.isIntersecting;start();},{threshold:.1}).observe(demo);
+    reduced.addEventListener('change', () => {paused=reduced.matches;if(paused)elapsed=12000;render();start();});
+    document.addEventListener('visibilitychange', () => {if(document.hidden){cancelAnimationFrame(frame);last=0;}else start();});
+    render();
+  });
+</script>
