@@ -31,11 +31,17 @@ const { title } = Astro.props;
 
     <script>
       const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
-      let light = window.matchMedia('(prefers-color-scheme: light)').matches;
-      try { const saved = localStorage.getItem('portfolio-theme'); if (saved) light = saved === 'light'; } catch {}
-      const applyTheme = () => { document.documentElement.dataset.theme = light ? 'light' : 'dark'; themeButton?.setAttribute('aria-pressed', String(light)); if (themeButton) themeButton.textContent = light ? 'Dark' : 'Light'; };
+      const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+      let light = systemTheme.matches;
+      const applyTheme = () => {
+        document.documentElement.dataset.theme = light ? 'light' : 'dark';
+        themeButton?.setAttribute('aria-pressed', String(light));
+        themeButton?.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+        if (themeButton) themeButton.textContent = light ? 'Dark' : 'Light';
+      };
       applyTheme();
-      themeButton?.addEventListener('click', () => { light = !light; applyTheme(); try { localStorage.setItem('portfolio-theme', light ? 'light' : 'dark'); } catch {} });
+      systemTheme.addEventListener('change', event => { light = event.matches; applyTheme(); });
+      themeButton?.addEventListener('click', () => { light = !light; applyTheme(); });
       const nav = document.querySelector('.site-nav');
       const toggle = document.querySelector('.nav-toggle');
       const links = document.querySelector('.nav-links');

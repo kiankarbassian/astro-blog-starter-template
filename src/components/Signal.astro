@@ -1,53 +1,83 @@
-<figure class="signal-art reveal">
-  <canvas class="signal-canvas" role="img" aria-label="Interactive three-dimensional network of connected points"></canvas>
-  <figcaption><span>Interactive network visualization</span><button class="signal-toggle" aria-pressed="false">Pause motion</button></figcaption>
+<figure class="signal-art token-demo">
+  <h2>How AI chooses what comes next.</h2>
+  <p class="demo-intro">AI writes an answer one small piece (token) at a time. Ask a question, then click a piece of the answer to see what else it could have written.</p>
+  <form class="prompt-form"><label for="llm-prompt">Try a short question</label><div><input id="llm-prompt" maxlength="240" value="Why is the sky blue?" required/><button type="submit" aria-label="Submit question"><span aria-hidden="true">→</span></button></div></form>
+  <p class="demo-status" role="status">Ask your question using the arrow. Then click the answer to explore.</p>
+  <div class="answer-tokens" aria-label="Generated answer: select a piece to inspect"></div>
+  <div class="probability-panel" hidden>
+    <div class="choice-heading"><span>The AI picked</span><strong class="chosen-token"></strong></div>
+    <div class="candidate-headings"><span>Word</span><span>Probability</span></div>
+    <div class="candidate-list"></div>
+    <p class="probability-explanation">The bars show how likely each option was to come next, based on the question and the answer so far. Orange marks the option used. The AI samples from these choices, like a weighted draw: more likely options have a better chance, but the top option does not always win. These small pieces are called tokens: a word, part of a word, or punctuation. Only the top options are shown.</p>
+  </div>
+  <figcaption>Powered by Qwen via Cloudflare Workers AI · prompts go to Cloudflare. A higher percentage means a more likely next piece, not a more accurate answer.</figcaption>
 </figure>
+<style>
+ .token-demo h2{font-size:clamp(24px,2.4vw,32px);font-weight:500;line-height:1.2;letter-spacing:-.03em;margin:0;text-wrap:balance;max-width:350px}
+ .demo-intro{font-size:13px;color:var(--muted);line-height:1.7;margin:14px 0 28px;max-width:390px}
+ .prompt-form{font-size:12px}.prompt-form label{display:block;margin-bottom:9px;color:var(--muted)}.prompt-form>div{display:flex;gap:8px}.prompt-form input{width:100%;min-width:0;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:13px;font:13px var(--sans)}.prompt-form button{display:flex;gap:12px;align-items:center;background:var(--accent);color:var(--bg);border:0;border-radius:6px;padding:13px;font-size:12px}.prompt-form button:disabled{opacity:.6;cursor:wait}.prompt-form input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+ .demo-status{font-size:11px;color:var(--muted);line-height:1.6;margin:22px 0 12px}
+ .answer-tokens{display:flex;flex-wrap:wrap;gap:3px;min-height:60px;align-content:flex-start;margin-bottom:20px}.answer-tokens button{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:3px;font:18px/1.4 var(--sans);color:var(--text);padding:5px 3px;min-height:38px;white-space:pre-wrap}.answer-tokens button:hover{background:var(--surface);color:var(--accent)}.answer-tokens button[aria-pressed=true]{background:var(--accent);color:var(--bg);border-color:var(--accent)}.answer-tokens .plain-answer{font-size:17px;line-height:1.6;margin:0}
+ .probability-panel{border-top:1px solid var(--line);padding-top:20px}.choice-heading{display:flex;justify-content:space-between;align-items:baseline;gap:15px;margin-bottom:18px}.choice-heading>span{font-size:12px;color:var(--muted)}.chosen-token{font-size:22px;font-weight:500;color:var(--accent);overflow-wrap:anywhere}
+ :global(.candidate){display:grid;grid-template-columns:minmax(60px,1fr) minmax(40px,2fr) 86px;gap:12px;align-items:center;margin:12px 0;font-size:12px}:global(.candidate-track){height:7px;background:var(--surface);border-radius:3px;overflow:hidden}:global(.candidate-fill){display:block;height:100%;background:var(--muted);transform-origin:left}:global(.candidate.selected) :global(.candidate-fill){background:var(--accent)}:global(.candidate.selected) :global(.candidate-label){color:var(--accent)}:global(.candidate-label){overflow-wrap:anywhere;white-space:pre-wrap}:global(.candidate-value){font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;color:var(--text)}
+ .candidate-headings{display:grid;grid-template-columns:minmax(60px,1fr) minmax(40px,2fr) 86px;gap:12px;font-size:11px;color:var(--muted);margin-bottom:8px}.candidate-headings>span:last-child{grid-column:3;text-align:right}
+ .probability-explanation{font-size:11px;line-height:1.7;color:var(--muted);margin:20px 0 0}.token-demo figcaption{font-size:10px;line-height:1.7;color:var(--muted);margin-top:24px}
+</style>
 <script>
-  const canvas = document.querySelector<HTMLCanvasElement>('.signal-canvas');
-  const button = document.querySelector<HTMLButtonElement>('.signal-toggle');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let paused = reduced.matches, visible = true, angle = .4, frame = 0, width = 0, height = 0;
-      const points = Array.from({ length: 160 }, (_, i) => {
-        const y = 1 - 2 * (i + .5) / 160;
-        const r = Math.sqrt(1 - y * y), phi = i * Math.PI * (3 - Math.sqrt(5));
-        return { x: Math.cos(phi) * r, y, z: Math.sin(phi) * r };
-      });
-      const draw = () => {
-        ctx.clearRect(0, 0, width, height);
-        const light = document.documentElement.dataset.theme === 'light';
-        const size = Math.min(width, height) * .38;
-        const projected = points.map(p => {
-          const x = p.x * Math.cos(angle) - p.z * Math.sin(angle);
-          const z = p.x * Math.sin(angle) + p.z * Math.cos(angle);
-          const tilt = -.22;
-          return { x: width / 2 + x * size, y: height / 2 + (p.y * Math.cos(tilt) - z * Math.sin(tilt)) * size, z };
-        });
-        for (let i = 0; i < points.length; i++) {
-          for (let j = i + 1; j < points.length; j++) {
-            const a = points[i], b = points[j];
-            if (Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z) < .34) {
-              const depth = (projected[i].z + projected[j].z + 2) / 4;
-              ctx.strokeStyle = light ? `rgba(155,64,32,${.1 + depth * .4})` : `rgba(245,139,99,${.07 + depth * .48})`;
-              ctx.lineWidth = .7;
-              ctx.beginPath(); ctx.moveTo(projected[i].x, projected[i].y); ctx.lineTo(projected[j].x, projected[j].y); ctx.stroke();
-            }
-          }
-        }
-        projected.forEach(p => { ctx.fillStyle = light ? '#a74625' : '#f58b63'; ctx.globalAlpha = .25 + (p.z + 1) * .375; ctx.beginPath(); ctx.arc(p.x, p.y, 1.2 + (p.z + 1) * .6, 0, Math.PI * 2); ctx.fill(); });
-        ctx.globalAlpha = 1;
-      };
-      const animate = () => { if (!paused && visible) { angle += .0025; draw(); frame = requestAnimationFrame(animate); } };
-      const syncButton = () => { if (button) { button.textContent = paused ? 'Play motion' : 'Pause motion'; button.setAttribute('aria-pressed', String(paused)); } };
-      new ResizeObserver(() => { width = canvas.clientWidth; height = canvas.clientHeight; const dpr = Math.min(devicePixelRatio, 2); canvas.width = width * dpr; canvas.height = height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(); }).observe(canvas);
-      new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; cancelAnimationFrame(frame); if (visible) animate(); }).observe(canvas);
-      new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-      button?.addEventListener('click', () => { paused = !paused; syncButton(); cancelAnimationFrame(frame); animate(); });
-      reduced.addEventListener('change', () => { paused = reduced.matches; syncButton(); cancelAnimationFrame(frame); draw(); animate(); });
-      canvas.addEventListener('pointermove', event => { if (paused) { angle = (event.offsetX / width) * Math.PI * 2; draw(); } });
-      syncButton();
+ const root=document.querySelector<HTMLElement>('.token-demo');
+ if(root){
+  type Candidate={token:string;probability:number};
+  type Token=Candidate&{alternatives:Candidate[]};
+  const form=root.querySelector<HTMLFormElement>('form')!,input=root.querySelector<HTMLInputElement>('input')!,submit=form.querySelector<HTMLButtonElement>('button')!,status=root.querySelector<HTMLElement>('.demo-status')!,answer=root.querySelector<HTMLElement>('.answer-tokens')!,panel=root.querySelector<HTMLElement>('.probability-panel')!,list=root.querySelector<HTMLElement>('.candidate-list')!;
+  const label=(text:string)=>text.replace(/\n/g,'↵').trim()||'(space)';
+  const percent=(value:number)=>{const p=Math.max(0,Math.min(100,value*100));if(p===0)return '0%';if(p<.0001)return `${p.toExponential(2)}%`;return `${p.toFixed(p<.01?5:p<.1?4:p<1?3:2)}%`;};
+  const inspect=(token:Token,index:number)=>{
+   answer.querySelectorAll('button').forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
+   panel.hidden=false;root.querySelector('.chosen-token')!.textContent=`“${label(token.token)}”`;
+   list.replaceChildren();
+   const candidates=token.alternatives.slice(0,5);
+   if(!candidates.some(c=>c.token===token.token))candidates.push({token:token.token,probability:token.probability});
+   candidates.sort((a,b)=>b.probability-a.probability).forEach(candidate=>{
+    const row=document.createElement('div');row.className=`candidate${candidate.token===token.token?' selected':''}`;
+    const name=document.createElement('span'),track=document.createElement('span'),bar=document.createElement('i'),value=document.createElement('span');
+    name.className='candidate-label';name.textContent=label(candidate.token);track.className='candidate-track';bar.className='candidate-fill';bar.style.transform=`scaleX(${Math.max(0,Math.min(1,candidate.probability))})`;track.append(bar);value.className='candidate-value';value.textContent=percent(candidate.probability);row.append(name,track,value);list.append(row);
+   });
+  };
+  form.addEventListener('submit',async event=>{
+   event.preventDefault();submit.disabled=true;submit.textContent='…';panel.hidden=true;answer.replaceChildren();status.textContent='The model is choosing a short answer…';
+   try{
+    const response=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:input.value}),signal:AbortSignal.timeout(30000)});
+    if(!response.ok){const error=await response.json();throw new Error(error.error||'The model is unavailable. Please try again.');}
+    const reader=response.body!.getReader(),decoder=new TextDecoder();
+    let buffer='',text='';let rawTokens:any[]=[];
+    status.textContent='The AI is preparing a short answer…';
+    while(true){
+     const {value,done}=await reader.read();buffer+=decoder.decode(value,{stream:!done});
+     const lines=buffer.split('\n');buffer=lines.pop()||'';
+     for(const line of lines){
+      if(!line.startsWith('data:'))continue;
+      const payload=line.slice(5).trim();if(!payload||payload==='[DONE]')continue;
+      const chunk=JSON.parse(payload);if(chunk.error)throw new Error(chunk.error.message||'The model stopped. Please try again.');
+      const choice=chunk.choices?.[0];if(!choice)continue;
+      text+=choice.delta?.content||'';
+      rawTokens.push(...(choice.logprobs?.content||[]));
+     }
+     if(done)break;
     }
-  }
+    const specialToken=/<\|[^>]*\|>/g;
+    text=text.replace(specialToken,'');
+    rawTokens=rawTokens.filter(t=>!/^<\|[^>]*\|>$/.test(t.token));
+    const aligned=rawTokens.map(t=>t.token).join('')===text;
+    const data={text,tokens:aligned?rawTokens.map(t=>({token:t.token,probability:Math.exp(t.logprob),alternatives:(t.top_logprobs||[]).filter((c:any)=>!/^<\|[^>]*\|>$/.test(c.token)).map((c:any)=>({token:c.token,probability:Math.exp(c.logprob)}))})):[]};
+    answer.replaceChildren();
+    if(!data.text)throw new Error('No answer came back. Please try again.');
+    const tokens:Token[]=data.tokens||[];
+    if(tokens.length){
+     tokens.forEach((token,index)=>{const button=document.createElement('button');button.type='button';button.textContent=token.token;button.setAttribute('aria-label',`Inspect token ${index+1}: ${label(token.token)}`);button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>inspect(token,index));answer.append(button);});
+     inspect(tokens[0],0);status.textContent='Click any piece of the answer. Below are the choices the AI considered at that point.';
+    }else{const p=document.createElement('p');p.className='plain-answer';p.textContent=data.text;answer.append(p);status.textContent='This response arrived without probability data. Try again to inspect its choices.';}
+   }catch(error){status.textContent=error instanceof Error?error.message:'Connection failed. Please try again.';}
+   finally{submit.disabled=false;submit.innerHTML='<span aria-hidden="true">→</span>';}
+  });
+ }
 </script>
