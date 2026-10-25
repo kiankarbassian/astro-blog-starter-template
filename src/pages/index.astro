@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Signal from '../components/Signal.astro';
 import DamageScan from '../components/DamageScan.astro';
 import MarketScan from '../components/MarketScan.astro';
+import CPUWorkbench from '../components/CPUWorkbench.astro';
 
 const experience = [
   {
@@ -63,10 +64,50 @@ const skills = ['Python', 'C++', 'Go', 'TypeScript', 'Assembly', 'SystemVerilog'
 
     <section class="experience section-dark" id="experience"><div class="container"><div class="section-head reveal"><div class="section-marker section-marker-dark"><span>Experience</span></div><h2 class="display display-light">Experience</h2></div><div class="experience-list">{experience.map((item, index) => (<article class={`experience-item accent-${item.accent} reveal`}><div class="experience-number">{item.type}</div><div class="experience-main"><div class="experience-meta"><span>{item.time}</span></div><h3><a class="employer-link" href={item.url} target="_blank" rel="noopener noreferrer">{item.company}<span aria-hidden="true"> ↗</span></a></h3><p class="experience-role">{item.role} <span>·</span> {item.place}</p><ul class="experience-summary">{item.summary.map((point) => <li>{point}</li>)}</ul>{index === 0 && <DamageScan />}{item.company === 'Lossdog' && <MarketScan />}</div><div class="experience-impact"><span>impact</span><strong>{item.impact}</strong></div></article>))}</div></div></section>
 
-    <section class="work section-cream" id="work"><div class="container"><div class="work-heading reveal"><div class="section-marker"><span>Selected work</span></div><div><h2 class="display">Projects</h2></div><p class="body-copy">Selected projects in AI, embedded systems, and electrical engineering.</p></div><div class="project-grid">{projects.map((project) => (<article class={`project-card project-${project.accent} reveal`}><div class="project-card-top"><span class="project-label">{project.label}</span></div><div class={`project-glyph glyph-${project.glyph}`} aria-hidden="true">{project.glyph === 'pulse' && <><span></span><span></span><span></span><span></span><span></span><span></span></>}{project.glyph === 'wave' && <div class="audio-wave">{Array.from({ length: 25 }, (_, i) => <span style={`--wave-height:${12 + Math.sin(i * .65) ** 2 * 44 + Math.sin(i * .27) ** 2 * 18}px;--wave-delay:${-i * .13}s`}></span>)}</div>}{project.glyph === 'orbit' && <><i></i><i></i><i></i></>}{project.glyph === 'grid' && <><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></>}</div><h3>{project.title}</h3><p>{project.description}</p><div class="project-tags">{project.tags.map((tag) => <span>{tag}</span>)}</div></article>))}</div></div></section>
+    <section class="work section-cream" id="work"><div class="container"><div class="work-heading reveal"><div class="section-marker"><span>Selected work</span></div><div><h2 class="display">Projects</h2></div><p class="body-copy">Selected projects in AI, embedded systems, and electrical engineering.</p></div><div class="project-grid">{projects.map((project) => (<article class={`project-card project-${project.accent} reveal`}><div class="project-card-top"><span class="project-label">{project.label}</span></div><div class={`project-glyph glyph-${project.glyph}`} aria-hidden="true">{project.glyph === 'pulse' && <><span></span><span></span><span></span><span></span><span></span><span></span></>}{project.glyph === 'wave' && <div class="audio-wave">{Array.from({ length: 25 }, (_, i) => <span style={`--wave-height:${12 + Math.sin(i * .65) ** 2 * 44 + Math.sin(i * .27) ** 2 * 18}px;--wave-delay:${-i * .13}s`}></span>)}</div>}{project.glyph === 'orbit' && <><i></i><i></i><i></i></>}{project.glyph === 'grid' && <><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></>}</div><h3>{project.title}</h3><p>{project.description}</p><div class="project-tags">{project.tags.map((tag) => <span>{tag}</span>)}</div>{index === 0 && <button class="cpu-project-link" type="button" data-open-cpu>Explore the interactive CPU <span aria-hidden="true">↗</span></button>}</article>))}</div>
+      <details class="cpu-project-details" id="cpu-demo">
+        <summary class="cpu-project-summary">
+          <div class="cpu-project-summary-text">
+            <span class="cpu-project-eyebrow">PROJECT 01 / INTERACTIVE DEMONSTRATION</span>
+            <strong>Inside the 16-bit SLC-3.</strong>
+            <p>Run sample instructions, trace the datapath, and see registers change in real time.</p>
+          </div>
+          <span class="cpu-project-cta">Open workbench <span aria-hidden="true">↗</span></span>
+        </summary>
+        <CPUWorkbench />
+      </details>
+    </div></section>
 
     <section class="toolkit section-dark" id="toolkit"><div class="container toolkit-grid"><div><div class="section-marker section-marker-dark reveal"><span>Toolkit</span></div><h2 class="display display-light reveal">Technical skills</h2><p class="body-copy body-copy-light reveal">Languages, frameworks, and tools I’ve used across my work and projects.</p></div><div class="skills-cloud reveal">{skills.map((skill, index) => <span class={`skill-chip chip-${index % 4}`}>{skill}</span>)}</div></div></section>
 
     <section class="contact section-orange" id="contact"><div class="container contact-inner"><div class="section-marker reveal"><span>Contact</span></div><div class="contact-copy"><h2 class="display reveal">Contact</h2><div class="contact-links reveal"><a class="contact-email" href="mailto:kiank2@illinois.edu">kiank2@illinois.edu <span>↗</span></a></div></div></div></section>
   </main>
 </Layout>
+
+<style>
+  .cpu-project-link{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:23px;padding:12px 0 5px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--accent);font:12px var(--mono);text-align:left;width:100%}
+  .cpu-project-link:hover,.cpu-project-link:focus-visible{color:var(--text)}
+  .cpu-project-link span{font-size:18px;line-height:1}
+  .cpu-project-details{margin-top:28px;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .cpu-project-summary{display:flex;align-items:center;justify-content:space-between;gap:35px;cursor:pointer;padding:30px 35px;background:var(--surface);list-style:none}
+  .cpu-project-summary::-webkit-details-marker{display:none}
+  .cpu-project-summary:hover{background:color-mix(in srgb,var(--surface) 90%,var(--accent))}
+  .cpu-project-summary:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+  .cpu-project-eyebrow{display:block;font:10px var(--mono);letter-spacing:.075em;color:var(--accent);margin-bottom:7px}
+  .cpu-project-summary strong{display:block;font:500 clamp(20px,2.3vw,30px)/1.25 var(--sans);letter-spacing:-.04em}
+  .cpu-project-summary p{font-size:13px;color:var(--muted);margin:7px 0 0}
+  .cpu-project-cta{display:flex;align-items:center;gap:25px;white-space:nowrap;border:1px solid var(--line);padding:13px 16px;border-radius:4px;font:12px var(--mono)}
+  .cpu-project-details[open] .cpu-project-cta{border-color:var(--accent);color:var(--accent)}
+  .cpu-project-details[open] .cpu-project-cta>span{transform:rotate(90deg)}
+  @media(max-width:700px){.cpu-project-summary{padding:20px;align-items:flex-start;flex-direction:column;gap:20px}.cpu-project-cta{width:100%;justify-content:space-between}}
+</style>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-open-cpu]').forEach(button => {
+    button.addEventListener('click', () => {
+      const details = document.querySelector<HTMLDetailsElement>('#cpu-demo');
+      if (!details) return;
+      details.open = true;
+      details.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+    });
+  });
+</script>
