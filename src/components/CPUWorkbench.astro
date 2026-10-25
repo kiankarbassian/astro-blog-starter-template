@@ -1,0 +1,434 @@
+<section class="cpu-feature" id="cpu" aria-labelledby="cpu-title">
+  <div class="container">
+    <div class="cpu-intro">
+      <div>
+        <p class="cpu-eyebrow">Featured build / Digital systems</p>
+        <h2 id="cpu-title">Meet the <em>16-bit</em><br />machine.</h2>
+      </div>
+      <div class="cpu-intro-aside">
+        <p>Designed in SystemVerilog. Brought to life on a Xilinx Spartan-7. Now you can inspect the thinking behind every instruction.</p>
+        <div class="cpu-intro-meta"><span>ECE 385</span><span>VIVADO</span><span>SLC-3</span></div>
+      </div>
+    </div>
+    <div class="cpu-workbench">
+      <div class="cpu-chrome">
+        <div class="cpu-brand"><span class="cpu-brand-icon" aria-hidden="true">▦</span><span>SLC-3 <small>/ INSTRUCTION LAB</small></span></div>
+        <span class="cpu-live"><i aria-hidden="true"></i> BROWSER SIMULATION</span>
+      </div>
+      <div class="cpu-toolbar">
+        <fieldset class="cpu-programs">
+          <legend>LOAD PROGRAM</legend>
+          <button type="button" data-program="0" aria-pressed="true">01 / Arithmetic</button>
+          <button type="button" data-program="1" aria-pressed="false">02 / Memory</button>
+          <button type="button" data-program="2" aria-pressed="false">03 / Branch loop</button>
+        </fieldset>
+        <div class="cpu-controls" aria-label="Simulation controls">
+          <button type="button" data-action="reset" class="cpu-reset" title="Reset machine">↺ <span>Reset</span></button>
+          <button type="button" data-action="step" class="cpu-step">Step <span aria-hidden="true">→</span></button>
+          <button type="button" data-action="run" class="cpu-run">▶ <span>Run</span></button>
+        </div>
+      </div>
+      <div class="cpu-main">
+        <div class="cpu-main-left">
+          <div class="cpu-display-header">
+            <div><span class="cpu-kicker">DATAPATH / SIMPLIFIED</span><h3>The silicon, decoded.</h3></div>
+            <div class="cpu-clock">µSTEP <strong data-bind="clock">000</strong></div>
+          </div>
+          <div class="cpu-board" aria-label="Simplified functional blocks. Highlighted elements participate in the current step.">
+            <div class="cpu-trace trace-a" aria-hidden="true"></div>
+            <div class="cpu-trace trace-b" aria-hidden="true"></div>
+            <div class="cpu-trace trace-c" aria-hidden="true"></div>
+            <div class="cpu-trace trace-d" aria-hidden="true"></div>
+            <div class="cpu-unit" data-unit="PC"><span>01 / PROGRAM COUNTER</span><strong data-bind="unit-pc">x3000</strong><small>Next address</small></div>
+            <div class="cpu-unit" data-unit="MAR"><span>02 / ADDRESS LATCH</span><strong data-bind="unit-mar">x0000</strong><small>MAR</small></div>
+            <div class="cpu-unit" data-unit="MEM"><span>03 / MEMORY</span><strong>64K × 16</strong><small>Word addressed</small></div>
+            <div class="cpu-unit" data-unit="REG"><span>06 / REGISTER FILE</span><strong>8 × 16</strong><small>R0 through R7</small></div>
+            <div class="cpu-unit" data-unit="ALU"><span>05 / ARITHMETIC UNIT</span><strong data-bind="alu">ADD / AND</strong><small>16-bit operations</small></div>
+            <div class="cpu-unit" data-unit="MDR"><span>04 / DATA LATCH</span><strong data-bind="unit-mdr">x0000</strong><small>MDR</small></div>
+            <div class="cpu-bus-strip"><span>ACTIVE DATA BUS</span><strong data-bind="bus">x0000</strong><span class="cpu-bus-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+          </div>
+          <div class="cpu-step-readout" role="status" aria-live="polite" aria-atomic="true">
+            <div class="cpu-step-label"><span>NOW EXECUTING</span><span data-bind="phase-tag">READY</span></div>
+            <strong data-bind="instruction">ADD R0, R0, #5</strong>
+            <p data-bind="description">Step through the first instruction, or press Run to watch the datapath move.</p>
+          </div>
+          <div class="cpu-signals"><span>CONTROL LINES</span><div class="cpu-signal-list" aria-label="Illustrative active control lines" data-signals><span>READY</span></div></div>
+        </div>
+        <aside class="cpu-sidebar" aria-label="Live machine state">
+          <div class="cpu-side-title"><span>MACHINE STATE</span><span>16-BIT HEX</span></div>
+          <div class="cpu-specials">
+            <div><span>PC</span><strong data-bind="pc">x3000</strong></div>
+            <div><span>IR</span><strong data-bind="ir">x0000</strong></div>
+            <div><span>MAR</span><strong data-bind="mar">x0000</strong></div>
+            <div><span>MDR</span><strong data-bind="mdr">x0000</strong></div>
+          </div>
+          <div class="cpu-register-title"><span>GENERAL PURPOSE REGISTERS</span><span>R0-R7</span></div>
+          <div class="cpu-register-list">
+            <div data-reg="0"><span>R0</span><strong>x0000</strong></div>
+            <div data-reg="1"><span>R1</span><strong>x0000</strong></div>
+            <div data-reg="2"><span>R2</span><strong>x0000</strong></div>
+            <div data-reg="3"><span>R3</span><strong>x0000</strong></div>
+            <div data-reg="4"><span>R4</span><strong>x0000</strong></div>
+            <div data-reg="5"><span>R5</span><strong>x0000</strong></div>
+            <div data-reg="6"><span>R6</span><strong>x0000</strong></div>
+            <div data-reg="7"><span>R7</span><strong>x0000</strong></div>
+          </div>
+          <div class="cpu-cc-row"><span>CONDITION CODES</span><div class="cpu-flags"><span data-flag="N">N</span><span data-flag="Z">Z</span><span data-flag="P">P</span></div></div>
+        </aside>
+      </div>
+      <div class="cpu-bottom">
+        <div class="cpu-code-panel">
+          <div class="cpu-bottom-label"><span>PROGRAM MEMORY</span><span data-bind="program-name">ARITHMETIC</span></div>
+          <div class="cpu-code-list" data-code></div>
+        </div>
+        <div class="cpu-explanation">
+          <div class="cpu-bottom-label"><span>DECODED INSTRUCTION</span><span data-bind="opcode">OPCODE 0001</span></div>
+          <div class="cpu-binary" data-bind="binary">0001 000 000 1 00101</div>
+          <p data-bind="decode">ADD: add a 5-bit signed immediate to a source register, store in the destination, then update NZP flags.</p>
+          <div class="cpu-note"><span class="cpu-note-mark" aria-hidden="true">↳</span><span>This executable model demonstrates an LC-3 instruction subset and simplified micro-operations. It is not a cycle-accurate simulation of the FPGA or a hardware connection.</span></div>
+        </div>
+      </div>
+      <div class="cpu-foot"><span>BUILT FROM GATES, REGISTERS AND STUBBORN DEBUGGING.</span><span data-bind="status">READY TO EXECUTE</span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.cpu-feature{padding:35px 0 125px;color:var(--text)}
+.cpu-intro{display:grid;grid-template-columns:1.25fr .75fr;align-items:end;gap:70px;margin-bottom:35px}
+.cpu-eyebrow{margin:0 0 18px;color:var(--accent);font:11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.cpu-intro h2{font-size:clamp(52px,7.2vw,104px);letter-spacing:-.085em;line-height:.99;font-weight:500;margin:0}
+.cpu-intro h2 em{color:var(--accent);font-style:normal}
+.cpu-intro-aside{padding-bottom:8px}
+.cpu-intro-aside p{max-width:345px;font-size:15px;color:var(--muted);line-height:1.75;margin:0 0 32px}
+.cpu-intro-meta{display:flex;gap:22px;font:10px var(--mono);letter-spacing:.1em;color:var(--muted)}
+.cpu-workbench{--cpu-bg:#111817;--cpu-panel:#192221;--cpu-edge:#34413c;--cpu-text:#edf1e9;--cpu-muted:#92a39b;--cpu-accent:#f58b63;background:var(--cpu-bg);color:var(--cpu-text);border:1px solid var(--cpu-edge);border-radius:7px;overflow:hidden;box-shadow:0 34px 80px #0002}
+.cpu-chrome{height:59px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--cpu-edge);background:#16201e}
+.cpu-brand{display:flex;gap:12px;align-items:center;font:600 13px var(--mono);letter-spacing:.045em}
+.cpu-brand small{font-weight:400;color:var(--cpu-muted);font-size:10px}
+.cpu-brand-icon{color:var(--cpu-accent);font-size:22px;font-weight:400}
+.cpu-live{font:9px var(--mono);letter-spacing:.08em;display:flex;align-items:center;gap:9px;color:var(--cpu-muted)}
+.cpu-live i{width:6px;height:6px;border-radius:50%;background:var(--cpu-accent);box-shadow:0 0 0 4px #f58b631d}
+.cpu-toolbar{padding:19px 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:25px;border-bottom:1px solid var(--cpu-edge)}
+.cpu-programs{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:7px;min-width:0}
+.cpu-programs legend{font:9px var(--mono);color:var(--cpu-muted);letter-spacing:.12em;padding:0;margin-bottom:10px}
+.cpu-programs button{font:11px var(--mono);padding:11px 12px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--cpu-muted);transition:background .2s,color .2s,border-color .2s}
+.cpu-programs button[aria-pressed=true]{background:#26342f;border-color:#526058;color:var(--cpu-text)}
+.cpu-programs button:hover{color:var(--cpu-text)}
+.cpu-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cpu-controls button{border-radius:4px;min-height:42px;padding:0 17px;font:12px var(--mono);border:1px solid var(--cpu-edge);color:var(--cpu-text);background:#1b2522}
+.cpu-controls button:active{transform:translateY(1px)}
+.cpu-controls .cpu-run{border-color:var(--cpu-accent);background:var(--cpu-accent);color:#18201d;font-weight:700}
+.cpu-controls .cpu-step{border-color:#607268}
+.cpu-controls .cpu-step span{margin-left:15px}
+.cpu-controls button:disabled{opacity:.4;cursor:not-allowed}
+.cpu-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(255px,.78fr)}
+.cpu-main-left{min-width:0;padding:30px 32px 24px}
+.cpu-sidebar{border-left:1px solid var(--cpu-edge);background:#141c1b;padding:30px 25px}
+.cpu-display-header{display:flex;justify-content:space-between;gap:20px;align-items:start;margin-bottom:25px}
+.cpu-kicker,.cpu-side-title,.cpu-register-title,.cpu-step-label,.cpu-signals>span,.cpu-bottom-label,.cpu-cc-row>span{font:10px/1.5 var(--mono);color:var(--cpu-muted);letter-spacing:.08em}
+.cpu-display-header h3{font-weight:500;font-size:28px;line-height:1.1;letter-spacing:-.04em;margin:8px 0 0}
+.cpu-clock{text-align:right;font:10px var(--mono);color:var(--cpu-muted)}
+.cpu-clock strong{display:block;font:26px var(--mono);font-weight:400;color:var(--cpu-accent);margin-top:5px}
+.cpu-board{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,110px);gap:24px 18px;padding:30px 20px 65px;border:1px solid var(--cpu-edge);background-color:#111917;background-image:linear-gradient(#d3edda07 1px,transparent 1px),linear-gradient(90deg,#d3edda07 1px,transparent 1px);background-size:21px 21px;overflow:hidden}
+.cpu-trace{position:absolute;z-index:-1;background:#52655a;opacity:.48;pointer-events:none}
+.trace-a{height:1px;width:68%;top:85px;left:16%}
+.trace-b{height:1px;width:68%;top:219px;left:16%}
+.trace-c{width:1px;height:153px;top:85px;left:50%}
+.trace-d{width:1px;height:153px;top:85px;right:16%}
+.cpu-unit{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:15px;background:#1b2522;border:1px solid #46534b;border-radius:3px;transition:border-color .24s,box-shadow .24s,background .24s}
+.cpu-unit span{font:9px/1.35 var(--mono);color:#95a69b;white-space:nowrap;letter-spacing:.005em}
+.cpu-unit strong{font:clamp(13px,1.7vw,22px)/1.4 var(--mono);font-weight:500;color:var(--cpu-text);margin:9px 0 3px;white-space:nowrap}
+.cpu-unit small{font:10px var(--mono);color:#7f9087}
+.cpu-unit.active{border-color:var(--cpu-accent);background:#2a2822;box-shadow:inset 0 0 0 1px #f58b6330,0 0 25px #f58b6315}
+.cpu-unit.active strong{color:#ffb99b}
+.cpu-unit.active:after{content:"";position:absolute;top:-4px;right:-4px;width:7px;height:7px;background:var(--cpu-accent);box-shadow:0 0 14px var(--cpu-accent)}
+.cpu-bus-strip{position:absolute;bottom:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:16px;padding:0 18px;border-top:1px solid var(--cpu-edge);background:#15201c}
+.cpu-bus-strip>span:first-child{font:9px var(--mono);color:var(--cpu-muted);letter-spacing:.06em}
+.cpu-bus-strip strong{font:17px var(--mono);font-weight:500;color:var(--cpu-accent);margin-left:auto}
+.cpu-bus-bars{display:flex;gap:3px;align-items:center;height:13px}
+.cpu-bus-bars i{width:3px;height:10px;background:#45574e;transition:background .15s,transform .15s}
+.cpu-bus-bars i.on{background:var(--cpu-accent);transform:scaleY(1.3)}
+.cpu-step-readout{padding:24px 0 18px;min-height:168px}
+.cpu-step-label{display:flex;justify-content:space-between}
+.cpu-step-label span:last-child{color:var(--cpu-accent)}
+.cpu-step-readout strong{display:block;font:clamp(20px,2.8vw,33px)/1.3 var(--mono);letter-spacing:-.04em;font-weight:500;margin-top:12px}
+.cpu-step-readout p{font-size:13px;color:var(--cpu-muted);line-height:1.65;max-width:560px;margin:8px 0 0}
+.cpu-signals{display:flex;gap:20px;padding:15px 0 0;border-top:1px solid var(--cpu-edge);align-items:flex-start}
+.cpu-signals>span{flex-shrink:0}
+.cpu-signal-list{display:flex;flex-wrap:wrap;gap:6px}
+.cpu-signal-list span{font:9px var(--mono);border:1px solid #695449;background:#2a2621;color:#f6b296;padding:5px 8px;border-radius:2px}
+.cpu-side-title,.cpu-register-title,.cpu-bottom-label{display:flex;justify-content:space-between;gap:12px}
+.cpu-side-title span:last-child,.cpu-register-title span:last-child,.cpu-bottom-label span:last-child{color:#c2d1c5}
+.cpu-specials{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid #32413a;background:#32413a;margin-top:17px}
+.cpu-specials>div{background:#1b2522;padding:13px 15px}
+.cpu-specials span{display:block;font:10px var(--mono);color:var(--cpu-muted)}
+.cpu-specials strong{font:18px var(--mono);color:var(--cpu-text);font-weight:400}
+.cpu-register-title{margin-top:29px}
+.cpu-register-list{margin-top:13px;border-top:1px solid var(--cpu-edge)}
+.cpu-register-list>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #2e3a35;padding:9px 4px;transition:background .18s}
+.cpu-register-list>div span{font:11px var(--mono);color:var(--cpu-muted)}
+.cpu-register-list>div strong{font:14px var(--mono);font-weight:400;color:var(--cpu-text)}
+.cpu-register-list>div.changed{background:#f58b6319}
+.cpu-register-list>div.changed strong{color:var(--cpu-accent)}
+.cpu-cc-row{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:23px}
+.cpu-flags{display:flex;gap:6px}
+.cpu-flags span{font:12px var(--mono);width:27px;height:27px;border:1px solid var(--cpu-edge);display:grid;place-items:center;color:var(--cpu-muted)}
+.cpu-flags span.active{border-color:var(--cpu-accent);color:#161c19;background:var(--cpu-accent);font-weight:700}
+.cpu-bottom{border-top:1px solid var(--cpu-edge);display:grid;grid-template-columns:1fr 1fr;background:#17201e}
+.cpu-code-panel,.cpu-explanation{min-width:0;padding:28px 32px}
+.cpu-code-panel{border-right:1px solid var(--cpu-edge)}
+.cpu-code-list{display:grid;gap:1px;margin-top:16px;font:11px/1.5 var(--mono)}
+.cpu-code-row{display:grid;grid-template-columns:65px 74px minmax(0,1fr);gap:12px;padding:8px 10px;border-left:2px solid transparent;color:#82948a}
+.cpu-code-row strong{font-weight:400;color:#b8c8bb}
+.cpu-code-row.active{border-color:var(--cpu-accent);background:#f58b6312;color:#f7bf9f}
+.cpu-code-row.active strong{color:var(--cpu-text)}
+.cpu-code-row.past{color:#d0ddd3}
+.cpu-binary{font:clamp(16px,2.2vw,25px)/1.3 var(--mono);letter-spacing:.065em;color:var(--cpu-accent);margin:25px 0 14px;overflow-wrap:anywhere}
+.cpu-explanation>p{font-size:13px;color:var(--cpu-muted);line-height:1.65;margin:0;min-height:54px}
+.cpu-note{display:flex;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--cpu-edge);font:10px/1.65 var(--mono);color:#9cac9f}
+.cpu-note-mark{color:var(--cpu-accent);font-size:18px}
+.cpu-foot{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--cpu-edge);padding:17px 26px;font:9px var(--mono);letter-spacing:.06em;color:#879a8d}
+.cpu-foot span:last-child{color:var(--cpu-accent)}
+.cpu-workbench button:focus-visible{outline:2px solid var(--cpu-accent);outline-offset:3px}
+@media(max-width:1020px){
+ .cpu-toolbar{align-items:stretch;flex-direction:column}
+ .cpu-main{grid-template-columns:minmax(0,1fr)}
+ .cpu-sidebar{border-left:0;border-top:1px solid var(--cpu-edge);display:grid;grid-template-columns:1fr 1.3fr;gap:12px 30px}
+ .cpu-side-title,.cpu-specials,.cpu-cc-row{grid-column:1}
+ .cpu-register-title,.cpu-register-list{grid-column:2}
+ .cpu-register-title{grid-row:1;margin-top:0}
+ .cpu-register-list{grid-row:2 / span 3;margin-top:0}
+ .cpu-cc-row{align-self:end}
+}
+@media(max-width:700px){
+ .cpu-feature{padding:10px 0 85px}
+ .cpu-intro{grid-template-columns:1fr;gap:23px;margin-bottom:25px}
+ .cpu-intro h2{font-size:clamp(46px,11vw,76px)}
+ .cpu-intro-aside p{margin-bottom:18px}
+ .cpu-chrome{padding:0 16px;height:53px}
+ .cpu-brand small{display:none}
+ .cpu-live{font-size:8px}
+ .cpu-toolbar{padding:18px 15px}
+ .cpu-programs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+ .cpu-programs button{padding:11px 7px;text-align:center;font-size:10px}
+ .cpu-controls{justify-content:stretch}
+ .cpu-controls button{flex:1;padding:0 10px}
+ .cpu-main-left{padding:22px 15px}
+ .cpu-display-header h3{font-size:24px}
+ .cpu-board{padding:19px 9px 60px;grid-template-rows:95px 95px;gap:16px 7px}
+ .cpu-unit{padding:8px}
+ .cpu-unit span{font-size:7px;white-space:normal}
+ .cpu-unit strong{font-size:clamp(11px,3vw,17px)}
+ .cpu-unit small{font-size:8px}
+ .cpu-bus-strip{gap:8px;padding:0 9px}
+ .cpu-bus-strip>span:first-child{font-size:8px}
+ .cpu-bus-bars{gap:2px}
+ .cpu-bus-bars i{width:2px}
+ .cpu-sidebar{display:block;padding:23px 15px}
+ .cpu-register-title{margin-top:24px}
+ .cpu-register-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
+ .cpu-cc-row{margin-top:24px}
+ .cpu-bottom{grid-template-columns:1fr}
+ .cpu-code-panel{border-right:0;border-bottom:1px solid var(--cpu-edge)}
+ .cpu-code-panel,.cpu-explanation{padding:24px 15px}
+ .cpu-code-row{grid-template-columns:55px 60px minmax(0,1fr);gap:9px;font-size:10px;padding:7px 5px}
+ .cpu-signals{display:block}
+ .cpu-signal-list{margin-top:12px}
+ .cpu-foot{padding:14px 15px}
+ .cpu-foot span:first-child{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .cpu-unit,.cpu-bus-bars i,.cpu-register-list>div,.cpu-programs button{transition:none}
+}
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.cpu-workbench');
+  if (root) {
+    const start = 0x3000;
+    type Program = {name:string; description:string; words:number[]; data:Record<number,number>};
+    const programs:Program[] = [
+      {name:'ARITHMETIC',description:'ADD, NOT and AND write back to 16-bit registers.',words:[0x1025,0x1223,0x943F,0x5641,0x193F],data:{}},
+      {name:'MEMORY',description:'PC-relative addressing loads a number, increments it, stores it back, then reads it again.',words:[0xE006,0x2205,0x1261,0x3203,0x2402],data:{12295:7}},
+      {name:'BRANCH LOOP',description:'A countdown uses condition codes to choose whether to repeat an instruction.',words:[0x1023,0x103F,0x03FE,0x923F],data:{}}
+    ];
+    const mask = (v:number) => v & 0xffff;
+    const hex = (v:number) => 'x' + mask(v).toString(16).toUpperCase().padStart(4,'0');
+    const sext = (v:number,bits:number) => (v & (1 << (bits-1))) ? v-(1<<bits) : v;
+    const signed = (v:number) => (v & 0x8000) ? v - 0x10000 : v;
+    const bits = (v:number) => mask(v).toString(2).padStart(16,'0');
+    const el = (selector:string) => root.querySelector<HTMLElement>(selector);
+    const setText = (key:string,value:string) => {
+      root.querySelectorAll<HTMLElement>('[data-bind="' + key + '"]').forEach(node => node.textContent = value);
+    };
+    let timer:ReturnType<typeof setInterval>|undefined;
+    let programIndex = 0;
+    let mem = new Map<number,number>();
+    let regs:number[] = Array(8).fill(0);
+    let pc = start, mar = 0, mdr = 0, ir = 0, bus = 0, instrAddr = start, cycles = 0, instructions = 0;
+    let cc = 'Z', phase = 'addr', halted = false, lastReg = -1, alu = 'ADD / AND';
+    let description = '', phaseTag = 'READY', signals:string[] = [];
+    let units:string[] = [];
+    const done = () => {
+      phase = 'addr';
+      instructions++;
+      if (pc < start || pc >= start + programs[programIndex].words.length) {
+        halted = true;
+        phaseTag = 'COMPLETE';
+        description += ' Program complete. Reset or load another example to continue.';
+      }
+    };
+    const setCC = (value:number) => { const n = signed(mask(value)); cc = n < 0 ? 'N' : n > 0 ? 'P' : 'Z'; };
+    const disassemble = (word:number) => {
+      const op = word >>> 12, dr = (word>>>9)&7, sr=(word>>>6)&7, reg=word&7;
+      const operand = (word & 0x20) ? '#' + sext(word&31,5) : 'R'+reg;
+      if (op===1) return 'ADD R'+dr+', R'+sr+', '+operand;
+      if (op===5) return 'AND R'+dr+', R'+sr+', '+operand;
+      if (op===9) return 'NOT R'+dr+', R'+sr;
+      if (op===2) return 'LD R'+dr+', #'+sext(word&511,9);
+      if (op===3) return 'ST R'+dr+', #'+sext(word&511,9);
+      if (op===14) return 'LEA R'+dr+', #'+sext(word&511,9);
+      if (op===0) return 'BR'+((word&0x800)?'n':'')+((word&0x400)?'z':'')+((word&0x200)?'p':'')+' #'+sext(word&511,9);
+      return '.FILL '+hex(word);
+    };
+    const explanation = (word:number) => {
+      const op=word>>>12;
+      if(op===1) return 'ADD combines a source register with a register or signed immediate, writes the 16-bit result, and updates NZP.';
+      if(op===5) return 'AND performs a bitwise operation, writes a register, and updates NZP.';
+      if(op===9) return 'NOT inverts all 16 bits of the source register, then updates NZP.';
+      if(op===2) return 'LD reads a word from PC + signed offset9, loads a destination register, and updates NZP.';
+      if(op===3) return 'ST writes a source register to memory at PC + signed offset9.';
+      if(op===14) return 'LEA writes the computed PC-relative address into a register and updates NZP.';
+      if(op===0) return 'BR compares the instruction NZP mask to the current condition code and may change the PC.';
+      return 'This instruction is not included in the interactive subset.';
+    };
+    const reset = (index:number) => {
+      pause();
+      programIndex=index;mem=new Map<number,number>();regs=Array(8).fill(0);
+      programs[index].words.forEach((w,i)=>mem.set(start+i,w));
+      Object.entries(programs[index].data).forEach(([addr,value])=>mem.set(Number(addr),value));
+      pc=start;mar=0;mdr=0;ir=0;bus=0;instrAddr=start;cc='Z';
+      cycles=0;instructions=0;phase='addr';halted=false;lastReg=-1;alu='ADD / AND';
+      description=programs[index].description + ' Press Step to advance one micro-operation.';
+      phaseTag='READY';signals=[];units=[];
+      render();
+    };
+    const tick = () => {
+      if(halted) return;
+      cycles++;lastReg=-1;signals=[];units=[];
+      const op=ir>>>12, dr=(ir>>>9)&7, sr=(ir>>>6)&7, second=ir&7;
+      if(phase==='addr'){
+        instrAddr=pc;bus=pc;mar=pc;pc=mask(pc+1);
+        phase='read';phaseTag='FETCH / ADDRESS';units=['PC','MAR'];signals=['GATE_PC','LD_MAR','LD_PC'];
+        description='Place the current PC on the address path, latch it into MAR, and increment the PC.';
+      } else if(phase==='read'){
+        mdr=mem.get(mar)??0;bus=mdr;
+        phase='latch';phaseTag='FETCH / MEMORY';units=['MEM','MDR'];signals=['MEM_EN','LD_MDR'];
+        description='Read the 16-bit instruction at MAR into the Memory Data Register.';
+      } else if(phase==='latch'){
+        ir=mdr;bus=mdr;phase='execute';phaseTag='DECODE';units=['MDR'];signals=['GATE_MDR','LD_IR'];
+        description='Copy MDR into IR. The opcode and operand fields now determine the next operation.';
+      } else if(phase==='execute'){
+        const offset=sext(ir&511,9);
+        if(op===1 || op===5){
+          const rhs=(ir&0x20)?sext(ir&31,5):regs[second];
+          const result=mask(op===1?regs[sr]+rhs:regs[sr]&rhs);
+          regs[dr]=result;bus=result;lastReg=dr;setCC(result);alu=op===1?'ADD':'AND';
+          units=['REG','ALU'];signals=['GATE_ALU','LD_REG','LD_CC'];
+          phaseTag='EXECUTE / ALU';description=disassemble(ir)+' produced '+hex(result)+' (signed '+signed(result)+'). Destination and condition codes updated.';done();
+        }else if(op===9){
+          const result=mask(~regs[sr]);regs[dr]=result;bus=result;lastReg=dr;setCC(result);alu='NOT';
+          units=['REG','ALU'];signals=['GATE_ALU','LD_REG','LD_CC'];
+          phaseTag='EXECUTE / NOT';description='Invert '+hex(regs[sr])+' to get '+hex(result)+'. The result is written to R'+dr+'.';done();
+        }else if(op===14){
+          const addr=mask(pc+offset);regs[dr]=addr;bus=addr;lastReg=dr;setCC(addr);
+          units=['PC','REG'];signals=['ADDR_ADDER','LD_REG','LD_CC'];
+          phaseTag='EXECUTE / ADDRESS';description='Compute PC '+(offset>=0?'+ ':'- ')+Math.abs(offset)+' = '+hex(addr)+' and write the address into R'+dr+'.';done();
+        }else if(op===0){
+          const maskNZP=(ir>>>9)&7;
+          const matches=(cc==='N'&&Boolean(maskNZP&4))||(cc==='Z'&&Boolean(maskNZP&2))||(cc==='P'&&Boolean(maskNZP&1));
+          if(matches) pc=mask(pc+offset);
+          bus=pc;units=['PC'];signals=['LD_BEN','PCMUX'];
+          phaseTag='EXECUTE / BRANCH';description='Condition '+cc+' '+(matches?'matches':'does not match')+' the branch mask. '+(matches?'PC becomes '+hex(pc)+'.':'Execution continues sequentially.');done();
+        }else if(op===2 || op===3){
+          mar=mask(pc+offset);bus=mar;units=['PC','MAR'];signals=['ADDR_ADDER','LD_MAR'];
+          phaseTag='ADDRESS CALC';description='Compute the PC-relative effective address '+hex(mar)+' and latch it into MAR.';
+          phase=op===2?'load-read':'store-prep';
+        }else{
+          halted=true;phaseTag='UNSUPPORTED';description='Unsupported opcode '+op.toString(16).toUpperCase()+'. Load a sample program to continue.';
+        }
+      } else if(phase==='load-read'){
+        mdr=mem.get(mar)??0;bus=mdr;units=['MEM','MDR'];signals=['MEM_EN','LD_MDR'];
+        phase='load-write';phaseTag='MEMORY / READ';description='Read memory['+hex(mar)+'] = '+hex(mdr)+' into MDR.';
+      } else if(phase==='load-write'){
+        const dest=(ir>>>9)&7;regs[dest]=mdr;bus=mdr;lastReg=dest;setCC(mdr);
+        units=['MDR','REG'];signals=['GATE_MDR','LD_REG','LD_CC'];
+        phaseTag='WRITEBACK';description='Write '+hex(mdr)+' into R'+dest+' and update the condition codes.';done();
+      } else if(phase==='store-prep'){
+        const source=(ir>>>9)&7;mdr=regs[source];bus=mdr;units=['REG','MDR'];signals=['LD_MDR'];
+        phaseTag='STORE / PREPARE';description='Copy the value in R'+source+' ('+hex(mdr)+') into MDR.';
+        phase='store-write';
+      } else if(phase==='store-write'){
+        mem.set(mar,mdr);bus=mdr;units=['MDR','MEM'];signals=['MEM_WR'];
+        phaseTag='MEMORY / WRITE';description='Store '+hex(mdr)+' into memory['+hex(mar)+'].';done();
+      }
+    };
+    const render = () => {
+      const program=programs[programIndex];
+      setText('clock',String(cycles).padStart(3,'0'));
+      setText('pc',hex(pc));setText('mar',hex(mar));setText('mdr',hex(mdr));setText('ir',hex(ir));setText('bus',hex(bus));
+      setText('unit-pc',hex(pc));setText('unit-mar',hex(mar));setText('unit-mdr',hex(mdr));setText('alu',alu);
+      setText('phase-tag',phaseTag);setText('description',description);
+      setText('program-name',program.name);
+      setText('status',halted?'PROGRAM COMPLETE':'INSTRUCTION '+String(instructions+1).padStart(2,'0')+' / CYCLE '+String(cycles).padStart(3,'0'));
+      const activeAddr=(phase==='addr')?pc:instrAddr;
+      const instruction=mem.get(activeAddr)??ir;
+      setText('instruction',halted?'End of program':disassemble(instruction));
+      setText('decode',explanation(instruction));
+      setText('opcode','OPCODE '+bits(instruction).slice(0,4));
+      const binary=bits(instruction);
+      setText('binary',binary.slice(0,4)+' '+binary.slice(4,7)+' '+binary.slice(7,10)+' '+binary.slice(10));
+      root.querySelectorAll<HTMLElement>('[data-program]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.program)===programIndex)));
+      root.querySelectorAll<HTMLElement>('[data-unit]').forEach(node=>node.classList.toggle('active',units.includes(node.dataset.unit||'')));
+      root.querySelectorAll<HTMLElement>('[data-reg]').forEach(node=>{
+        const n=Number(node.dataset.reg);const val=node.querySelector('strong');
+        if(val) val.textContent=hex(regs[n]);node.classList.toggle('changed',n===lastReg);
+      });
+      root.querySelectorAll<HTMLElement>('[data-flag]').forEach(node=>node.classList.toggle('active',node.dataset.flag===cc));
+      const bars=root.querySelectorAll<HTMLElement>('.cpu-bus-bars i');
+      bars.forEach((node,index)=>node.classList.toggle('on',Boolean(bus & (1 << (15-index)))));
+      const signalBox=el('[data-signals]');
+      if(signalBox){signalBox.replaceChildren();(signals.length?signals:['IDLE']).forEach(signal=>{
+        const span=document.createElement('span');span.textContent=signal;signalBox.append(span);
+      });}
+      const codeBox=el('[data-code]');
+      if(codeBox){
+        codeBox.replaceChildren();
+        program.words.forEach((word,index)=>{
+          const address=start+index;const row=document.createElement('div');
+          row.className='cpu-code-row'+(address===activeAddr&&!halted?' active':'')+(address<activeAddr?' past':'');
+          const addr=document.createElement('span'),value=document.createElement('span'),instr=document.createElement('strong');
+          addr.textContent=hex(address);value.textContent=hex(mem.get(address)??word);instr.textContent=disassemble(mem.get(address)??word);
+          row.append(addr,value,instr);codeBox.append(row);
+        });
+      }
+      const runBtn=el('[data-action=run]') as HTMLButtonElement|null;
+      const stepBtn=el('[data-action=step]') as HTMLButtonElement|null;
+      if(runBtn){runBtn.disabled=halted;runBtn.querySelector('span')!.textContent=timer?'Pause':'Run';runBtn.firstChild!.textContent=timer?'Ⅱ ':'▶ ';}
+      if(stepBtn)stepBtn.disabled=halted;
+    };
+    const pause=()=>{if(timer!==undefined){clearInterval(timer);timer=undefined;}};
+    const advance=()=>{tick();if(halted)pause();render();};
+    root.querySelectorAll<HTMLButtonElement>('[data-program]').forEach(button=>button.addEventListener('click',()=>reset(Number(button.dataset.program))));
+    root.querySelector('[data-action=step]')?.addEventListener('click',()=>{pause();advance();});
+    root.querySelector('[data-action=reset]')?.addEventListener('click',()=>reset(programIndex));
+    root.querySelector('[data-action=run]')?.addEventListener('click',()=>{
+      if(timer!==undefined){pause();render();return;}
+      if(halted)return;
+      timer=setInterval(advance,780);advance();
+    });
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();render();}});
+    reset(0);
+  }
+</script>
