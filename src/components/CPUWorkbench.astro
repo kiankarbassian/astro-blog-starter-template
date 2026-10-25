@@ -148,7 +148,7 @@
 .cpu-signals{display:flex;gap:20px;padding:15px 0 0;border-top:1px solid var(--cpu-edge);align-items:flex-start}
 .cpu-signals>span{flex-shrink:0}
 .cpu-signal-list{display:flex;flex-wrap:wrap;gap:6px}
-.cpu-signal-list span{font:9px var(--mono);border:1px solid #695449;background:#2a2621;color:#f6b296;padding:5px 8px;border-radius:2px}
+:global(.cpu-signal-list span){font:9px var(--mono);border:1px solid #695449;background:#2a2621;color:#f6b296;padding:5px 8px;border-radius:2px}
 .cpu-side-title,.cpu-register-title,.cpu-bottom-label{display:flex;justify-content:space-between;gap:12px}
 .cpu-side-title span:last-child,.cpu-register-title span:last-child,.cpu-bottom-label span:last-child{color:#c2d1c5}
 .cpu-specials{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid #32413a;background:#32413a;margin-top:17px}
@@ -170,11 +170,11 @@
 .cpu-code-panel,.cpu-explanation{min-width:0;padding:28px 32px}
 .cpu-code-panel{border-right:1px solid var(--cpu-edge)}
 .cpu-code-list{display:grid;gap:1px;margin-top:16px;font:11px/1.5 var(--mono)}
-.cpu-code-row{display:grid;grid-template-columns:65px 74px minmax(0,1fr);gap:12px;padding:8px 10px;border-left:2px solid transparent;color:#82948a}
-.cpu-code-row strong{font-weight:400;color:#b8c8bb}
-.cpu-code-row.active{border-color:var(--cpu-accent);background:#f58b6312;color:#f7bf9f}
-.cpu-code-row.active strong{color:var(--cpu-text)}
-.cpu-code-row.past{color:#d0ddd3}
+:global(.cpu-code-row){display:grid;grid-template-columns:65px 74px minmax(0,1fr);gap:12px;padding:8px 10px;border-left:2px solid transparent;color:#82948a}
+:global(.cpu-code-row strong){font-weight:400;color:#b8c8bb}
+:global(.cpu-code-row.active){border-color:var(--cpu-accent);background:#f58b6312;color:#f7bf9f}
+:global(.cpu-code-row.active strong){color:var(--cpu-text)}
+:global(.cpu-code-row.past){color:#d0ddd3}
 .cpu-binary{font:clamp(16px,2.2vw,25px)/1.3 var(--mono);letter-spacing:.065em;color:var(--cpu-accent);margin:25px 0 14px;overflow-wrap:anywhere}
 .cpu-explanation>p{font-size:13px;color:var(--cpu-muted);line-height:1.65;margin:0;min-height:54px}
 .cpu-note{display:flex;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--cpu-edge);font:10px/1.65 var(--mono);color:#9cac9f}
@@ -223,7 +223,7 @@
  .cpu-bottom{grid-template-columns:1fr}
  .cpu-code-panel{border-right:0;border-bottom:1px solid var(--cpu-edge)}
  .cpu-code-panel,.cpu-explanation{padding:24px 15px}
- .cpu-code-row{grid-template-columns:55px 60px minmax(0,1fr);gap:9px;font-size:10px;padding:7px 5px}
+ :global(.cpu-code-row){grid-template-columns:55px 60px minmax(0,1fr);gap:9px;font-size:10px;padding:7px 5px}
  .cpu-signals{display:block}
  .cpu-signal-list{margin-top:12px}
  .cpu-foot{padding:14px 15px}
