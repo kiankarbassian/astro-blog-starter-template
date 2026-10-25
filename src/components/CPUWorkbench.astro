@@ -1,15 +1,5 @@
-<section class="cpu-feature" id="cpu" aria-labelledby="cpu-title">
+<div class="cpu-feature" id="cpu" aria-label="Interactive 16-bit SLC-3 processor simulator">
   <div class="container">
-    <div class="cpu-intro">
-      <div>
-        <p class="cpu-eyebrow">Featured build / Digital systems</p>
-        <h2 id="cpu-title">Meet the <em>16-bit</em><br />machine.</h2>
-      </div>
-      <div class="cpu-intro-aside">
-        <p>Designed in SystemVerilog. Brought to life on a Xilinx Spartan-7. Now you can inspect the thinking behind every instruction.</p>
-        <div class="cpu-intro-meta"><span>ECE 385</span><span>VIVADO</span><span>SLC-3</span></div>
-      </div>
-    </div>
     <div class="cpu-workbench">
       <div class="cpu-chrome">
         <div class="cpu-brand"><span class="cpu-brand-icon" aria-hidden="true">▦</span><span>SLC-3 <small>/ INSTRUCTION LAB</small></span></div>
@@ -91,10 +81,11 @@
       <div class="cpu-foot"><span>BUILT FROM GATES, REGISTERS AND STUBBORN DEBUGGING.</span><span data-bind="status">READY TO EXECUTE</span></div>
     </div>
   </div>
-</section>
+</div>
 
 <style>
-.cpu-feature{padding:35px 0 125px;color:var(--text)}
+.cpu-feature{padding:0;color:var(--text)}
+.cpu-feature>.container{width:100%;max-width:none;margin:0}
 .cpu-intro{display:grid;grid-template-columns:1.25fr .75fr;align-items:end;gap:70px;margin-bottom:35px}
 .cpu-eyebrow{margin:0 0 18px;color:var(--accent);font:11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .cpu-intro h2{font-size:clamp(52px,7.2vw,104px);letter-spacing:-.085em;line-height:.99;font-weight:500;margin:0}
