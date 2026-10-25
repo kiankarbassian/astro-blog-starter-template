@@ -526,6 +526,30 @@ section{
   height:20px;
   border:1px solid var(--accent)
 }
+.glyph-chip{
+  top:76px;
+  right:48px;
+  width:110px;
+  height:90px;
+  border:2px solid var(--accent);
+  border-radius:9px;
+  transform:rotate(-8deg)
+}
+.glyph-chip::before{
+  content:'';
+  position:absolute;
+  inset:19px;
+  border:2px solid var(--accent);
+  border-radius:4px;
+  background:linear-gradient(135deg,transparent 46%,var(--accent) 49%,transparent 52%)
+}
+.glyph-chip::after{
+  content:'';
+  position:absolute;
+  inset:-11px 14px;
+  border-top:4px dotted var(--accent);
+  border-bottom:4px dotted var(--accent)
+}
 .toolkit-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
