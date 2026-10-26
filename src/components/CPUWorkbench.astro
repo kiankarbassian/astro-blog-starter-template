@@ -1,469 +1,150 @@
-<div class="slc-workbench" id="slc-workbench" aria-label="Interactive SLC-3.2 datapath demonstration">
-  <div class="slc-topline">
-    <div class="slc-identity"><span class="slc-chip" aria-hidden="true">▦</span><div><strong>SLC-3.2</strong><span>ECE 385 / MODIFIED DATAPATH</span></div></div>
-    <div class="slc-status"><span class="slc-status-dot"></span><span data-bind="status">READY TO STEP</span></div>
-  </div>
-  <div class="slc-toolbar">
-    <fieldset class="slc-programs"><legend>DEMONSTRATION PROGRAMS</legend>
-      <button type="button" data-program="0" aria-pressed="true">01 / ALU + NZP</button>
-      <button type="button" data-program="1" aria-pressed="false">02 / Memory + I/O</button>
-      <button type="button" data-program="2" aria-pressed="false">03 / Branch + JSR</button>
-    </fieldset>
-    <div class="slc-actions" aria-label="CPU simulation controls">
-      <button type="button" data-action="reset" class="slc-quiet">Reset</button>
-      <button type="button" data-action="step" class="slc-quiet">Step <span aria-hidden="true">→</span></button>
-      <button type="button" data-action="run" class="slc-primary"><span data-run-label>Run</span></button>
+---
+const nodes = [
+  {id:'PC',x:520,y:118,w:140,h:62,title:'PC',value:'x0000',role:'16-bit program counter'},
+  {id:'INC',x:702,y:137,w:72,h:43,title:'+1',value:'',role:'PC incrementer'},
+  {id:'PCMUX',x:534,y:219,w:116,h:52,title:'PCMUX',value:'',role:'next PC select',mux:true},
+  {id:'ADDR',x:490,y:307,w:135,h:56,title:'ADDRESS ADDER',value:'16-bit',role:'BaseR/PC + offset'},
+  {id:'ADDR1',x:659,y:393,w:128,h:53,title:'ADDR1MUX',value:'PC / BaseR',role:'address source',mux:true},
+  {id:'ADDR2',x:354,y:393,w:128,h:53,title:'ADDR2MUX',value:'0 / 6 / 9 / 11',role:'signed offset',mux:true},
+  {id:'SEXT11',x:144,y:347,w:112,h:43,title:'SEXT[10:0]',value:'offset11',role:'JSR offset'},
+  {id:'SEXT9',x:144,y:397,w:112,h:43,title:'SEXT[8:0]',value:'offset9',role:'BR offset'},
+  {id:'SEXT6',x:144,y:447,w:112,h:43,title:'SEXT[5:0]',value:'offset6',role:'LDR / STR offset'},
+  {id:'SEXT5',x:144,y:497,w:112,h:43,title:'SEXT[4:0]',value:'imm5',role:'ALU immediate'},
+  {id:'IR',x:147,y:572,w:154,h:56,title:'IR',value:'x0000',role:'instruction register'},
+  {id:'CONTROL',x:510,y:492,w:219,h:73,title:'CONTROL FSM',value:'control.sv',role:'instruction sequencer'},
+  {id:'REG',x:873,y:131,w:237,h:150,title:'REG FILE',value:'8 × 16 bits',role:'regs.sv'},
+  {id:'SR2MUX',x:787,y:376,w:142,h:50,title:'SR2MUX',value:'SR2 / imm5',role:'ALU B input',mux:true},
+  {id:'ALU',x:899,y:469,w:181,h:78,title:'ALU',value:'ADD / AND / NOT',role:'alu.sv'},
+  {id:'NZP',x:772,y:536,w:109,h:55,title:'NZP / BEN',value:'N Z P',role:'status and branch'},
+  {id:'MDR',x:139,y:676,w:148,h:61,title:'MDR',value:'x0000',role:'memory data register'},
+  {id:'MAR',x:321,y:676,w:148,h:61,title:'MAR',value:'x0000',role:'memory address register'},
+  {id:'MIO',x:512,y:671,w:131,h:48,title:'MIO.EN',value:'MDR input mux',role:'memory/CPU bus',mux:true},
+  {id:'IO',x:513,y:760,w:214,h:82,title:'cpu_to_io',value:'xFFFF I/O decode',role:'provided board interface'},
+  {id:'BRAM',x:794,y:758,w:168,h:85,title:'ON-CHIP BRAM',value:'synchronous memory',role:'block RAM'},
+  {id:'BOARD',x:1024,y:758,w:133,h:85,title:'URBANA I/O',value:'HEX / SW',role:'physical peripherals'}
+];
+const wires = [
+  {id:'bus',d:'M35 76 H1133 V643 H35',heavy:true},
+  {id:'gate-pc',d:'M590 118 V76'},
+  {id:'gate-mar-mux',d:'M490 337 H320 V76'},
+  {id:'gate-alu',d:'M990 547 V643'},
+  {id:'gate-mdr',d:'M212 676 V643'},
+  {id:'bus-pc',d:'M473 76 V247 H534'},
+  {id:'pc-increment',d:'M660 146 H702'},
+  {id:'inc-pcmux',d:'M739 180 V203 H611 V219'},
+  {id:'pc-mux-pc',d:'M573 219 V180 H573 V180'},
+  {id:'pc-addr1',d:'M606 180 V361 H728 V393'},
+  {id:'reg-addr1',d:'M873 230 H752 V393'},
+  {id:'addr1-adder',d:'M711 393 V336 H625'},
+  {id:'addr2-adder',d:'M426 393 V336 H490'},
+  {id:'addr-pcmux',d:'M560 307 V271'},
+  {id:'addr-gate',d:'M490 336 H320'},
+  {id:'sext11-addr2',d:'M256 367 H324 V404 H354'},
+  {id:'sext9-addr2',d:'M256 418 H338 V418 H354'},
+  {id:'sext6-addr2',d:'M256 468 H325 V433 H354'},
+  {id:'ir-immediate',d:'M181 572 V549 H144 V519'},
+  {id:'ir-decode',d:'M301 603 H510'},
+  {id:'ir-sext',d:'M144 583 H119 V369 H144 M119 419 H144 M119 469 H144 M119 519 H144'},
+  {id:'reg-alu-a',d:'M1018 281 V469'},
+  {id:'reg-sr2',d:'M902 281 V349 H864 V376'},
+  {id:'sext5-sr2',d:'M256 518 H751 V407 H787'},
+  {id:'sr2-alu',d:'M858 426 V452 H945 V469'},
+  {id:'alu-nzp',d:'M899 515 H851 V536'},
+  {id:'reg-bus',d:'M1024 131 V76'},
+  {id:'bus-reg',d:'M1133 167 H1110'},
+  {id:'bus-ir',d:'M317 643 V604 H301'},
+  {id:'bus-mar',d:'M393 643 V676'},
+  {id:'bus-mdr',d:'M212 643 V676'},
+  {id:'reg-mdr',d:'M873 268 H821 V604 H248 V676'},
+  {id:'mdr-mio',d:'M287 709 H512'},
+  {id:'io-mdr',d:'M572 719 V746 H244 V737'},
+  {id:'mar-io',d:'M395 737 V786 H513'},
+  {id:'mio-io',d:'M576 719 V760'},
+  {id:'io-bram',d:'M727 790 H794 M794 810 H727'},
+  {id:'io-board',d:'M962 790 H1024 M1024 811 H962'},
+  {id:'control-nzp',d:'M729 530 H772'},
+  {id:'nzp-control',d:'M776 570 H728'},
+  {id:'control-alu',d:'M729 503 H855 V484 H899'},
+  {id:'ir-pause',d:'M208 628 V651 H654 V760'},
+  {id:'control-mem',d:'M619 565 V651 H834 V758'}
+];
+const annotations = [
+  {text:'GatePC',x:586,y:107},{text:'GateMARMUX / gate_mar',x:323,y:107},
+  {text:'GateALU',x:999,y:613},{text:'GateMDR',x:225,y:664},
+  {text:'16',x:1098,y:61},{text:'LD.PC',x:519,y:110},
+  {text:'SR1',x:1036,y:311},{text:'SR2',x:908,y:321},
+  {text:'DR',x:1105,y:174},{text:'ALUK',x:839,y:474},
+  {text:'LD.IR',x:317,y:589},{text:'LD.MAR',x:416,y:671},
+  {text:'LD.MDR',x:219,y:672},{text:'LD.REG',x:1024,y:118},
+  {text:'LD.CC',x:880,y:567},{text:'addr',x:408,y:752},
+  {text:'rdata / wdata',x:743,y:782}
+];
+---
+<div class="lab5-workbench" id="lab5-workbench">
+  <header class="lab5-head">
+    <div><p class="lab5-overline">ECE 385 · EXPERIMENT 05 · SYSTEMVERILOG</p><h3>Inside the SLC-3 datapath.</h3><p>A guided view of the CPU modules, bus controls and memory interface I built for Lab 5.</p></div>
+    <div class="lab5-meta"><span>16-BIT CPU</span><span>SPARTAN-7</span><span>FETCH → DECODE → EXECUTE</span></div>
+  </header>
+  <div class="lab5-toolbar">
+    <label class="lab5-select-group" for="lab5-trace"><span>TRACE AN INSTRUCTION</span>
+      <select id="lab5-trace" data-trace>
+        <option value="fetch">Instruction fetch</option><option value="add">ADD immediate</option><option value="and">AND register</option><option value="not">NOT</option>
+        <option value="ldr">LDR (register + offset)</option><option value="str">STR (register + offset)</option>
+        <option value="br">BR (conditional)</option><option value="jmp">JMP</option><option value="jsr">JSR</option><option value="pause">PAUSE / Continue</option>
+      </select>
+    </label>
+    <div class="lab5-actions">
+      <button type="button" data-back aria-label="Previous micro-operation" title="Previous micro-operation">←</button>
+      <button type="button" data-next>Next step <span aria-hidden="true">→</span></button>
+      <button type="button" data-play aria-pressed="false">Play trace</button>
+      <button type="button" data-reset>Reset</button>
     </div>
   </div>
-  <div class="slc-content">
-    <div class="slc-main">
-      <div class="slc-heading"><div><span class="slc-eyebrow">DATA FLOW / CLICK ANY MODULE TO INSPECT</span><h3>The datapath, in motion.</h3></div><div class="slc-counter"><span>MICRO-OPERATIONS</span><strong data-bind="clock">000</strong></div></div>
-      <div class="slc-diagram-scroller" tabindex="0" role="region" aria-label="Scrollable SLC-3.2 processor datapath">
-        <svg class="slc-diagram" viewBox="0 0 920 545" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram of SLC-3.2 internal registers, control, ALU, CPU bus and memory-mapped I/O">
-          <defs>
-            <marker id="slc-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#6e847a" stroke-width="1.2"/></marker>
-            <pattern id="slc-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#344740" stroke-width=".5" opacity=".38"/></pattern>
-          </defs>
-          <rect width="920" height="545" fill="url(#slc-grid)"/>
-          <text class="slc-section-label" x="22" y="27">16-BIT INTERNAL PROCESSOR</text>
-          <text class="slc-section-label" x="22" y="515">FPGA PERIPHERALS / BRAM</text>
-          <g class="slc-wires" fill="none" stroke="#647a70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path data-route="pc-bus" d="M109 126 V292"/>
-            <path data-route="pc-inc" d="M194 81 H239"/>
-            <path data-route="addr-pc" d="M421 82 H305"/>
-            <path data-route="reg-pc" d="M727 126 V148 H265 V125"/>
-            <path data-route="ir-sext" d="M176 221 H230"/>
-            <path data-route="ir-control" d="M107 259 V406 H363"/>
-            <path data-route="sext-addr" d="M325 211 V124 H440"/>
-            <path data-route="reg-alu" d="M725 126 V190"/>
-            <path data-route="alu-bus" d="M725 260 V292"/>
-            <path data-route="alu-cc" d="M816 226 H849 V407 H745"/>
-            <path data-route="bus-reg" d="M822 292 V126 H810"/>
-            <path data-route="bus-mar" d="M111 292 V354"/>
-            <path data-route="mdr-bus" d="M280 354 V292"/>
-            <path data-route="bus-ir" d="M177 292 V241"/>
-            <path data-route="reg-mdr" d="M675 119 H610 V340 H314 V354"/>
-            <path data-route="mem-mdr" d="M753 404 H317"/>
-            <path data-route="mdr-mem" d="M317 419 H753"/>
-            <path data-route="mar-mem" d="M190 389 H753"/>
-            <path data-route="mem-io" d="M753 462 H638"/>
-            <path data-route="io-mem" d="M638 477 H753"/>
-            <path data-route="control" d="M449 406 V280"/>
-          </g>
-          <path class="slc-bus" d="M33 292 H878" fill="none" stroke="#9baea1" stroke-width="7" stroke-linecap="round"/>
-          <text class="slc-bus-label" x="457" y="282" text-anchor="middle">16-BIT CPU BUS</text>
-          <g class="slc-node" data-node="PC" tabindex="0" role="button" aria-label="Inspect program counter">
-            <rect x="33" y="57" width="152" height="69" rx="5"/><text class="slc-node-title" x="46" y="77">PROGRAM COUNTER</text><text class="slc-node-value" x="46" y="109" data-bind="unit-pc">x0000</text>
-          </g>
-          <g class="slc-node" data-node="PCMUX" tabindex="0" role="button" aria-label="Inspect PC multiplexer">
-            <rect x="239" y="57" width="86" height="69" rx="5"/><text class="slc-node-title" x="249" y="77">PC MUX</text><text class="slc-node-small" x="249" y="105">+1 / target</text>
-          </g>
-          <g class="slc-node" data-node="ADDR" tabindex="0" role="button" aria-label="Inspect address adder and multiplexers">
-            <rect x="421" y="57" width="151" height="69" rx="5"/><text class="slc-node-title" x="434" y="77">ADDRESS PATH</text><text class="slc-node-small" x="434" y="105">ADDR1 / ADDR2 MUX</text>
-          </g>
-          <g class="slc-node" data-node="REG" tabindex="0" role="button" aria-label="Inspect register file">
-            <rect x="647" y="47" width="163" height="79" rx="5"/><text class="slc-node-title" x="659" y="69">REGISTER FILE</text><text class="slc-node-value" x="659" y="101">8 × 16-bit</text>
-          </g>
-          <g class="slc-node" data-node="IR" tabindex="0" role="button" aria-label="Inspect instruction register">
-            <rect x="33" y="189" width="143" height="70" rx="5"/><text class="slc-node-title" x="46" y="210">INSTRUCTION / IR</text><text class="slc-node-value" x="46" y="241" data-bind="unit-ir">x0000</text>
-          </g>
-          <g class="slc-node" data-node="SEXT" tabindex="0" role="button" aria-label="Inspect sign extension and immediate path">
-            <rect x="230" y="184" width="136" height="69" rx="5"/><text class="slc-node-title" x="242" y="205">SIGN EXTENSION</text><text class="slc-node-small" x="242" y="233">imm5 / off6 / 9 / 11</text>
-          </g>
-          <g class="slc-node" data-node="SR2" tabindex="0" role="button" aria-label="Inspect second ALU operand multiplexer">
-            <rect x="440" y="184" width="131" height="69" rx="5"/><text class="slc-node-title" x="451" y="205">SR2 MUX</text><text class="slc-node-small" x="451" y="233">reg / immediate</text>
-          </g>
-          <g class="slc-node" data-node="ALU" tabindex="0" role="button" aria-label="Inspect arithmetic logic unit">
-            <rect x="647" y="184" width="163" height="76" rx="5"/><text class="slc-node-title" x="659" y="205">16-BIT ALU</text><text class="slc-node-value" x="659" y="239" data-bind="unit-alu">ADD / AND</text>
-          </g>
-          <g class="slc-node" data-node="MAR" tabindex="0" role="button" aria-label="Inspect memory address register">
-            <rect x="33" y="354" width="157" height="67" rx="5"/><text class="slc-node-title" x="46" y="375">MEMORY ADDRESS / MAR</text><text class="slc-node-value" x="46" y="404" data-bind="unit-mar">x0000</text>
-          </g>
-          <g class="slc-node" data-node="MDR" tabindex="0" role="button" aria-label="Inspect memory data register">
-            <rect x="232" y="354" width="144" height="67" rx="5"/><text class="slc-node-title" x="245" y="375">MEMORY DATA / MDR</text><text class="slc-node-value" x="245" y="404" data-bind="unit-mdr">x0000</text>
-          </g>
-          <g class="slc-node" data-node="CONTROL" tabindex="0" role="button" aria-label="Inspect control state machine">
-            <rect x="363" y="444" width="178" height="66" rx="5"/><text class="slc-node-title" x="377" y="465">CONTROL FSM</text><text class="slc-node-small" x="377" y="493">RUN / CONTINUE / GATES</text>
-          </g>
-          <g class="slc-node" data-node="CC" tabindex="0" role="button" aria-label="Inspect NZP flags and branch enable logic">
-            <rect x="633" y="444" width="116" height="66" rx="5"/><text class="slc-node-title" x="646" y="465">NZP / BEN</text><text class="slc-node-value" x="646" y="492" data-bind="unit-cc">Z</text>
-          </g>
-          <g class="slc-node" data-node="IO" tabindex="0" role="button" aria-label="Inspect memory mapped input output interface">
-            <rect x="432" y="354" width="188" height="67" rx="5"/><text class="slc-node-title" x="445" y="375">CPU_TO_IO</text><text class="slc-node-small" x="445" y="402">xFFFF / SWITCHES + HEX</text>
-          </g>
-          <g class="slc-node" data-node="MEM" tabindex="0" role="button" aria-label="Inspect on-chip block RAM">
-            <rect x="753" y="354" width="137" height="67" rx="5"/><text class="slc-node-title" x="766" y="375">ON-CHIP BRAM</text><text class="slc-node-small" x="766" y="402">SYNCHRONOUS</text>
-          </g>
-          <text class="slc-tiny" x="20" y="539">Adapted from the ECE 385 modified SLC-3 datapath. Paths are schematic, not a routed FPGA netlist.</text>
-        </svg>
-      </div>
-      <div class="slc-legend"><span><i class="slc-legend-hot"></i> Active datapath</span><span><i class="slc-legend-idle"></i> Other connections</span><span>Tap a block for its role</span></div>
-      <div class="slc-active-step" aria-live="polite" aria-atomic="true">
-        <div class="slc-step-meta"><span data-bind="phase">READY</span><span data-bind="operation">FETCH</span></div>
-        <strong data-bind="instruction">ADD R0, R0, #5</strong>
-        <p data-bind="description">Select a program, step through the control states, or run the example automatically.</p>
-        <div class="slc-signal-wrap"><span>ASSERTED SIGNALS</span><div class="slc-signals" data-signals><span>IDLE</span></div></div>
-      </div>
-      <div class="slc-inspector"><div class="slc-inspect-heading"><span>MODULE INSPECTOR</span><span data-bind="inspect-subtitle">SELECT A COMPONENT</span></div><strong data-bind="inspect-title">Control the datapath</strong><p data-bind="inspect-body">Click any hardware block to understand its role in the actual Lab 5 design.</p></div>
+  <div class="lab5-progress"><div class="lab5-progress-title"><span data-trace-title>INSTRUCTION FETCH</span><span data-step-count>STEP 1 / 4</span></div><div class="lab5-progress-steps" data-timeline aria-label="Trace steps"></div></div>
+  <div class="lab5-stage">
+    <div class="lab5-canvas-wrap" tabindex="0" role="region" aria-label="Full SLC-3 datapath diagram. Scroll sideways on smaller screens.">
+      <svg class="lab5-svg" viewBox="0 0 1180 866" xmlns="http://www.w3.org/2000/svg" aria-labelledby="lab5-svg-title">
+        <title id="lab5-svg-title">Modified ECE 385 SLC-3 datapath with bus, muxes, address adder, control FSM, registers and I/O subsystem</title>
+        <defs>
+          <pattern id="lab5-grid" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M26 0H0V26" fill="none" stroke="#35463f" stroke-width=".55" opacity=".33"/></pattern>
+          <marker id="lab5-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#758b7d" stroke-width="1.5"/></marker>
+        </defs>
+        <rect width="1180" height="866" fill="url(#lab5-grid)"/>
+        <text class="lab5-region-text" x="38" y="36">CPU.SV / INTERNAL 16-BIT DATAPATH</text>
+        <path class="lab5-separator" d="M30 656 H1150" />
+        <text class="lab5-region-text" x="37" y="662">PROCESSOR_TOP.SV / MEMORY + PHYSICAL I/O</text>
+        {wires.map(w => <path data-wire={w.id} class:list={['lab5-wire',w.heavy && 'lab5-global-bus']} d={w.d}/>)}
+        <g class="lab5-bus-label"><rect x="738" y="60" width="130" height="32" rx="3"/><text x="803" y="81" text-anchor="middle">16-BIT CPU BUS</text></g>
+        {annotations.map(a=><text class="lab5-annotation" x={a.x} y={a.y}>{a.text}</text>)}
+        {nodes.map(n=><g class:list={['lab5-node',n.mux && 'lab5-mux']} data-module={n.id} tabindex="0" role="button" aria-label={'Inspect ' + n.title + ': ' + n.role}>
+          {n.mux ? <polygon points={n.x+','+n.y+' '+(n.x+n.w)+','+n.y+' '+(n.x+n.w-13)+','+(n.y+n.h)+' '+(n.x+13)+','+(n.y+n.h)}/> : <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="3"/>}
+          <text class="lab5-node-title" x={n.x+13} y={n.y+22}>{n.title}</text>
+          {n.value && <text class="lab5-node-value" x={n.x+13} y={n.y+(n.h>85?62:43)}>{n.value}</text>}
+        </g>)}
+        <g class="lab5-pins" aria-hidden="true"><circle cx="590" cy="76" r="3"/><circle cx="990" cy="643" r="3"/><circle cx="212" cy="643" r="3"/><circle cx="1133" cy="643" r="3"/></g>
+        <text class="lab5-caption" x="1160" y="856" text-anchor="end">SCHEMATIC ADAPTED FROM LAB 5, FIGURE ON P. 5.8. SIMPLIFIED FOR THE WEB.</text>
+      </svg>
     </div>
-    <aside class="slc-side">
-      <div class="slc-side-head"><span>MACHINE STATE</span><span>16-BIT HEX</span></div>
-      <div class="slc-specials">
-        <div><span>PC</span><strong data-bind="pc">x0000</strong></div><div><span>IR</span><strong data-bind="ir">x0000</strong></div>
-        <div><span>MAR</span><strong data-bind="mar">x0000</strong></div><div><span>MDR</span><strong data-bind="mdr">x0000</strong></div>
-        <div><span>BUS</span><strong data-bind="bus">x0000</strong></div><div><span>MEM[MAR]</span><strong data-bind="memvalue">x0000</strong></div>
-      </div>
-      <div class="slc-side-head slc-register-heading"><span>REGISTER FILE</span><span>R0–R7</span></div>
-      <div class="slc-registers">
-        {Array.from({length:8},(_,i)=><button type="button" data-reg={i}><span>{'R'+i}</span><strong>x0000</strong></button>)}
-      </div>
-      <div class="slc-flags"><span>CONDITION CODES</span><div><b data-flag="N">N</b><b data-flag="Z">Z</b><b data-flag="P">P</b></div></div>
-      <div class="slc-io">
-        <div class="slc-side-head"><span>URBANA BOARD / I/O</span><span>xFFFF</span></div>
-        <div class="slc-screen"><span>HEX DISPLAY / OUTPUT</span><strong data-bind="hexout">0000</strong></div>
-        <div class="slc-leds"><span>PAUSE LED VECTOR</span><strong data-bind="leds">000</strong></div>
-        <label for="slc-switch-input">SWITCHES / 16-BIT HEX INPUT</label>
-        <div class="slc-switch-row"><span>x</span><input id="slc-switch-input" data-switches type="text" maxlength="4" inputmode="text" value="0003" spellcheck="false" aria-describedby="slc-switch-note" /><button type="button" data-action="continue">Continue</button></div>
-        <small id="slc-switch-note">The LDR/STR I/O example uses xFFFF. Continue releases one PAUSE instruction.</small>
-        <p class="slc-inline-message" data-io-message role="status" aria-live="polite"></p>
-      </div>
-    </aside>
+    <div class="lab5-diagram-key"><span><i class="lab5-key-on"></i> Active data/control path</span><span><i></i> Unselected connection</span><span>Click a block to inspect it</span></div>
   </div>
-  <div class="slc-bottom">
-    <div class="slc-code"><div class="slc-side-head"><span>PROGRAM MEMORY</span><span data-bind="program-name">ALU + NZP</span></div><div class="slc-list" data-code></div></div>
-    <div class="slc-decoder"><div class="slc-side-head"><span>DECODED INSTRUCTION</span><span data-bind="opcode">OP 0001</span></div><strong data-bind="binary">0001 000 000 1 00101</strong><p data-bind="decode">Select a program to trace its instruction fields.</p><div class="slc-spec-note">This is a browser teaching model of the modified ECE 385 SLC-3.2, not a cycle-accurate RTL or live connection to the Spartan-7. Physical RAM wait-state timing is simplified.</div></div>
+  <div class="lab5-readouts">
+    <section class="lab5-microstep" aria-live="polite" aria-atomic="true">
+      <div class="lab5-panel-heading"><span>ACTIVE MICRO-OPERATION</span><strong data-current-phase>FETCH / ADDRESS</strong></div>
+      <h4 data-current-formula>MAR ← PC</h4>
+      <p data-current-explanation>The PC drives the internal bus while the memory address register captures the instruction address.</p>
+      <div class="lab5-signals"><span>ASSERTED SIGNALS</span><div data-signal-tags></div></div>
+    </section>
+    <section class="lab5-module-panel">
+      <div class="lab5-panel-heading"><span>MODULE INSPECTOR</span><strong data-module-id>PC</strong></div>
+      <h4 data-module-title>Program counter</h4>
+      <p data-module-description>Select a datapath component to see what the hardware does and which control signals affect it.</p>
+      <div class="lab5-module-source" data-module-source>cpu.sv</div>
+    </section>
+  </div>
+  <div class="lab5-foot">
+    <div><strong>What's real here</strong><span>The modules, routing relationships, instruction set and signal names are based on the ECE 385 Lab 5 SLC-3 design.</span></div>
+    <div><strong>What's illustrative</strong><span>Instruction traces show representative micro-operations. This is not a live RTL simulation, FPGA connection or clock-accurate BRAM model.</span></div>
   </div>
 </div>
-<style>
-.slc-workbench{--sb:#121b19;--sp:#1b2723;--se:#3a4c43;--sm:#a4b5aa;--sa:#f58b63;color:#edf4ec;background:var(--sb);border:1px solid var(--se);border-radius:7px;overflow:hidden;box-shadow:0 22px 60px #0002;font-family:var(--sans)}
-.slc-workbench button,.slc-workbench input{font-family:var(--mono)}
-.slc-workbench button{cursor:pointer}
-.slc-workbench button:focus-visible,.slc-node:focus-visible,.slc-diagram-scroller:focus-visible{outline:2px solid var(--sa);outline-offset:3px}
-.slc-topline{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 27px;border-bottom:1px solid var(--se)}
-.slc-identity{display:flex;align-items:center;gap:14px}
-.slc-chip{font-size:30px;color:var(--sa);line-height:1}
-.slc-identity strong,.slc-identity span:last-child{display:block}
-.slc-identity strong{font:600 15px var(--mono)}
-.slc-identity div span{font:10px var(--mono);color:var(--sm);letter-spacing:.09em;margin-top:3px}
-.slc-status{display:flex;gap:10px;align-items:center;color:var(--sm);font:10px var(--mono);letter-spacing:.05em;text-align:right}
-.slc-status-dot{height:7px;width:7px;border-radius:50%;background:var(--sa);box-shadow:0 0 0 4px #f58b6321}
-.slc-toolbar{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:20px 27px;border-bottom:1px solid var(--se)}
-.slc-programs{border:0;margin:0;padding:0;display:flex;gap:7px;flex-wrap:wrap}
-.slc-programs legend{font:10px var(--mono);letter-spacing:.08em;color:var(--sm);margin-bottom:9px}
-.slc-programs button,.slc-actions button{font-size:11px;line-height:1.3;border:1px solid var(--se);border-radius:4px;background:transparent;color:var(--sm);padding:10px 12px;transition:background .2s,border-color .2s}
-.slc-programs button:hover,.slc-actions .slc-quiet:hover{color:#fff;border-color:#74897b}
-.slc-programs button[aria-pressed=true]{color:#fff;background:#304139;border-color:#74897b}
-.slc-actions{display:flex;gap:7px;flex-shrink:0}
-.slc-actions button{color:#e8efe9;min-height:40px}
-.slc-actions .slc-primary{min-width:80px;background:var(--sa);border-color:var(--sa);color:#19201a;font-weight:bold}
-.slc-actions button:active,.slc-programs button:active{transform:translateY(1px)}
-.slc-actions button:disabled{opacity:.4;cursor:not-allowed}
-.slc-content{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(270px,.76fr)}
-.slc-main{min-width:0;padding:29px 30px 24px}
-.slc-side{border-left:1px solid var(--se);padding:30px 23px;background:#161f1d;min-width:0}
-.slc-heading{display:flex;justify-content:space-between;align-items:start;gap:18px;margin-bottom:22px}
-.slc-eyebrow,.slc-counter>span{font:9px var(--mono);letter-spacing:.07em;color:var(--sm)}
-.slc-heading h3{margin:8px 0 0;font-size:clamp(22px,2.2vw,31px);font-weight:500;line-height:1.2;letter-spacing:-.045em}
-.slc-counter{text-align:right;flex-shrink:0}
-.slc-counter>span{display:block}
-.slc-counter strong{display:block;font:29px var(--mono);color:var(--sa);margin-top:5px}
-.slc-diagram-scroller{overflow-x:auto;scrollbar-color:#587064 transparent;border:1px solid var(--se);background:#131d19}
-.slc-diagram{display:block;width:100%;min-width:620px;height:auto}
-.slc-section-label,.slc-bus-label,.slc-tiny{font:9px var(--mono);letter-spacing:.08em;fill:#8fa597}
-.slc-bus-label{fill:#d0dfd1;paint-order:stroke;stroke:#131d19;stroke-width:4}
-.slc-tiny{font-size:8.3px;letter-spacing:0}
-.slc-wires path{opacity:.68;transition:stroke .2s,opacity .2s,stroke-width .2s}
-.slc-wires path.active{stroke:var(--sa);stroke-width:3.5;opacity:1;stroke-dasharray:11 5;animation:slc-flow .9s linear infinite}
-.slc-bus.active{stroke:var(--sa);filter:drop-shadow(0 0 4px #f58b6355)}
-@keyframes slc-flow{to{stroke-dashoffset:-32}}
-.slc-node{cursor:pointer}
-.slc-node rect{stroke:#51665a;fill:#203029;stroke-width:1.4;transition:fill .2s,stroke .2s}
-.slc-node:hover rect,.slc-node.selected rect{stroke:#f2bf9f;fill:#364039}
-.slc-node.active rect{stroke:var(--sa);fill:#4b362a;stroke-width:2;filter:drop-shadow(0 0 5px #f58b6333)}
-.slc-node-title{font:9px var(--mono);fill:#bbcec0;letter-spacing:.01em}
-.slc-node-value{font:20px var(--mono);fill:#f1f5ed}
-.slc-node-small{font:12px var(--mono);fill:#d9e5d8}
-.slc-node.active .slc-node-value{fill:#ffbd9b}
-.slc-legend{display:flex;gap:15px;flex-wrap:wrap;color:var(--sm);font:10px var(--mono);padding:12px 0 18px}
-.slc-legend span{display:flex;align-items:center;gap:7px}
-.slc-legend i{display:inline-block;width:21px;height:3px;background:#718377}
-.slc-legend .slc-legend-hot{background:var(--sa)}
-.slc-active-step{border-top:1px solid var(--se);padding:21px 0}
-.slc-step-meta{display:flex;justify-content:space-between;gap:12px;font:10px var(--mono);color:var(--sa);letter-spacing:.05em}
-.slc-active-step>strong{display:block;font:clamp(19px,2.5vw,30px)/1.2 var(--mono);margin-top:10px;font-weight:500}
-.slc-active-step>p,.slc-inspector>p{font-size:13px;line-height:1.65;color:var(--sm);margin:9px 0 0}
-.slc-signal-wrap{display:flex;gap:17px;margin-top:21px;align-items:start}
-.slc-signal-wrap>span{font:10px var(--mono);color:var(--sm);white-space:nowrap;margin-top:4px}
-.slc-signals{display:flex;gap:6px;flex-wrap:wrap}
-:global(.slc-signals span){font:10px var(--mono);color:#ffbf9f;background:#382b24;border:1px solid #805b47;border-radius:3px;padding:4px 7px}
-.slc-inspector{border:1px solid var(--se);border-radius:4px;background:#1a2721;padding:17px 19px}
-.slc-inspect-heading,.slc-side-head{display:flex;justify-content:space-between;gap:12px;color:var(--sm);font:10px var(--mono);letter-spacing:.06em}
-.slc-inspect-heading span:last-child{color:var(--sa);text-align:right}
-.slc-inspector>strong{display:block;font:500 17px var(--mono);margin-top:12px}
-.slc-specials{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#3c5044;border:1px solid #3c5044;margin-top:15px}
-.slc-specials>div{background:#203029;padding:12px}
-.slc-specials span{display:block;font:10px var(--mono);color:var(--sm)}
-.slc-specials strong{display:block;font:17px var(--mono);font-weight:400;letter-spacing:-.03em;margin-top:6px}
-.slc-register-heading{margin-top:26px}
-.slc-registers{display:grid;margin-top:12px}
-.slc-registers button{display:flex;justify-content:space-between;align-items:center;min-height:34px;padding:7px 3px;border:0;border-bottom:1px solid #31453a;background:transparent;color:var(--sm);font-size:12px}
-.slc-registers button strong{font-weight:400;color:#eef5ed;font-size:13px}
-.slc-registers button.changed{background:#f58b6315}
-.slc-registers button.changed strong{color:var(--sa)}
-.slc-registers button:hover{background:#304139}
-.slc-flags{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:21px 0;color:var(--sm);font:10px var(--mono)}
-.slc-flags>div{display:flex;gap:5px}
-.slc-flags b{width:28px;height:28px;display:grid;place-items:center;font-weight:400;border:1px solid var(--se)}
-.slc-flags b.active{border-color:var(--sa);background:var(--sa);color:#19201a;font-weight:bold}
-.slc-io{border-top:1px solid var(--se);padding-top:21px}
-.slc-screen{background:#111a16;padding:15px;border:1px solid #4b6550;border-radius:3px;margin-top:14px}
-.slc-screen span,.slc-leds span,.slc-io label{display:block;font:9px var(--mono);color:var(--sm);letter-spacing:.07em}
-.slc-screen strong{display:block;margin-top:10px;font:29px var(--mono);letter-spacing:.19em;color:#b9e6b7}
-.slc-leds{display:flex;align-items:center;justify-content:space-between;margin:17px 0 19px}
-.slc-leds strong{font:14px var(--mono);color:var(--sa)}
-.slc-switch-row{display:flex;align-items:center;gap:6px;margin-top:9px}
-.slc-switch-row>span{font:14px var(--mono);color:var(--sm)}
-.slc-switch-row input{min-width:0;width:100%;background:#26362e;border:1px solid #5c7866;border-radius:3px;color:#e9f3e8;padding:10px;font-size:14px}
-.slc-switch-row button{flex-shrink:0;background:#304138;border:1px solid #6b806d;color:#f6e9df;border-radius:3px;padding:11px 9px;font:10px var(--mono)}
-.slc-switch-row button:hover{border-color:var(--sa)}
-.slc-io small{display:block;margin-top:9px;color:var(--sm);font:10px/1.6 var(--mono)}
-.slc-inline-message{min-height:14px;font:10px/1.4 var(--mono);color:var(--sa);margin:9px 0 0}
-.slc-bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--se)}
-.slc-code,.slc-decoder{padding:26px 30px;min-width:0}
-.slc-code{border-right:1px solid var(--se)}
-.slc-list{margin-top:15px;display:grid;gap:2px}
-:global(.slc-code-row){display:grid;grid-template-columns:59px 60px minmax(0,1fr);gap:10px;padding:7px;border-left:2px solid transparent;color:#91aa97;font:11px/1.4 var(--mono)}
-:global(.slc-code-row strong){font-weight:400;color:#e3f0e2;overflow-wrap:anywhere}
-:global(.slc-code-row.active){border-color:#f58b63;background:#f58b6317;color:#ffba9a}
-.slc-decoder>strong{display:block;margin:23px 0 14px;color:var(--sa);font:clamp(16px,2vw,24px)/1.4 var(--mono);letter-spacing:.05em;overflow-wrap:anywhere}
-.slc-decoder>p{font-size:13px;line-height:1.65;color:var(--sm)}
-.slc-spec-note{margin-top:20px;padding-top:17px;border-top:1px solid var(--se);font:10px/1.8 var(--mono);color:#a2b6a7}
-@media(max-width:1060px){.slc-toolbar{flex-direction:column;align-items:stretch}.slc-actions{justify-content:flex-end}.slc-content{grid-template-columns:minmax(0,1fr)}.slc-side{border-left:0;border-top:1px solid var(--se)}.slc-specials{grid-template-columns:repeat(3,1fr)}.slc-registers{grid-template-columns:1fr 1fr;column-gap:25px}.slc-side .slc-io{max-width:560px}}
-@media(max-width:700px){.slc-topline,.slc-toolbar{padding:15px}.slc-status{font-size:8px}.slc-identity div span{font-size:8px}.slc-programs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.slc-programs button{padding:10px 5px;font-size:9px}.slc-actions>*{flex:1}.slc-main,.slc-side,.slc-code,.slc-decoder{padding:20px 15px}.slc-diagram{min-width:690px}.slc-heading h3{font-size:22px}.slc-counter>span{font-size:8px}.slc-bottom{grid-template-columns:1fr}.slc-code{border-right:0;border-bottom:1px solid var(--se)}.slc-signal-wrap{flex-direction:column;gap:7px}.slc-legend{font-size:9px}.slc-code-row{font-size:10px}}
-@media(prefers-reduced-motion:reduce){.slc-wires path.active{animation:none}.slc-node rect,.slc-wires path,.slc-programs button,.slc-actions button{transition:none}}
-</style>
-<script>
-  const root = document.querySelector<HTMLElement>('#slc-workbench');
-  if (root) {
-    type Program = {name:string;words:number[];data:Record<number,number>;intro:string};
-    const programs:Program[] = [
-      {name:'ALU + NZP',words:[0x1025,0x1223,0x5401,0x96bf,0x18ff],data:{},intro:'Arithmetic and logic: 16-bit ADD, AND, NOT, register writeback and NZP updates.'},
-      {name:'MEMORY + I/O',words:[0x1027,0x7050,0x6450,0x14a1,0x7450,0x16ff,0xd801,0x68c0,0x1921,0x78c0,0xd401],data:{},intro:'STR/LDR use BaseR + signed offset6. A PAUSE requests switches, then a store to xFFFF updates HEX.'},
-      {name:'BRANCH + JSR',words:[0x1023,0x103f,0x03fe,0x4802,0x943f,0x0e02,0x923f,0xc1c0,0xd002],data:{},intro:'A conditional countdown uses NZP; JSR writes R7, JMP returns from a subroutine.'}
-    ];
-    const mask=(n:number)=>n&65535,hex=(n:number)=>'x'+mask(n).toString(16).toUpperCase().padStart(4,'0'),signed=(n:number)=>(mask(n)&32768)?mask(n)-65536:mask(n),sext=(n:number,b:number)=>(n&(1<<(b-1)))?n-(1<<b):n;
-    const bin=(n:number)=>mask(n).toString(2).padStart(16,'0');
-    const q=(s:string)=>root.querySelector<HTMLElement>(s);
-    const write=(name:string,value:string)=>root.querySelectorAll<HTMLElement>('[data-bind="'+name+'"]').forEach(e=>e.textContent=value);
-    let memory=new Map<number,number>(),regs:number[]=Array(8).fill(0);
-    let programIndex=0,pc=0,mar=0,mdr=0,ir=0,bus=0,cc='Z',hexout=0,leds=0,switches=3;
-    let cycles=0,completed=0,instructionAddress=0,stage='fetch-address',phase='READY',description='',operation='FETCH';
-    let lastReg=-1,halted=false,selected='CONTROL',aluMode='ADD / AND',activeNodes:string[]=[],activePaths:string[]=[],signals:string[]=[];
-    let timer:ReturnType<typeof setInterval>|undefined;
-    const detail:Record<string,[string,string]> = {
-      PC:['Program Counter','The 16-bit PC identifies the next instruction. In fetch it is gated into MAR and incremented. A branch, JSR, or JMP can replace the sequential PC.'],
-      PCMUX:['PC multiplexer','Selects the next PC: PC+1, an address-adder target, or a register-based jump. The control FSM sets pcmux and ld_pc.'],
-      ADDR:['Address adder and MUXes','ADDR1MUX selects PC or BaseR. ADDR2MUX selects the sign-extended offset (or zero). Together they form BR, JSR, LDR and STR addresses.'],
-      REG:['8 × 16-bit register file','Two source registers feed the datapath; a destination register receives the gated bus when ld_reg is asserted. R7 stores the JSR return address.'],
-      IR:['Instruction Register','IR holds the fetched 16-bit instruction. Bits [15:12] select the opcode; other fields select registers, immediates, offsets and PAUSE LED cues.'],
-      SEXT:['Sign extension','Converts imm5, offset6, PCoffset9 and PCoffset11 into signed 16-bit operands without changing their two’s-complement value.'],
-      SR2:['SR2 multiplexer','For ADD/AND, selects either register SR2 or the sign-extended 5-bit immediate as the ALU B operand.'],
-      ALU:['16-bit ALU','Implements ADD, AND, NOT and pass-through operations, using the register file and optionally sign-extended immediates. Its result can drive the internal bus.'],
-      MAR:['Memory Address Register','MAR latches the address used by the RAM or I/O access. On this board, only the low 10 address bits select an on-chip BRAM location.'],
-      MDR:['Memory Data Register','MDR buffers instruction/data reads or data to store. In the SLC-3 datapath it can place its value on the bus using gate_mdr.'],
-      CONTROL:['Instruction sequencer / FSM','The SystemVerilog control.sv state machine asserts register loads, bus gates, multiplexers, ALU selection, and memory controls over fetch, decode and execute states.'],
-      CC:['NZP and branch-enable logic','Negative, Zero, Positive flags are set by most register writes. BR masks the current NZP bits to decide whether the computed target replaces PC.'],
-      IO:['CPU_TO_IO','The supplied interface routes address xFFFF to board switches on reads and HEX display on writes, rather than ordinary BRAM. The PAUSE instruction drives LED cues.'],
-      MEM:['Synchronous FPGA Block RAM','The Spartan-7 stores 16-bit instruction/data words in on-chip RAM. The actual FSM holds memory states over extra cycles because this lab has no ready/R handshake.']
-    };
-    const readMem=(address:number)=>mask(address)===0xffff?switches:(memory.get(mask(address))??0);
-    const writeMem=(address:number,value:number)=>{if(mask(address)===0xffff)hexout=mask(value);else memory.set(mask(address),mask(value));};
-    const setCC=(n:number)=>{const s=signed(n);cc=s<0?'N':s>0?'P':'Z';};
-    const stop=()=>{if(timer!==undefined){clearInterval(timer);timer=undefined;}};
-    const disassemble=(v:number)=>{
-      const op=v>>>12,dr=(v>>>9)&7,sr=(v>>>6)&7,br=(v>>>9)&7,base=(v>>>6)&7;
-      const operand=(v&0x20)?'#'+sext(v&31,5):'R'+(v&7);
-      if(op===1)return 'ADD R'+dr+', R'+sr+', '+operand;
-      if(op===5)return 'AND R'+dr+', R'+sr+', '+operand;
-      if(op===9)return 'NOT R'+dr+', R'+sr;
-      if(op===0)return 'BR'+((br&4)?'n':'')+((br&2)?'z':'')+((br&1)?'p':'')+' #'+sext(v&511,9);
-      if(op===12)return 'JMP R'+base;
-      if(op===4)return 'JSR #'+sext(v&2047,11);
-      if(op===6)return 'LDR R'+dr+', R'+base+', #'+sext(v&63,6);
-      if(op===7)return 'STR R'+dr+', R'+base+', #'+sext(v&63,6);
-      if(op===13)return 'PAUSE '+hex(v&4095);
-      return '.FILL '+hex(v);
-    };
-    const explain=(v:number)=>{
-      const op=v>>>12;
-      if(op===1)return 'ADD: SR1 plus SR2/SEXT(imm5). The ALU result goes onto the bus; ld_reg and ld_cc write the destination and NZP.';
-      if(op===5)return 'AND: bitwise AND of SR1 and SR2/SEXT(imm5), with destination and NZP writeback.';
-      if(op===9)return 'NOT: bitwise invert SR1 and write the result and NZP.';
-      if(op===0)return 'BR: compare IR[11:9] against NZP. If any requested condition matches, PC receives PC + SEXT(offset9).';
-      if(op===12)return 'JMP: load PC from the register selected by BaseR.';
-      if(op===4)return 'JSR: save the incremented PC to R7, then PC ← PC + SEXT(offset11).';
-      if(op===6)return 'LDR: read memory at BaseR + SEXT(offset6), write the data to DR and update NZP.';
-      if(op===7)return 'STR: write SR to memory at BaseR + SEXT(offset6).';
-      if(op===13)return 'PAUSE: latch the 12-bit LED vector and wait for a Continue press. LED[11:10] are programmer-defined I/O cues.';
-      return 'Unsupported in this SLC-3.2 example.';
-    };
-    const showDetail=()=>{
-      const item=detail[selected]||detail.CONTROL;
-      write('inspect-title',item[0]);write('inspect-body',item[1]);write('inspect-subtitle',selected==='REG'?'R0–R7':selected);
-      root.querySelectorAll<SVGGElement>('[data-node]').forEach(node=>node.classList.toggle('selected',node.dataset.node===selected));
-    };
-    const complete=()=>{
-      completed++;stage='fetch-address';
-      if(pc>=programs[programIndex].words.length){halted=true;phase='COMPLETE';description+=' Example finished. Reset or select another program to explore more.';stop();}
-    };
-    const tick=()=>{
-      if(halted||stage==='pause-wait')return;
-      cycles++;lastReg=-1;activeNodes=[];activePaths=[];signals=[];
-      const op=ir>>>12,dr=(ir>>>9)&7,sr=(ir>>>6)&7,base=(ir>>>6)&7;
-      if(stage==='fetch-address'){
-        instructionAddress=pc;mar=pc;bus=pc;stage='fetch-memory';phase='FETCH / MAR';operation='ADDRESS';
-        activeNodes=['PC','MAR'];activePaths=['pc-bus','bus-mar'];
-        signals=['gate_pc','ld_mar'];description='The PC drives the 16-bit bus. MAR latches the instruction address '+hex(mar)+'.';
-      }else if(stage==='fetch-memory'){
-        mdr=readMem(mar);stage='fetch-latch';phase='FETCH / RAM';operation='READ';
-        activeNodes=['MAR','MEM','MDR'];activePaths=['mar-mem','mem-mdr'];
-        signals=['sram_mem_ena','ld_mdr'];description='The memory subsystem supplies '+hex(mdr)+' from '+hex(mar)+'. Hardware inserts extra wait-state cycles for synchronous RAM.';
-      }else if(stage==='fetch-latch'){
-        bus=mdr;ir=mdr;pc=mask(pc+1);stage='decode';phase='FETCH / IR';operation='LATCH';
-        activeNodes=['MDR','IR','PC','PCMUX'];activePaths=['mdr-bus','bus-ir','pc-inc'];
-        signals=['gate_mdr','ld_ir','ld_pc'];description='MDR drives the bus into IR, and the PC advances to '+hex(pc)+'.';
-      }else if(stage==='decode'){
-        stage='execute';phase='DECODE';operation='CONTROL';
-        activeNodes=['IR','CONTROL','SEXT'];activePaths=['ir-control','ir-sext'];
-        signals=op===0?['ld_ben']:['decode'];description='Control.sv interprets '+disassemble(ir)+' and chooses the next micro-operations.';
-      }else if(stage==='execute'){
-        const offset6=sext(ir&63,6);
-        if(op===1||op===5||op===9){
-          const rhs=(ir&0x20)?sext(ir&31,5):regs[ir&7];
-          const result=mask(op===9?~regs[sr]:op===1?regs[sr]+rhs:regs[sr]&rhs);
-          bus=result;regs[dr]=result;lastReg=dr;setCC(result);aluMode=op===9?'NOT':op===5?'AND':'ADD';
-          phase='EXECUTE / ALU';operation='WRITEBACK';
-          activeNodes=['REG','SR2','ALU','CC'];activePaths=['reg-alu','alu-bus','bus-reg','alu-cc'];
-          signals=['aluk','gate_alu','ld_reg','ld_cc'];description=disassemble(ir)+' writes '+hex(result)+' to R'+dr+'; NZP = '+cc+'.';complete();
-        }else if(op===6||op===7){
-          mar=mask(regs[base]+offset6);bus=mar;phase=op===6?'LDR / ADDRESS':'STR / ADDRESS';operation='ADDRESS';
-          activeNodes=['REG','SEXT','ADDR','MAR','ALU'];activePaths=['ir-sext','sext-addr','reg-alu','alu-bus','bus-mar'];
-          signals=['aluk','gate_alu','ld_mar','addr2mux'];
-          if(op===7){mdr=regs[dr];stage='store-write';activeNodes.push('MDR');activePaths.push('reg-mdr');signals.push('ld_mdr');description='BaseR '+hex(regs[base])+' + signed offset '+offset6+' = '+hex(mar)+'. MDR captures R'+dr+' = '+hex(mdr)+'.';}
-          else{stage='load-read';description='BaseR '+hex(regs[base])+' + signed offset '+offset6+' = '+hex(mar)+'. MAR captures the effective address.';}
-        }else if(op===0){
-          const requested=(ir>>>9)&7,match=(cc==='N'&&!!(requested&4))||(cc==='Z'&&!!(requested&2))||(cc==='P'&&!!(requested&1));
-          if(match)pc=mask(pc+sext(ir&511,9));
-          phase='EXECUTE / BR';operation=match?'BRANCH TAKEN':'NOT TAKEN';activeNodes=['CC','CONTROL','ADDR','PC'];
-          activePaths=['ir-control','ir-sext',...(match?['sext-addr','addr-pc']:[])];
-          signals=['ld_ben',...(match?['pcmux','ld_pc','addr1mux','addr2mux']:[])];
-          description='NZP = '+cc+', instruction mask = '+requested.toString(2).padStart(3,'0')+'. '+(match?'Branch to '+hex(pc)+'.':'Continue at '+hex(pc)+'.');complete();
-        }else if(op===12){
-          pc=regs[base];phase='EXECUTE / JMP';operation='CONTROL TRANSFER';
-          activeNodes=['REG','PCMUX','PC'];activePaths=['reg-pc'];
-          signals=['pcmux','ld_pc'];description='Jump to the address in R'+base+': '+hex(pc)+'.';complete();
-        }else if(op===4){
-          bus=pc;regs[7]=pc;lastReg=7;stage='jsr-target';phase='JSR / LINK';operation='SAVE RETURN';
-          activeNodes=['PC','REG'];activePaths=['pc-bus','bus-reg'];signals=['gate_pc','drmux','ld_reg'];
-          description='Save the return address '+hex(pc)+' in R7 before updating PC.';
-        }else if(op===13){
-          leds=ir&4095;stage='pause-wait';phase='PAUSE / WAIT';operation='CONTINUE REQUIRED';
-          activeNodes=['IR','CONTROL','IO'];activePaths=['ir-control'];signals=['ld_led'];
-          description='PAUSE presents LED vector '+hex(leds)+' and holds execution until Continue is pressed.';stop();
-        }else{
-          halted=true;phase='UNSUPPORTED';description='Opcode '+op.toString(16)+' is outside this teaching model.';stop();
-        }
-      }else if(stage==='jsr-target'){
-        pc=mask(pc+sext(ir&2047,11));phase='JSR / TARGET';operation='CONTROL TRANSFER';
-        activeNodes=['IR','SEXT','ADDR','PCMUX','PC'];activePaths=['ir-sext','sext-addr','addr-pc'];
-        signals=['addr1mux','addr2mux','pcmux','ld_pc'];
-        description='PC ← PC + SEXT(offset11) = '+hex(pc)+'. R7 still holds the return address.';complete();
-      }else if(stage==='load-read'){
-        mdr=readMem(mar);stage='load-write';phase='LDR / MEMORY';operation='READ';
-        activeNodes=['MAR',mar===65535?'IO':'MEM','MDR'];activePaths=['mar-mem','mem-mdr',...(mar===65535?['mem-io']:[])];
-        signals=['sram_mem_ena','ld_mdr'];description=(mar===65535?'CPU_TO_IO supplies the switch value ':'BRAM supplies ')+hex(mdr)+' into MDR.';
-      }else if(stage==='load-write'){
-        bus=mdr;regs[dr]=mdr;lastReg=dr;setCC(mdr);phase='LDR / WRITEBACK';operation='WRITEBACK';
-        activeNodes=['MDR','REG','CC'];activePaths=['mdr-bus','bus-reg'];
-        signals=['gate_mdr','ld_reg','ld_cc'];description='MDR drives '+hex(mdr)+' to R'+dr+'. NZP becomes '+cc+'.';complete();
-      }else if(stage==='store-write'){
-        writeMem(mar,mdr);phase='STR / MEMORY';operation='WRITE';
-        activeNodes=['MAR','MDR',mar===65535?'IO':'MEM'];activePaths=['mar-mem','mdr-mem',...(mar===65535?['mem-io']:[])];
-        signals=['sram_mem_ena','sram_wr_ena'];description=mar===65535?'CPU_TO_IO sends '+hex(mdr)+' to the HEX display.':'Write '+hex(mdr)+' into BRAM['+hex(mar)+'].';complete();
-      }
-    };
-    const render=()=>{
-      const code=programs[programIndex],activeAddr=stage==='fetch-address'?pc:instructionAddress;
-      const word=stage==='fetch-address'?(memory.get(pc)??0):ir;
-      write('pc',hex(pc));write('ir',hex(ir));write('mar',hex(mar));write('mdr',hex(mdr));
-      write('bus',hex(bus));write('memvalue',hex(readMem(mar)));write('clock',String(cycles).padStart(3,'0'));
-      write('unit-pc',hex(pc));write('unit-ir',hex(ir));write('unit-mar',hex(mar));write('unit-mdr',hex(mdr));
-      write('unit-alu',aluMode);write('unit-cc',cc);write('hexout',hex(hexout).slice(1));write('leds',(leds&4095).toString(16).toUpperCase().padStart(3,'0'));
-      write('program-name',code.name);write('phase',phase);write('operation',operation);write('description',description);
-      write('status',halted?'PROGRAM COMPLETE':stage==='pause-wait'?'WAITING FOR CONTINUE':timer?'AUTO RUNNING':'STEP MODE');
-      write('instruction',halted?'Program complete':disassemble(word));write('decode',explain(word));write('opcode','OP '+bin(word).slice(0,4));
-      const b=bin(word);write('binary',b.slice(0,4)+' '+b.slice(4,7)+' '+b.slice(7,10)+' '+b.slice(10));
-      root.querySelectorAll<HTMLElement>('[data-program]').forEach(e=>e.setAttribute('aria-pressed',String(Number(e.dataset.program)===programIndex)));
-      root.querySelectorAll<SVGGElement>('[data-node]').forEach(e=>e.classList.toggle('active',activeNodes.includes(e.dataset.node||'')));
-      root.querySelectorAll<SVGPathElement>('[data-route]').forEach(e=>e.classList.toggle('active',activePaths.includes(e.dataset.route||'')));
-      root.querySelector<SVGPathElement>('.slc-bus')?.classList.toggle('active',activePaths.some(path=>path.includes('bus')));
-      root.querySelectorAll<HTMLButtonElement>('[data-reg]').forEach(e=>{
-        const i=Number(e.dataset.reg);const v=e.querySelector('strong');if(v)v.textContent=hex(regs[i]);e.classList.toggle('changed',i===lastReg);
-      });
-      root.querySelectorAll<HTMLElement>('[data-flag]').forEach(e=>e.classList.toggle('active',e.dataset.flag===cc));
-      const signalBox=q('[data-signals]');if(signalBox){signalBox.replaceChildren();(signals.length?signals:['idle']).forEach(s=>{const badge=document.createElement('span');badge.textContent=s;signalBox.appendChild(badge);});}
-      const codeBox=q('[data-code]');if(codeBox){codeBox.replaceChildren();code.words.forEach((orig,i)=>{
-        const row=document.createElement('div');row.className='slc-code-row'+(i===activeAddr&&!halted?' active':'');
-        const a=document.createElement('span'),v=document.createElement('span'),d=document.createElement('strong'),w=memory.get(i)??orig;
-        a.textContent=hex(i);v.textContent=hex(w);d.textContent=disassemble(w);row.append(a,v,d);codeBox.appendChild(row);
-      });}
-      const step=q('[data-action=step]') as HTMLButtonElement|null,run=q('[data-action=run]') as HTMLButtonElement|null;
-      if(step)step.disabled=halted||stage==='pause-wait';
-      if(run)run.disabled=halted||stage==='pause-wait';
-      const runLabel=q('[data-run-label]');if(runLabel)runLabel.textContent=timer?'Pause':'Run';
-      showDetail();
-    };
-    const reset=(index:number)=>{
-      stop();programIndex=index;memory=new Map();programs[index].words.forEach((w,i)=>memory.set(i,w));
-      Object.entries(programs[index].data).forEach(([addr,val])=>memory.set(Number(addr),val));
-      regs=Array(8).fill(0);pc=0;mar=0;mdr=0;ir=0;bus=0;cc='Z';hexout=0;leds=0;cycles=0;completed=0;instructionAddress=0;
-      stage='fetch-address';phase='READY';operation='FETCH';description=programs[index].intro+' Press Step to advance one operation.';
-      lastReg=-1;halted=false;aluMode='ADD / AND';activeNodes=[];activePaths=[];signals=[];
-      const io=q('[data-io-message]');if(io)io.textContent='';render();
-    };
-    const step=()=>{tick();if(halted||stage==='pause-wait')stop();render();};
-    const switchField=q('[data-switches]') as HTMLInputElement|null;
-    switchField?.addEventListener('change',()=>{
-      const value=switchField.value.trim().replace(/^x|^0x/i,'');
-      if(!/^[\da-f]{1,4}$/i.test(value)){switchField.setCustomValidity('Enter 1–4 hexadecimal digits.');switchField.reportValidity();return;}
-      switchField.setCustomValidity('');switches=parseInt(value,16);switchField.value=mask(switches).toString(16).toUpperCase().padStart(4,'0');
-      const msg=q('[data-io-message]');if(msg)msg.textContent='Switches set to '+hex(switches);render();
-    });
-    root.querySelectorAll<HTMLButtonElement>('[data-program]').forEach(button=>button.addEventListener('click',()=>reset(Number(button.dataset.program))));
-    q('[data-action=reset]')?.addEventListener('click',()=>reset(programIndex));
-    q('[data-action=step]')?.addEventListener('click',()=>{stop();step();});
-    q('[data-action=run]')?.addEventListener('click',()=>{
-      if(timer){stop();render();return;}
-      if(halted||stage==='pause-wait')return;
-      timer=setInterval(step,850);step();
-    });
-    q('[data-action=continue]')?.addEventListener('click',()=>{
-      const msg=q('[data-io-message]');
-      if(stage!=='pause-wait'){if(msg)msg.textContent='Continue is used only while a PAUSE instruction is active.';return;}
-      phase='PAUSE / RELEASED';operation='CONTINUE';signals=['continue_i'];description='Continue released this PAUSE. The next instruction may now be fetched.';activeNodes=['CONTROL'];activePaths=['ir-control'];
-      complete();if(msg)msg.textContent='PAUSE released.';render();
-    });
-    root.querySelectorAll<SVGGElement>('[data-node]').forEach(node=>{
-      const open=()=>{selected=node.dataset.node||'CONTROL';showDetail();};
-      node.addEventListener('click',open);
-      node.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
-    });
-    root.querySelectorAll<HTMLButtonElement>('[data-reg]').forEach(button=>button.addEventListener('click',()=>{
-      selected='REG';showDetail();const i=Number(button.dataset.reg);
-      write('inspect-title','Register R'+i+' / '+hex(regs[i]));
-      write('inspect-body','R'+i+' is a 16-bit general-purpose register. The register file exposes two read ports and a controlled write port. R7 is used for JSR return addresses.');
-    }));
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();render();}});
-    reset(0);
-  }
-</script>
+<link rel="stylesheet" href="/slc3-workbench.css" />
+<script is:inline src="/slc3-workbench.js"></script>
