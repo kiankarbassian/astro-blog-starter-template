@@ -6,10 +6,10 @@ const nodes = [
   {"id":"ADDR","x":487,"y":428,"w":185,"h":70,"title":"ADDRESS ADDER","value":"16-bit result","role":"BaseR/PC + offset"},
   {"id":"ADDR1","x":725,"y":523,"w":174,"h":64,"title":"ADDR1MUX","value":"PC / BaseR","role":"address source","mux":true},
   {"id":"ADDR2","x":324,"y":523,"w":173,"h":64,"title":"ADDR2MUX","value":"0 / 6 / 9 / 11","role":"signed offset","mux":true},
-  {"id":"SEXT11","x":85,"y":440,"w":160,"h":48,"title":"SEXT[10:0]","value":"PCoffset11","role":"JSR offset"},
-  {"id":"SEXT9","x":85,"y":500,"w":160,"h":48,"title":"SEXT[8:0]","value":"PCoffset9","role":"BR offset"},
-  {"id":"SEXT6","x":85,"y":560,"w":160,"h":48,"title":"SEXT[5:0]","value":"offset6","role":"LDR / STR offset"},
-  {"id":"SEXT5","x":85,"y":620,"w":160,"h":48,"title":"SEXT[4:0]","value":"imm5","role":"ALU immediate"},
+  {"id":"SEXT11","x":85,"y":426,"w":160,"h":56,"title":"SEXT[10:0]","value":"PCoffset11","role":"JSR offset"},
+  {"id":"SEXT9","x":85,"y":491,"w":160,"h":56,"title":"SEXT[8:0]","value":"PCoffset9","role":"BR offset"},
+  {"id":"SEXT6","x":85,"y":556,"w":160,"h":56,"title":"SEXT[5:0]","value":"offset6","role":"LDR / STR offset"},
+  {"id":"SEXT5","x":85,"y":621,"w":160,"h":56,"title":"SEXT[4:0]","value":"imm5","role":"ALU immediate"},
   {"id":"IR","x":85,"y":324,"w":160,"h":75,"title":"IR","value":"IR[15:0]","role":"instruction register"},
   {"id":"CONTROL","x":491,"y":619,"w":224,"h":74,"title":"CONTROL FSM","value":"control.sv","role":"instruction sequencer"},
   {"id":"REG","x":1030,"y":156,"w":225,"h":165,"title":"REGISTER FILE","value":"8 × 16 bits","role":"regs.sv"},
@@ -39,15 +39,15 @@ const wires = [
   {"id":"addr2-adder","d":"M413 523 V483 H487"},
   {"id":"addr-pcmux","d":"M555 428 V343"},
   {"id":"addr-gate","d":"M487 453 H458"},
-  {"id":"sext11-addr2","d":"M245 464 H280 V538 H324"},
-  {"id":"sext9-addr2","d":"M245 524 H292 V554 H324"},
+  {"id":"sext11-addr2","d":"M245 454 H280 V538 H324"},
+  {"id":"sext9-addr2","d":"M245 519 H292 V554 H324"},
   {"id":"sext6-addr2","d":"M245 584 H305 V572 H324"},
-  {"id":"ir-immediate","d":"M245 382 H268 V644 H245"},
+  {"id":"ir-immediate","d":"M245 382 H268 V649 H245"},
   {"id":"ir-decode","d":"M245 357 H301 V398 H700 V649 H715"},
-  {"id":"ir-sext","d":"M85 369 H57 V464 H85 M57 464 V524 H85 M57 524 V584 H85 M57 584 V644 H85"},
+  {"id":"ir-sext","d":"M85 369 H57 V454 H85 M57 454 V519 H85 M57 519 V584 H85 M57 584 V649 H85"},
   {"id":"reg-alu-a","d":"M1193 321 V567"},
   {"id":"reg-sr2","d":"M1030 304 H991 V446"},
-  {"id":"sext5-sr2","d":"M245 644 H271 V510 H906 V479 H918"},
+  {"id":"sext5-sr2","d":"M245 649 H271 V510 H906 V479 H918"},
   {"id":"sr2-alu","d":"M991 514 V543 H1121 V567"},
   {"id":"alu-nzp","d":"M1082 624 H1053 V646 H1034"},
   {"id":"reg-bus","d":"M1130 156 V87"},
@@ -120,8 +120,9 @@ const annotations = [
         {annotations.map(a=><text class="lab5-annotation" x={a.x} y={a.y}>{a.text}</text>)}
         {nodes.map(n=><g class:list={['lab5-node',n.mux && 'lab5-mux']} data-module={n.id} tabindex="0" role="button" aria-label={'Inspect ' + n.title + ': ' + n.role}>
           {n.mux ? <polygon points={n.x+','+n.y+' '+(n.x+n.w)+','+n.y+' '+(n.x+n.w-13)+','+(n.y+n.h)+' '+(n.x+13)+','+(n.y+n.h)}/> : <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="3"/>}
-          <text class="lab5-node-title" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=90?30:22)}>{n.title}</text>
-          {n.value && <text class="lab5-node-value" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=90?83:n.h-13)}>{n.value}</text>}
+          <text class="lab5-node-title" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=140?30:n.h>=90?28:22)}>{n.title}</text>
+          {n.value && <text class="lab5-node-value" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=140?89:n.h>=90?70:n.h-13)}>{n.value}</text>}
+          {n.id === 'REG' && <text class="lab5-node-detail" x={n.x+16} y={n.y+126}>SR1 OUT  /  SR2 OUT  /  DR IN</text>}
         </g>)}
         <g class="lab5-pins" aria-hidden="true"><circle cx="565" cy="87" r="3"/><circle cx="1172" cy="742" r="3"/><circle cx="192" cy="742" r="3"/><circle cx="1350" cy="742" r="3"/></g>
         <text class="lab5-caption" x="1356" y="1058" text-anchor="end">SCHEMATIC ADAPTED FROM LAB 5, FIGURE ON P. 5.8. SIMPLIFIED FOR THE WEB.</text>
