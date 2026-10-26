@@ -1,425 +1,469 @@
-<div class="cpu-feature" id="cpu" aria-label="Interactive 16-bit SLC-3 processor simulator">
-  <div class="container">
-    <div class="cpu-workbench">
-      <div class="cpu-chrome">
-        <div class="cpu-brand"><span class="cpu-brand-icon" aria-hidden="true">▦</span><span>SLC-3 <small>/ INSTRUCTION LAB</small></span></div>
-        <span class="cpu-live"><i aria-hidden="true"></i> BROWSER SIMULATION</span>
-      </div>
-      <div class="cpu-toolbar">
-        <fieldset class="cpu-programs">
-          <legend>LOAD PROGRAM</legend>
-          <button type="button" data-program="0" aria-pressed="true">01 / Arithmetic</button>
-          <button type="button" data-program="1" aria-pressed="false">02 / Memory</button>
-          <button type="button" data-program="2" aria-pressed="false">03 / Branch loop</button>
-        </fieldset>
-        <div class="cpu-controls" aria-label="Simulation controls">
-          <button type="button" data-action="reset" class="cpu-reset" title="Reset machine">↺ <span>Reset</span></button>
-          <button type="button" data-action="step" class="cpu-step">Step <span aria-hidden="true">→</span></button>
-          <button type="button" data-action="run" class="cpu-run">▶ <span>Run</span></button>
-        </div>
-      </div>
-      <div class="cpu-main">
-        <div class="cpu-main-left">
-          <div class="cpu-display-header">
-            <div><span class="cpu-kicker">DATAPATH / SIMPLIFIED</span><h3>The silicon, decoded.</h3></div>
-            <div class="cpu-clock">µSTEP <strong data-bind="clock">000</strong></div>
-          </div>
-          <div class="cpu-board" aria-label="Simplified functional blocks. Highlighted elements participate in the current step.">
-            <div class="cpu-trace trace-a" aria-hidden="true"></div>
-            <div class="cpu-trace trace-b" aria-hidden="true"></div>
-            <div class="cpu-trace trace-c" aria-hidden="true"></div>
-            <div class="cpu-trace trace-d" aria-hidden="true"></div>
-            <div class="cpu-unit" data-unit="PC"><span>01 / PROGRAM COUNTER</span><strong data-bind="unit-pc">x3000</strong><small>Next address</small></div>
-            <div class="cpu-unit" data-unit="MAR"><span>02 / ADDRESS LATCH</span><strong data-bind="unit-mar">x0000</strong><small>MAR</small></div>
-            <div class="cpu-unit" data-unit="MEM"><span>03 / MEMORY</span><strong>64K × 16</strong><small>Word addressed</small></div>
-            <div class="cpu-unit" data-unit="REG"><span>06 / REGISTER FILE</span><strong>8 × 16</strong><small>R0 through R7</small></div>
-            <div class="cpu-unit" data-unit="ALU"><span>05 / ARITHMETIC UNIT</span><strong data-bind="alu">ADD / AND</strong><small>16-bit operations</small></div>
-            <div class="cpu-unit" data-unit="MDR"><span>04 / DATA LATCH</span><strong data-bind="unit-mdr">x0000</strong><small>MDR</small></div>
-            <div class="cpu-bus-strip"><span>ACTIVE DATA BUS</span><strong data-bind="bus">x0000</strong><span class="cpu-bus-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-          </div>
-          <div class="cpu-step-readout" role="status" aria-live="polite" aria-atomic="true">
-            <div class="cpu-step-label"><span>NOW EXECUTING</span><span data-bind="phase-tag">READY</span></div>
-            <strong data-bind="instruction">ADD R0, R0, #5</strong>
-            <p data-bind="description">Step through the first instruction, or press Run to watch the datapath move.</p>
-          </div>
-          <div class="cpu-signals"><span>CONTROL LINES</span><div class="cpu-signal-list" aria-label="Illustrative active control lines" data-signals><span>READY</span></div></div>
-        </div>
-        <aside class="cpu-sidebar" aria-label="Live machine state">
-          <div class="cpu-side-title"><span>MACHINE STATE</span><span>16-BIT HEX</span></div>
-          <div class="cpu-specials">
-            <div><span>PC</span><strong data-bind="pc">x3000</strong></div>
-            <div><span>IR</span><strong data-bind="ir">x0000</strong></div>
-            <div><span>MAR</span><strong data-bind="mar">x0000</strong></div>
-            <div><span>MDR</span><strong data-bind="mdr">x0000</strong></div>
-          </div>
-          <div class="cpu-register-title"><span>GENERAL PURPOSE REGISTERS</span><span>R0-R7</span></div>
-          <div class="cpu-register-list">
-            <div data-reg="0"><span>R0</span><strong>x0000</strong></div>
-            <div data-reg="1"><span>R1</span><strong>x0000</strong></div>
-            <div data-reg="2"><span>R2</span><strong>x0000</strong></div>
-            <div data-reg="3"><span>R3</span><strong>x0000</strong></div>
-            <div data-reg="4"><span>R4</span><strong>x0000</strong></div>
-            <div data-reg="5"><span>R5</span><strong>x0000</strong></div>
-            <div data-reg="6"><span>R6</span><strong>x0000</strong></div>
-            <div data-reg="7"><span>R7</span><strong>x0000</strong></div>
-          </div>
-          <div class="cpu-cc-row"><span>CONDITION CODES</span><div class="cpu-flags"><span data-flag="N">N</span><span data-flag="Z">Z</span><span data-flag="P">P</span></div></div>
-        </aside>
-      </div>
-      <div class="cpu-bottom">
-        <div class="cpu-code-panel">
-          <div class="cpu-bottom-label"><span>PROGRAM MEMORY</span><span data-bind="program-name">ARITHMETIC</span></div>
-          <div class="cpu-code-list" data-code></div>
-        </div>
-        <div class="cpu-explanation">
-          <div class="cpu-bottom-label"><span>DECODED INSTRUCTION</span><span data-bind="opcode">OPCODE 0001</span></div>
-          <div class="cpu-binary" data-bind="binary">0001 000 000 1 00101</div>
-          <p data-bind="decode">ADD: add a 5-bit signed immediate to a source register, store in the destination, then update NZP flags.</p>
-          <div class="cpu-note"><span class="cpu-note-mark" aria-hidden="true">↳</span><span>This executable model demonstrates an LC-3 instruction subset and simplified micro-operations. It is not a cycle-accurate simulation of the FPGA or a hardware connection.</span></div>
-        </div>
-      </div>
-      <div class="cpu-foot"><span>BUILT FROM GATES, REGISTERS AND STUBBORN DEBUGGING.</span><span data-bind="status">READY TO EXECUTE</span></div>
+<div class="slc-workbench" id="slc-workbench" aria-label="Interactive SLC-3.2 datapath demonstration">
+  <div class="slc-topline">
+    <div class="slc-identity"><span class="slc-chip" aria-hidden="true">▦</span><div><strong>SLC-3.2</strong><span>ECE 385 / MODIFIED DATAPATH</span></div></div>
+    <div class="slc-status"><span class="slc-status-dot"></span><span data-bind="status">READY TO STEP</span></div>
+  </div>
+  <div class="slc-toolbar">
+    <fieldset class="slc-programs"><legend>DEMONSTRATION PROGRAMS</legend>
+      <button type="button" data-program="0" aria-pressed="true">01 / ALU + NZP</button>
+      <button type="button" data-program="1" aria-pressed="false">02 / Memory + I/O</button>
+      <button type="button" data-program="2" aria-pressed="false">03 / Branch + JSR</button>
+    </fieldset>
+    <div class="slc-actions" aria-label="CPU simulation controls">
+      <button type="button" data-action="reset" class="slc-quiet">Reset</button>
+      <button type="button" data-action="step" class="slc-quiet">Step <span aria-hidden="true">→</span></button>
+      <button type="button" data-action="run" class="slc-primary"><span data-run-label>Run</span></button>
     </div>
   </div>
+  <div class="slc-content">
+    <div class="slc-main">
+      <div class="slc-heading"><div><span class="slc-eyebrow">DATA FLOW / CLICK ANY MODULE TO INSPECT</span><h3>The datapath, in motion.</h3></div><div class="slc-counter"><span>MICRO-OPERATIONS</span><strong data-bind="clock">000</strong></div></div>
+      <div class="slc-diagram-scroller" tabindex="0" role="region" aria-label="Scrollable SLC-3.2 processor datapath">
+        <svg class="slc-diagram" viewBox="0 0 920 545" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram of SLC-3.2 internal registers, control, ALU, CPU bus and memory-mapped I/O">
+          <defs>
+            <marker id="slc-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#6e847a" stroke-width="1.2"/></marker>
+            <pattern id="slc-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#344740" stroke-width=".5" opacity=".38"/></pattern>
+          </defs>
+          <rect width="920" height="545" fill="url(#slc-grid)"/>
+          <text class="slc-section-label" x="22" y="27">16-BIT INTERNAL PROCESSOR</text>
+          <text class="slc-section-label" x="22" y="515">FPGA PERIPHERALS / BRAM</text>
+          <g class="slc-wires" fill="none" stroke="#647a70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path data-route="pc-bus" d="M109 126 V292"/>
+            <path data-route="pc-inc" d="M194 81 H239"/>
+            <path data-route="addr-pc" d="M421 82 H305"/>
+            <path data-route="reg-pc" d="M727 126 V148 H265 V125"/>
+            <path data-route="ir-sext" d="M176 221 H230"/>
+            <path data-route="ir-control" d="M107 259 V406 H363"/>
+            <path data-route="sext-addr" d="M325 211 V124 H440"/>
+            <path data-route="reg-alu" d="M725 126 V190"/>
+            <path data-route="alu-bus" d="M725 260 V292"/>
+            <path data-route="alu-cc" d="M816 226 H849 V407 H745"/>
+            <path data-route="bus-reg" d="M822 292 V126 H810"/>
+            <path data-route="bus-mar" d="M111 292 V354"/>
+            <path data-route="mdr-bus" d="M280 354 V292"/>
+            <path data-route="bus-ir" d="M177 292 V241"/>
+            <path data-route="reg-mdr" d="M675 119 H610 V340 H314 V354"/>
+            <path data-route="mem-mdr" d="M753 404 H317"/>
+            <path data-route="mdr-mem" d="M317 419 H753"/>
+            <path data-route="mar-mem" d="M190 389 H753"/>
+            <path data-route="mem-io" d="M753 462 H638"/>
+            <path data-route="io-mem" d="M638 477 H753"/>
+            <path data-route="control" d="M449 406 V280"/>
+          </g>
+          <path class="slc-bus" d="M33 292 H878" fill="none" stroke="#9baea1" stroke-width="7" stroke-linecap="round"/>
+          <text class="slc-bus-label" x="457" y="282" text-anchor="middle">16-BIT CPU BUS</text>
+          <g class="slc-node" data-node="PC" tabindex="0" role="button" aria-label="Inspect program counter">
+            <rect x="33" y="57" width="152" height="69" rx="5"/><text class="slc-node-title" x="46" y="77">PROGRAM COUNTER</text><text class="slc-node-value" x="46" y="109" data-bind="unit-pc">x0000</text>
+          </g>
+          <g class="slc-node" data-node="PCMUX" tabindex="0" role="button" aria-label="Inspect PC multiplexer">
+            <rect x="239" y="57" width="86" height="69" rx="5"/><text class="slc-node-title" x="249" y="77">PC MUX</text><text class="slc-node-small" x="249" y="105">+1 / target</text>
+          </g>
+          <g class="slc-node" data-node="ADDR" tabindex="0" role="button" aria-label="Inspect address adder and multiplexers">
+            <rect x="421" y="57" width="151" height="69" rx="5"/><text class="slc-node-title" x="434" y="77">ADDRESS PATH</text><text class="slc-node-small" x="434" y="105">ADDR1 / ADDR2 MUX</text>
+          </g>
+          <g class="slc-node" data-node="REG" tabindex="0" role="button" aria-label="Inspect register file">
+            <rect x="647" y="47" width="163" height="79" rx="5"/><text class="slc-node-title" x="659" y="69">REGISTER FILE</text><text class="slc-node-value" x="659" y="101">8 × 16-bit</text>
+          </g>
+          <g class="slc-node" data-node="IR" tabindex="0" role="button" aria-label="Inspect instruction register">
+            <rect x="33" y="189" width="143" height="70" rx="5"/><text class="slc-node-title" x="46" y="210">INSTRUCTION / IR</text><text class="slc-node-value" x="46" y="241" data-bind="unit-ir">x0000</text>
+          </g>
+          <g class="slc-node" data-node="SEXT" tabindex="0" role="button" aria-label="Inspect sign extension and immediate path">
+            <rect x="230" y="184" width="136" height="69" rx="5"/><text class="slc-node-title" x="242" y="205">SIGN EXTENSION</text><text class="slc-node-small" x="242" y="233">imm5 / off6 / 9 / 11</text>
+          </g>
+          <g class="slc-node" data-node="SR2" tabindex="0" role="button" aria-label="Inspect second ALU operand multiplexer">
+            <rect x="440" y="184" width="131" height="69" rx="5"/><text class="slc-node-title" x="451" y="205">SR2 MUX</text><text class="slc-node-small" x="451" y="233">reg / immediate</text>
+          </g>
+          <g class="slc-node" data-node="ALU" tabindex="0" role="button" aria-label="Inspect arithmetic logic unit">
+            <rect x="647" y="184" width="163" height="76" rx="5"/><text class="slc-node-title" x="659" y="205">16-BIT ALU</text><text class="slc-node-value" x="659" y="239" data-bind="unit-alu">ADD / AND</text>
+          </g>
+          <g class="slc-node" data-node="MAR" tabindex="0" role="button" aria-label="Inspect memory address register">
+            <rect x="33" y="354" width="157" height="67" rx="5"/><text class="slc-node-title" x="46" y="375">MEMORY ADDRESS / MAR</text><text class="slc-node-value" x="46" y="404" data-bind="unit-mar">x0000</text>
+          </g>
+          <g class="slc-node" data-node="MDR" tabindex="0" role="button" aria-label="Inspect memory data register">
+            <rect x="232" y="354" width="144" height="67" rx="5"/><text class="slc-node-title" x="245" y="375">MEMORY DATA / MDR</text><text class="slc-node-value" x="245" y="404" data-bind="unit-mdr">x0000</text>
+          </g>
+          <g class="slc-node" data-node="CONTROL" tabindex="0" role="button" aria-label="Inspect control state machine">
+            <rect x="363" y="444" width="178" height="66" rx="5"/><text class="slc-node-title" x="377" y="465">CONTROL FSM</text><text class="slc-node-small" x="377" y="493">RUN / CONTINUE / GATES</text>
+          </g>
+          <g class="slc-node" data-node="CC" tabindex="0" role="button" aria-label="Inspect NZP flags and branch enable logic">
+            <rect x="633" y="444" width="116" height="66" rx="5"/><text class="slc-node-title" x="646" y="465">NZP / BEN</text><text class="slc-node-value" x="646" y="492" data-bind="unit-cc">Z</text>
+          </g>
+          <g class="slc-node" data-node="IO" tabindex="0" role="button" aria-label="Inspect memory mapped input output interface">
+            <rect x="432" y="354" width="188" height="67" rx="5"/><text class="slc-node-title" x="445" y="375">CPU_TO_IO</text><text class="slc-node-small" x="445" y="402">xFFFF / SWITCHES + HEX</text>
+          </g>
+          <g class="slc-node" data-node="MEM" tabindex="0" role="button" aria-label="Inspect on-chip block RAM">
+            <rect x="753" y="354" width="137" height="67" rx="5"/><text class="slc-node-title" x="766" y="375">ON-CHIP BRAM</text><text class="slc-node-small" x="766" y="402">SYNCHRONOUS</text>
+          </g>
+          <text class="slc-tiny" x="20" y="539">Adapted from the ECE 385 modified SLC-3 datapath. Paths are schematic, not a routed FPGA netlist.</text>
+        </svg>
+      </div>
+      <div class="slc-legend"><span><i class="slc-legend-hot"></i> Active datapath</span><span><i class="slc-legend-idle"></i> Other connections</span><span>Tap a block for its role</span></div>
+      <div class="slc-active-step" aria-live="polite" aria-atomic="true">
+        <div class="slc-step-meta"><span data-bind="phase">READY</span><span data-bind="operation">FETCH</span></div>
+        <strong data-bind="instruction">ADD R0, R0, #5</strong>
+        <p data-bind="description">Select a program, step through the control states, or run the example automatically.</p>
+        <div class="slc-signal-wrap"><span>ASSERTED SIGNALS</span><div class="slc-signals" data-signals><span>IDLE</span></div></div>
+      </div>
+      <div class="slc-inspector"><div class="slc-inspect-heading"><span>MODULE INSPECTOR</span><span data-bind="inspect-subtitle">SELECT A COMPONENT</span></div><strong data-bind="inspect-title">Control the datapath</strong><p data-bind="inspect-body">Click any hardware block to understand its role in the actual Lab 5 design.</p></div>
+    </div>
+    <aside class="slc-side">
+      <div class="slc-side-head"><span>MACHINE STATE</span><span>16-BIT HEX</span></div>
+      <div class="slc-specials">
+        <div><span>PC</span><strong data-bind="pc">x0000</strong></div><div><span>IR</span><strong data-bind="ir">x0000</strong></div>
+        <div><span>MAR</span><strong data-bind="mar">x0000</strong></div><div><span>MDR</span><strong data-bind="mdr">x0000</strong></div>
+        <div><span>BUS</span><strong data-bind="bus">x0000</strong></div><div><span>MEM[MAR]</span><strong data-bind="memvalue">x0000</strong></div>
+      </div>
+      <div class="slc-side-head slc-register-heading"><span>REGISTER FILE</span><span>R0–R7</span></div>
+      <div class="slc-registers">
+        {Array.from({length:8},(_,i)=><button type="button" data-reg={i}><span>{'R'+i}</span><strong>x0000</strong></button>)}
+      </div>
+      <div class="slc-flags"><span>CONDITION CODES</span><div><b data-flag="N">N</b><b data-flag="Z">Z</b><b data-flag="P">P</b></div></div>
+      <div class="slc-io">
+        <div class="slc-side-head"><span>URBANA BOARD / I/O</span><span>xFFFF</span></div>
+        <div class="slc-screen"><span>HEX DISPLAY / OUTPUT</span><strong data-bind="hexout">0000</strong></div>
+        <div class="slc-leds"><span>PAUSE LED VECTOR</span><strong data-bind="leds">000</strong></div>
+        <label for="slc-switch-input">SWITCHES / 16-BIT HEX INPUT</label>
+        <div class="slc-switch-row"><span>x</span><input id="slc-switch-input" data-switches type="text" maxlength="4" inputmode="text" value="0003" spellcheck="false" aria-describedby="slc-switch-note" /><button type="button" data-action="continue">Continue</button></div>
+        <small id="slc-switch-note">The LDR/STR I/O example uses xFFFF. Continue releases one PAUSE instruction.</small>
+        <p class="slc-inline-message" data-io-message role="status" aria-live="polite"></p>
+      </div>
+    </aside>
+  </div>
+  <div class="slc-bottom">
+    <div class="slc-code"><div class="slc-side-head"><span>PROGRAM MEMORY</span><span data-bind="program-name">ALU + NZP</span></div><div class="slc-list" data-code></div></div>
+    <div class="slc-decoder"><div class="slc-side-head"><span>DECODED INSTRUCTION</span><span data-bind="opcode">OP 0001</span></div><strong data-bind="binary">0001 000 000 1 00101</strong><p data-bind="decode">Select a program to trace its instruction fields.</p><div class="slc-spec-note">This is a browser teaching model of the modified ECE 385 SLC-3.2, not a cycle-accurate RTL or live connection to the Spartan-7. Physical RAM wait-state timing is simplified.</div></div>
+  </div>
 </div>
-
 <style>
-.cpu-feature{padding:0;color:var(--text)}
-.cpu-feature>.container{width:100%;max-width:none;margin:0}
-.cpu-intro{display:grid;grid-template-columns:1.25fr .75fr;align-items:end;gap:70px;margin-bottom:35px}
-.cpu-eyebrow{margin:0 0 18px;color:var(--accent);font:11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
-.cpu-intro h2{font-size:clamp(52px,7.2vw,104px);letter-spacing:-.085em;line-height:.99;font-weight:500;margin:0}
-.cpu-intro h2 em{color:var(--accent);font-style:normal}
-.cpu-intro-aside{padding-bottom:8px}
-.cpu-intro-aside p{max-width:345px;font-size:15px;color:var(--muted);line-height:1.75;margin:0 0 32px}
-.cpu-intro-meta{display:flex;gap:22px;font:10px var(--mono);letter-spacing:.1em;color:var(--muted)}
-.cpu-workbench{--cpu-bg:#111817;--cpu-panel:#192221;--cpu-edge:#34413c;--cpu-text:#edf1e9;--cpu-muted:#92a39b;--cpu-accent:#f58b63;background:var(--cpu-bg);color:var(--cpu-text);border:1px solid var(--cpu-edge);border-radius:7px;overflow:hidden;box-shadow:0 34px 80px #0002}
-.cpu-chrome{height:59px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--cpu-edge);background:#16201e}
-.cpu-brand{display:flex;gap:12px;align-items:center;font:600 13px var(--mono);letter-spacing:.045em}
-.cpu-brand small{font-weight:400;color:var(--cpu-muted);font-size:10px}
-.cpu-brand-icon{color:var(--cpu-accent);font-size:22px;font-weight:400}
-.cpu-live{font:9px var(--mono);letter-spacing:.08em;display:flex;align-items:center;gap:9px;color:var(--cpu-muted)}
-.cpu-live i{width:6px;height:6px;border-radius:50%;background:var(--cpu-accent);box-shadow:0 0 0 4px #f58b631d}
-.cpu-toolbar{padding:19px 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:25px;border-bottom:1px solid var(--cpu-edge)}
-.cpu-programs{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:7px;min-width:0}
-.cpu-programs legend{font:9px var(--mono);color:var(--cpu-muted);letter-spacing:.12em;padding:0;margin-bottom:10px}
-.cpu-programs button{font:11px var(--mono);padding:11px 12px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--cpu-muted);transition:background .2s,color .2s,border-color .2s}
-.cpu-programs button[aria-pressed=true]{background:#26342f;border-color:#526058;color:var(--cpu-text)}
-.cpu-programs button:hover{color:var(--cpu-text)}
-.cpu-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.cpu-controls button{border-radius:4px;min-height:42px;padding:0 17px;font:12px var(--mono);border:1px solid var(--cpu-edge);color:var(--cpu-text);background:#1b2522}
-.cpu-controls button:active{transform:translateY(1px)}
-.cpu-controls .cpu-run{border-color:var(--cpu-accent);background:var(--cpu-accent);color:#18201d;font-weight:700}
-.cpu-controls .cpu-step{border-color:#607268}
-.cpu-controls .cpu-step span{margin-left:15px}
-.cpu-controls button:disabled{opacity:.4;cursor:not-allowed}
-.cpu-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(255px,.78fr)}
-.cpu-main-left{min-width:0;padding:30px 32px 24px}
-.cpu-sidebar{border-left:1px solid var(--cpu-edge);background:#141c1b;padding:30px 25px}
-.cpu-display-header{display:flex;justify-content:space-between;gap:20px;align-items:start;margin-bottom:25px}
-.cpu-kicker,.cpu-side-title,.cpu-register-title,.cpu-step-label,.cpu-signals>span,.cpu-bottom-label,.cpu-cc-row>span{font:10px/1.5 var(--mono);color:var(--cpu-muted);letter-spacing:.08em}
-.cpu-display-header h3{font-weight:500;font-size:28px;line-height:1.1;letter-spacing:-.04em;margin:8px 0 0}
-.cpu-clock{text-align:right;font:10px var(--mono);color:var(--cpu-muted)}
-.cpu-clock strong{display:block;font:26px var(--mono);font-weight:400;color:var(--cpu-accent);margin-top:5px}
-.cpu-board{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,110px);gap:24px 18px;padding:30px 20px 65px;border:1px solid var(--cpu-edge);background-color:#111917;background-image:linear-gradient(#d3edda07 1px,transparent 1px),linear-gradient(90deg,#d3edda07 1px,transparent 1px);background-size:21px 21px;overflow:hidden}
-.cpu-trace{position:absolute;z-index:-1;background:#52655a;opacity:.48;pointer-events:none}
-.trace-a{height:1px;width:68%;top:85px;left:16%}
-.trace-b{height:1px;width:68%;top:219px;left:16%}
-.trace-c{width:1px;height:153px;top:85px;left:50%}
-.trace-d{width:1px;height:153px;top:85px;right:16%}
-.cpu-unit{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:15px;background:#1b2522;border:1px solid #46534b;border-radius:3px;transition:border-color .24s,box-shadow .24s,background .24s}
-.cpu-unit span{font:9px/1.35 var(--mono);color:#95a69b;white-space:nowrap;letter-spacing:.005em}
-.cpu-unit strong{font:clamp(13px,1.7vw,22px)/1.4 var(--mono);font-weight:500;color:var(--cpu-text);margin:9px 0 3px;white-space:nowrap}
-.cpu-unit small{font:10px var(--mono);color:#7f9087}
-.cpu-unit.active{border-color:var(--cpu-accent);background:#2a2822;box-shadow:inset 0 0 0 1px #f58b6330,0 0 25px #f58b6315}
-.cpu-unit.active strong{color:#ffb99b}
-.cpu-unit.active:after{content:"";position:absolute;top:-4px;right:-4px;width:7px;height:7px;background:var(--cpu-accent);box-shadow:0 0 14px var(--cpu-accent)}
-.cpu-bus-strip{position:absolute;bottom:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:16px;padding:0 18px;border-top:1px solid var(--cpu-edge);background:#15201c}
-.cpu-bus-strip>span:first-child{font:9px var(--mono);color:var(--cpu-muted);letter-spacing:.06em}
-.cpu-bus-strip strong{font:17px var(--mono);font-weight:500;color:var(--cpu-accent);margin-left:auto}
-.cpu-bus-bars{display:flex;gap:3px;align-items:center;height:13px}
-.cpu-bus-bars i{width:3px;height:10px;background:#45574e;transition:background .15s,transform .15s}
-.cpu-bus-bars i.on{background:var(--cpu-accent);transform:scaleY(1.3)}
-.cpu-step-readout{padding:24px 0 18px;min-height:168px}
-.cpu-step-label{display:flex;justify-content:space-between}
-.cpu-step-label span:last-child{color:var(--cpu-accent)}
-.cpu-step-readout strong{display:block;font:clamp(20px,2.8vw,33px)/1.3 var(--mono);letter-spacing:-.04em;font-weight:500;margin-top:12px}
-.cpu-step-readout p{font-size:13px;color:var(--cpu-muted);line-height:1.65;max-width:560px;margin:8px 0 0}
-.cpu-signals{display:flex;gap:20px;padding:15px 0 0;border-top:1px solid var(--cpu-edge);align-items:flex-start}
-.cpu-signals>span{flex-shrink:0}
-.cpu-signal-list{display:flex;flex-wrap:wrap;gap:6px}
-:global(.cpu-signal-list span){font:9px var(--mono);border:1px solid #695449;background:#2a2621;color:#f6b296;padding:5px 8px;border-radius:2px}
-.cpu-side-title,.cpu-register-title,.cpu-bottom-label{display:flex;justify-content:space-between;gap:12px}
-.cpu-side-title span:last-child,.cpu-register-title span:last-child,.cpu-bottom-label span:last-child{color:#c2d1c5}
-.cpu-specials{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid #32413a;background:#32413a;margin-top:17px}
-.cpu-specials>div{background:#1b2522;padding:13px 15px}
-.cpu-specials span{display:block;font:10px var(--mono);color:var(--cpu-muted)}
-.cpu-specials strong{font:18px var(--mono);color:var(--cpu-text);font-weight:400}
-.cpu-register-title{margin-top:29px}
-.cpu-register-list{margin-top:13px;border-top:1px solid var(--cpu-edge)}
-.cpu-register-list>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #2e3a35;padding:9px 4px;transition:background .18s}
-.cpu-register-list>div span{font:11px var(--mono);color:var(--cpu-muted)}
-.cpu-register-list>div strong{font:14px var(--mono);font-weight:400;color:var(--cpu-text)}
-.cpu-register-list>div.changed{background:#f58b6319}
-.cpu-register-list>div.changed strong{color:var(--cpu-accent)}
-.cpu-cc-row{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:23px}
-.cpu-flags{display:flex;gap:6px}
-.cpu-flags span{font:12px var(--mono);width:27px;height:27px;border:1px solid var(--cpu-edge);display:grid;place-items:center;color:var(--cpu-muted)}
-.cpu-flags span.active{border-color:var(--cpu-accent);color:#161c19;background:var(--cpu-accent);font-weight:700}
-.cpu-bottom{border-top:1px solid var(--cpu-edge);display:grid;grid-template-columns:1fr 1fr;background:#17201e}
-.cpu-code-panel,.cpu-explanation{min-width:0;padding:28px 32px}
-.cpu-code-panel{border-right:1px solid var(--cpu-edge)}
-.cpu-code-list{display:grid;gap:1px;margin-top:16px;font:11px/1.5 var(--mono)}
-:global(.cpu-code-row){display:grid;grid-template-columns:65px 74px minmax(0,1fr);gap:12px;padding:8px 10px;border-left:2px solid transparent;color:#82948a}
-:global(.cpu-code-row strong){font-weight:400;color:#b8c8bb}
-:global(.cpu-code-row.active){border-color:var(--cpu-accent);background:#f58b6312;color:#f7bf9f}
-:global(.cpu-code-row.active strong){color:var(--cpu-text)}
-:global(.cpu-code-row.past){color:#d0ddd3}
-.cpu-binary{font:clamp(16px,2.2vw,25px)/1.3 var(--mono);letter-spacing:.065em;color:var(--cpu-accent);margin:25px 0 14px;overflow-wrap:anywhere}
-.cpu-explanation>p{font-size:13px;color:var(--cpu-muted);line-height:1.65;margin:0;min-height:54px}
-.cpu-note{display:flex;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--cpu-edge);font:10px/1.65 var(--mono);color:#9cac9f}
-.cpu-note-mark{color:var(--cpu-accent);font-size:18px}
-.cpu-foot{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--cpu-edge);padding:17px 26px;font:9px var(--mono);letter-spacing:.06em;color:#879a8d}
-.cpu-foot span:last-child{color:var(--cpu-accent)}
-.cpu-workbench button:focus-visible{outline:2px solid var(--cpu-accent);outline-offset:3px}
-@media(max-width:1020px){
- .cpu-toolbar{align-items:stretch;flex-direction:column}
- .cpu-main{grid-template-columns:minmax(0,1fr)}
- .cpu-sidebar{border-left:0;border-top:1px solid var(--cpu-edge);display:grid;grid-template-columns:1fr 1.3fr;gap:12px 30px}
- .cpu-side-title,.cpu-specials,.cpu-cc-row{grid-column:1}
- .cpu-register-title,.cpu-register-list{grid-column:2}
- .cpu-register-title{grid-row:1;margin-top:0}
- .cpu-register-list{grid-row:2 / span 3;margin-top:0}
- .cpu-cc-row{align-self:end}
-}
-@media(max-width:700px){
- .cpu-feature{padding:10px 0 85px}
- .cpu-intro{grid-template-columns:1fr;gap:23px;margin-bottom:25px}
- .cpu-intro h2{font-size:clamp(46px,11vw,76px)}
- .cpu-intro-aside p{margin-bottom:18px}
- .cpu-chrome{padding:0 16px;height:53px}
- .cpu-brand small{display:none}
- .cpu-live{font-size:8px}
- .cpu-toolbar{padding:18px 15px}
- .cpu-programs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
- .cpu-programs button{padding:11px 7px;text-align:center;font-size:10px}
- .cpu-controls{justify-content:stretch}
- .cpu-controls button{flex:1;padding:0 10px}
- .cpu-main-left{padding:22px 15px}
- .cpu-display-header h3{font-size:24px}
- .cpu-board{padding:19px 9px 60px;grid-template-rows:95px 95px;gap:16px 7px}
- .cpu-unit{padding:8px}
- .cpu-unit span{font-size:7px;white-space:normal}
- .cpu-unit strong{font-size:clamp(11px,3vw,17px)}
- .cpu-unit small{font-size:8px}
- .cpu-bus-strip{gap:8px;padding:0 9px}
- .cpu-bus-strip>span:first-child{font-size:8px}
- .cpu-bus-bars{gap:2px}
- .cpu-bus-bars i{width:2px}
- .cpu-sidebar{display:block;padding:23px 15px}
- .cpu-register-title{margin-top:24px}
- .cpu-register-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
- .cpu-cc-row{margin-top:24px}
- .cpu-bottom{grid-template-columns:1fr}
- .cpu-code-panel{border-right:0;border-bottom:1px solid var(--cpu-edge)}
- .cpu-code-panel,.cpu-explanation{padding:24px 15px}
- :global(.cpu-code-row){grid-template-columns:55px 60px minmax(0,1fr);gap:9px;font-size:10px;padding:7px 5px}
- .cpu-signals{display:block}
- .cpu-signal-list{margin-top:12px}
- .cpu-foot{padding:14px 15px}
- .cpu-foot span:first-child{display:none}
-}
-@media(prefers-reduced-motion:reduce){
- .cpu-unit,.cpu-bus-bars i,.cpu-register-list>div,.cpu-programs button{transition:none}
-}
+.slc-workbench{--sb:#121b19;--sp:#1b2723;--se:#3a4c43;--sm:#a4b5aa;--sa:#f58b63;color:#edf4ec;background:var(--sb);border:1px solid var(--se);border-radius:7px;overflow:hidden;box-shadow:0 22px 60px #0002;font-family:var(--sans)}
+.slc-workbench button,.slc-workbench input{font-family:var(--mono)}
+.slc-workbench button{cursor:pointer}
+.slc-workbench button:focus-visible,.slc-node:focus-visible,.slc-diagram-scroller:focus-visible{outline:2px solid var(--sa);outline-offset:3px}
+.slc-topline{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 27px;border-bottom:1px solid var(--se)}
+.slc-identity{display:flex;align-items:center;gap:14px}
+.slc-chip{font-size:30px;color:var(--sa);line-height:1}
+.slc-identity strong,.slc-identity span:last-child{display:block}
+.slc-identity strong{font:600 15px var(--mono)}
+.slc-identity div span{font:10px var(--mono);color:var(--sm);letter-spacing:.09em;margin-top:3px}
+.slc-status{display:flex;gap:10px;align-items:center;color:var(--sm);font:10px var(--mono);letter-spacing:.05em;text-align:right}
+.slc-status-dot{height:7px;width:7px;border-radius:50%;background:var(--sa);box-shadow:0 0 0 4px #f58b6321}
+.slc-toolbar{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:20px 27px;border-bottom:1px solid var(--se)}
+.slc-programs{border:0;margin:0;padding:0;display:flex;gap:7px;flex-wrap:wrap}
+.slc-programs legend{font:10px var(--mono);letter-spacing:.08em;color:var(--sm);margin-bottom:9px}
+.slc-programs button,.slc-actions button{font-size:11px;line-height:1.3;border:1px solid var(--se);border-radius:4px;background:transparent;color:var(--sm);padding:10px 12px;transition:background .2s,border-color .2s}
+.slc-programs button:hover,.slc-actions .slc-quiet:hover{color:#fff;border-color:#74897b}
+.slc-programs button[aria-pressed=true]{color:#fff;background:#304139;border-color:#74897b}
+.slc-actions{display:flex;gap:7px;flex-shrink:0}
+.slc-actions button{color:#e8efe9;min-height:40px}
+.slc-actions .slc-primary{min-width:80px;background:var(--sa);border-color:var(--sa);color:#19201a;font-weight:bold}
+.slc-actions button:active,.slc-programs button:active{transform:translateY(1px)}
+.slc-actions button:disabled{opacity:.4;cursor:not-allowed}
+.slc-content{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(270px,.76fr)}
+.slc-main{min-width:0;padding:29px 30px 24px}
+.slc-side{border-left:1px solid var(--se);padding:30px 23px;background:#161f1d;min-width:0}
+.slc-heading{display:flex;justify-content:space-between;align-items:start;gap:18px;margin-bottom:22px}
+.slc-eyebrow,.slc-counter>span{font:9px var(--mono);letter-spacing:.07em;color:var(--sm)}
+.slc-heading h3{margin:8px 0 0;font-size:clamp(22px,2.2vw,31px);font-weight:500;line-height:1.2;letter-spacing:-.045em}
+.slc-counter{text-align:right;flex-shrink:0}
+.slc-counter>span{display:block}
+.slc-counter strong{display:block;font:29px var(--mono);color:var(--sa);margin-top:5px}
+.slc-diagram-scroller{overflow-x:auto;scrollbar-color:#587064 transparent;border:1px solid var(--se);background:#131d19}
+.slc-diagram{display:block;width:100%;min-width:620px;height:auto}
+.slc-section-label,.slc-bus-label,.slc-tiny{font:9px var(--mono);letter-spacing:.08em;fill:#8fa597}
+.slc-bus-label{fill:#d0dfd1;paint-order:stroke;stroke:#131d19;stroke-width:4}
+.slc-tiny{font-size:8.3px;letter-spacing:0}
+.slc-wires path{opacity:.68;transition:stroke .2s,opacity .2s,stroke-width .2s}
+.slc-wires path.active{stroke:var(--sa);stroke-width:3.5;opacity:1;stroke-dasharray:11 5;animation:slc-flow .9s linear infinite}
+.slc-bus.active{stroke:var(--sa);filter:drop-shadow(0 0 4px #f58b6355)}
+@keyframes slc-flow{to{stroke-dashoffset:-32}}
+.slc-node{cursor:pointer}
+.slc-node rect{stroke:#51665a;fill:#203029;stroke-width:1.4;transition:fill .2s,stroke .2s}
+.slc-node:hover rect,.slc-node.selected rect{stroke:#f2bf9f;fill:#364039}
+.slc-node.active rect{stroke:var(--sa);fill:#4b362a;stroke-width:2;filter:drop-shadow(0 0 5px #f58b6333)}
+.slc-node-title{font:9px var(--mono);fill:#bbcec0;letter-spacing:.01em}
+.slc-node-value{font:20px var(--mono);fill:#f1f5ed}
+.slc-node-small{font:12px var(--mono);fill:#d9e5d8}
+.slc-node.active .slc-node-value{fill:#ffbd9b}
+.slc-legend{display:flex;gap:15px;flex-wrap:wrap;color:var(--sm);font:10px var(--mono);padding:12px 0 18px}
+.slc-legend span{display:flex;align-items:center;gap:7px}
+.slc-legend i{display:inline-block;width:21px;height:3px;background:#718377}
+.slc-legend .slc-legend-hot{background:var(--sa)}
+.slc-active-step{border-top:1px solid var(--se);padding:21px 0}
+.slc-step-meta{display:flex;justify-content:space-between;gap:12px;font:10px var(--mono);color:var(--sa);letter-spacing:.05em}
+.slc-active-step>strong{display:block;font:clamp(19px,2.5vw,30px)/1.2 var(--mono);margin-top:10px;font-weight:500}
+.slc-active-step>p,.slc-inspector>p{font-size:13px;line-height:1.65;color:var(--sm);margin:9px 0 0}
+.slc-signal-wrap{display:flex;gap:17px;margin-top:21px;align-items:start}
+.slc-signal-wrap>span{font:10px var(--mono);color:var(--sm);white-space:nowrap;margin-top:4px}
+.slc-signals{display:flex;gap:6px;flex-wrap:wrap}
+:global(.slc-signals span){font:10px var(--mono);color:#ffbf9f;background:#382b24;border:1px solid #805b47;border-radius:3px;padding:4px 7px}
+.slc-inspector{border:1px solid var(--se);border-radius:4px;background:#1a2721;padding:17px 19px}
+.slc-inspect-heading,.slc-side-head{display:flex;justify-content:space-between;gap:12px;color:var(--sm);font:10px var(--mono);letter-spacing:.06em}
+.slc-inspect-heading span:last-child{color:var(--sa);text-align:right}
+.slc-inspector>strong{display:block;font:500 17px var(--mono);margin-top:12px}
+.slc-specials{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#3c5044;border:1px solid #3c5044;margin-top:15px}
+.slc-specials>div{background:#203029;padding:12px}
+.slc-specials span{display:block;font:10px var(--mono);color:var(--sm)}
+.slc-specials strong{display:block;font:17px var(--mono);font-weight:400;letter-spacing:-.03em;margin-top:6px}
+.slc-register-heading{margin-top:26px}
+.slc-registers{display:grid;margin-top:12px}
+.slc-registers button{display:flex;justify-content:space-between;align-items:center;min-height:34px;padding:7px 3px;border:0;border-bottom:1px solid #31453a;background:transparent;color:var(--sm);font-size:12px}
+.slc-registers button strong{font-weight:400;color:#eef5ed;font-size:13px}
+.slc-registers button.changed{background:#f58b6315}
+.slc-registers button.changed strong{color:var(--sa)}
+.slc-registers button:hover{background:#304139}
+.slc-flags{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:21px 0;color:var(--sm);font:10px var(--mono)}
+.slc-flags>div{display:flex;gap:5px}
+.slc-flags b{width:28px;height:28px;display:grid;place-items:center;font-weight:400;border:1px solid var(--se)}
+.slc-flags b.active{border-color:var(--sa);background:var(--sa);color:#19201a;font-weight:bold}
+.slc-io{border-top:1px solid var(--se);padding-top:21px}
+.slc-screen{background:#111a16;padding:15px;border:1px solid #4b6550;border-radius:3px;margin-top:14px}
+.slc-screen span,.slc-leds span,.slc-io label{display:block;font:9px var(--mono);color:var(--sm);letter-spacing:.07em}
+.slc-screen strong{display:block;margin-top:10px;font:29px var(--mono);letter-spacing:.19em;color:#b9e6b7}
+.slc-leds{display:flex;align-items:center;justify-content:space-between;margin:17px 0 19px}
+.slc-leds strong{font:14px var(--mono);color:var(--sa)}
+.slc-switch-row{display:flex;align-items:center;gap:6px;margin-top:9px}
+.slc-switch-row>span{font:14px var(--mono);color:var(--sm)}
+.slc-switch-row input{min-width:0;width:100%;background:#26362e;border:1px solid #5c7866;border-radius:3px;color:#e9f3e8;padding:10px;font-size:14px}
+.slc-switch-row button{flex-shrink:0;background:#304138;border:1px solid #6b806d;color:#f6e9df;border-radius:3px;padding:11px 9px;font:10px var(--mono)}
+.slc-switch-row button:hover{border-color:var(--sa)}
+.slc-io small{display:block;margin-top:9px;color:var(--sm);font:10px/1.6 var(--mono)}
+.slc-inline-message{min-height:14px;font:10px/1.4 var(--mono);color:var(--sa);margin:9px 0 0}
+.slc-bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--se)}
+.slc-code,.slc-decoder{padding:26px 30px;min-width:0}
+.slc-code{border-right:1px solid var(--se)}
+.slc-list{margin-top:15px;display:grid;gap:2px}
+:global(.slc-code-row){display:grid;grid-template-columns:59px 60px minmax(0,1fr);gap:10px;padding:7px;border-left:2px solid transparent;color:#91aa97;font:11px/1.4 var(--mono)}
+:global(.slc-code-row strong){font-weight:400;color:#e3f0e2;overflow-wrap:anywhere}
+:global(.slc-code-row.active){border-color:#f58b63;background:#f58b6317;color:#ffba9a}
+.slc-decoder>strong{display:block;margin:23px 0 14px;color:var(--sa);font:clamp(16px,2vw,24px)/1.4 var(--mono);letter-spacing:.05em;overflow-wrap:anywhere}
+.slc-decoder>p{font-size:13px;line-height:1.65;color:var(--sm)}
+.slc-spec-note{margin-top:20px;padding-top:17px;border-top:1px solid var(--se);font:10px/1.8 var(--mono);color:#a2b6a7}
+@media(max-width:1060px){.slc-toolbar{flex-direction:column;align-items:stretch}.slc-actions{justify-content:flex-end}.slc-content{grid-template-columns:minmax(0,1fr)}.slc-side{border-left:0;border-top:1px solid var(--se)}.slc-specials{grid-template-columns:repeat(3,1fr)}.slc-registers{grid-template-columns:1fr 1fr;column-gap:25px}.slc-side .slc-io{max-width:560px}}
+@media(max-width:700px){.slc-topline,.slc-toolbar{padding:15px}.slc-status{font-size:8px}.slc-identity div span{font-size:8px}.slc-programs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.slc-programs button{padding:10px 5px;font-size:9px}.slc-actions>*{flex:1}.slc-main,.slc-side,.slc-code,.slc-decoder{padding:20px 15px}.slc-diagram{min-width:690px}.slc-heading h3{font-size:22px}.slc-counter>span{font-size:8px}.slc-bottom{grid-template-columns:1fr}.slc-code{border-right:0;border-bottom:1px solid var(--se)}.slc-signal-wrap{flex-direction:column;gap:7px}.slc-legend{font-size:9px}.slc-code-row{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.slc-wires path.active{animation:none}.slc-node rect,.slc-wires path,.slc-programs button,.slc-actions button{transition:none}}
 </style>
-
 <script>
-  const root = document.querySelector<HTMLElement>('.cpu-workbench');
+  const root = document.querySelector<HTMLElement>('#slc-workbench');
   if (root) {
-    const start = 0x3000;
-    type Program = {name:string; description:string; words:number[]; data:Record<number,number>};
+    type Program = {name:string;words:number[];data:Record<number,number>;intro:string};
     const programs:Program[] = [
-      {name:'ARITHMETIC',description:'ADD, NOT and AND write back to 16-bit registers.',words:[0x1025,0x1223,0x943F,0x5641,0x193F],data:{}},
-      {name:'MEMORY',description:'PC-relative addressing loads a number, increments it, stores it back, then reads it again.',words:[0xE006,0x2205,0x1261,0x3203,0x2402],data:{12295:7}},
-      {name:'BRANCH LOOP',description:'A countdown uses condition codes to choose whether to repeat an instruction.',words:[0x1023,0x103F,0x03FE,0x923F],data:{}}
+      {name:'ALU + NZP',words:[0x1025,0x1223,0x5401,0x96bf,0x18ff],data:{},intro:'Arithmetic and logic: 16-bit ADD, AND, NOT, register writeback and NZP updates.'},
+      {name:'MEMORY + I/O',words:[0x1027,0x7050,0x6450,0x14a1,0x7450,0x16ff,0xd801,0x68c0,0x1921,0x78c0,0xd401],data:{},intro:'STR/LDR use BaseR + signed offset6. A PAUSE requests switches, then a store to xFFFF updates HEX.'},
+      {name:'BRANCH + JSR',words:[0x1023,0x103f,0x03fe,0x4802,0x943f,0x0e02,0x923f,0xc1c0,0xd002],data:{},intro:'A conditional countdown uses NZP; JSR writes R7, JMP returns from a subroutine.'}
     ];
-    const mask = (v:number) => v & 0xffff;
-    const hex = (v:number) => 'x' + mask(v).toString(16).toUpperCase().padStart(4,'0');
-    const sext = (v:number,bits:number) => (v & (1 << (bits-1))) ? v-(1<<bits) : v;
-    const signed = (v:number) => (v & 0x8000) ? v - 0x10000 : v;
-    const bits = (v:number) => mask(v).toString(2).padStart(16,'0');
-    const el = (selector:string) => root.querySelector<HTMLElement>(selector);
-    const setText = (key:string,value:string) => {
-      root.querySelectorAll<HTMLElement>('[data-bind="' + key + '"]').forEach(node => node.textContent = value);
-    };
+    const mask=(n:number)=>n&65535,hex=(n:number)=>'x'+mask(n).toString(16).toUpperCase().padStart(4,'0'),signed=(n:number)=>(mask(n)&32768)?mask(n)-65536:mask(n),sext=(n:number,b:number)=>(n&(1<<(b-1)))?n-(1<<b):n;
+    const bin=(n:number)=>mask(n).toString(2).padStart(16,'0');
+    const q=(s:string)=>root.querySelector<HTMLElement>(s);
+    const write=(name:string,value:string)=>root.querySelectorAll<HTMLElement>('[data-bind="'+name+'"]').forEach(e=>e.textContent=value);
+    let memory=new Map<number,number>(),regs:number[]=Array(8).fill(0);
+    let programIndex=0,pc=0,mar=0,mdr=0,ir=0,bus=0,cc='Z',hexout=0,leds=0,switches=3;
+    let cycles=0,completed=0,instructionAddress=0,stage='fetch-address',phase='READY',description='',operation='FETCH';
+    let lastReg=-1,halted=false,selected='CONTROL',aluMode='ADD / AND',activeNodes:string[]=[],activePaths:string[]=[],signals:string[]=[];
     let timer:ReturnType<typeof setInterval>|undefined;
-    let programIndex = 0;
-    let mem = new Map<number,number>();
-    let regs:number[] = Array(8).fill(0);
-    let pc = start, mar = 0, mdr = 0, ir = 0, bus = 0, instrAddr = start, cycles = 0, instructions = 0;
-    let cc = 'Z', phase = 'addr', halted = false, lastReg = -1, alu = 'ADD / AND';
-    let description = '', phaseTag = 'READY', signals:string[] = [];
-    let units:string[] = [];
-    const done = () => {
-      phase = 'addr';
-      instructions++;
-      if (pc < start || pc >= start + programs[programIndex].words.length) {
-        halted = true;
-        phaseTag = 'COMPLETE';
-        description += ' Program complete. Reset or load another example to continue.';
-      }
+    const detail:Record<string,[string,string]> = {
+      PC:['Program Counter','The 16-bit PC identifies the next instruction. In fetch it is gated into MAR and incremented. A branch, JSR, or JMP can replace the sequential PC.'],
+      PCMUX:['PC multiplexer','Selects the next PC: PC+1, an address-adder target, or a register-based jump. The control FSM sets pcmux and ld_pc.'],
+      ADDR:['Address adder and MUXes','ADDR1MUX selects PC or BaseR. ADDR2MUX selects the sign-extended offset (or zero). Together they form BR, JSR, LDR and STR addresses.'],
+      REG:['8 × 16-bit register file','Two source registers feed the datapath; a destination register receives the gated bus when ld_reg is asserted. R7 stores the JSR return address.'],
+      IR:['Instruction Register','IR holds the fetched 16-bit instruction. Bits [15:12] select the opcode; other fields select registers, immediates, offsets and PAUSE LED cues.'],
+      SEXT:['Sign extension','Converts imm5, offset6, PCoffset9 and PCoffset11 into signed 16-bit operands without changing their two’s-complement value.'],
+      SR2:['SR2 multiplexer','For ADD/AND, selects either register SR2 or the sign-extended 5-bit immediate as the ALU B operand.'],
+      ALU:['16-bit ALU','Implements ADD, AND, NOT and pass-through operations, using the register file and optionally sign-extended immediates. Its result can drive the internal bus.'],
+      MAR:['Memory Address Register','MAR latches the address used by the RAM or I/O access. On this board, only the low 10 address bits select an on-chip BRAM location.'],
+      MDR:['Memory Data Register','MDR buffers instruction/data reads or data to store. In the SLC-3 datapath it can place its value on the bus using gate_mdr.'],
+      CONTROL:['Instruction sequencer / FSM','The SystemVerilog control.sv state machine asserts register loads, bus gates, multiplexers, ALU selection, and memory controls over fetch, decode and execute states.'],
+      CC:['NZP and branch-enable logic','Negative, Zero, Positive flags are set by most register writes. BR masks the current NZP bits to decide whether the computed target replaces PC.'],
+      IO:['CPU_TO_IO','The supplied interface routes address xFFFF to board switches on reads and HEX display on writes, rather than ordinary BRAM. The PAUSE instruction drives LED cues.'],
+      MEM:['Synchronous FPGA Block RAM','The Spartan-7 stores 16-bit instruction/data words in on-chip RAM. The actual FSM holds memory states over extra cycles because this lab has no ready/R handshake.']
     };
-    const setCC = (value:number) => { const n = signed(mask(value)); cc = n < 0 ? 'N' : n > 0 ? 'P' : 'Z'; };
-    const disassemble = (word:number) => {
-      const op = word >>> 12, dr = (word>>>9)&7, sr=(word>>>6)&7, reg=word&7;
-      const operand = (word & 0x20) ? '#' + sext(word&31,5) : 'R'+reg;
-      if (op===1) return 'ADD R'+dr+', R'+sr+', '+operand;
-      if (op===5) return 'AND R'+dr+', R'+sr+', '+operand;
-      if (op===9) return 'NOT R'+dr+', R'+sr;
-      if (op===2) return 'LD R'+dr+', #'+sext(word&511,9);
-      if (op===3) return 'ST R'+dr+', #'+sext(word&511,9);
-      if (op===14) return 'LEA R'+dr+', #'+sext(word&511,9);
-      if (op===0) return 'BR'+((word&0x800)?'n':'')+((word&0x400)?'z':'')+((word&0x200)?'p':'')+' #'+sext(word&511,9);
-      return '.FILL '+hex(word);
+    const readMem=(address:number)=>mask(address)===0xffff?switches:(memory.get(mask(address))??0);
+    const writeMem=(address:number,value:number)=>{if(mask(address)===0xffff)hexout=mask(value);else memory.set(mask(address),mask(value));};
+    const setCC=(n:number)=>{const s=signed(n);cc=s<0?'N':s>0?'P':'Z';};
+    const stop=()=>{if(timer!==undefined){clearInterval(timer);timer=undefined;}};
+    const disassemble=(v:number)=>{
+      const op=v>>>12,dr=(v>>>9)&7,sr=(v>>>6)&7,br=(v>>>9)&7,base=(v>>>6)&7;
+      const operand=(v&0x20)?'#'+sext(v&31,5):'R'+(v&7);
+      if(op===1)return 'ADD R'+dr+', R'+sr+', '+operand;
+      if(op===5)return 'AND R'+dr+', R'+sr+', '+operand;
+      if(op===9)return 'NOT R'+dr+', R'+sr;
+      if(op===0)return 'BR'+((br&4)?'n':'')+((br&2)?'z':'')+((br&1)?'p':'')+' #'+sext(v&511,9);
+      if(op===12)return 'JMP R'+base;
+      if(op===4)return 'JSR #'+sext(v&2047,11);
+      if(op===6)return 'LDR R'+dr+', R'+base+', #'+sext(v&63,6);
+      if(op===7)return 'STR R'+dr+', R'+base+', #'+sext(v&63,6);
+      if(op===13)return 'PAUSE '+hex(v&4095);
+      return '.FILL '+hex(v);
     };
-    const explanation = (word:number) => {
-      const op=word>>>12;
-      if(op===1) return 'ADD combines a source register with a register or signed immediate, writes the 16-bit result, and updates NZP.';
-      if(op===5) return 'AND performs a bitwise operation, writes a register, and updates NZP.';
-      if(op===9) return 'NOT inverts all 16 bits of the source register, then updates NZP.';
-      if(op===2) return 'LD reads a word from PC + signed offset9, loads a destination register, and updates NZP.';
-      if(op===3) return 'ST writes a source register to memory at PC + signed offset9.';
-      if(op===14) return 'LEA writes the computed PC-relative address into a register and updates NZP.';
-      if(op===0) return 'BR compares the instruction NZP mask to the current condition code and may change the PC.';
-      return 'This instruction is not included in the interactive subset.';
+    const explain=(v:number)=>{
+      const op=v>>>12;
+      if(op===1)return 'ADD: SR1 plus SR2/SEXT(imm5). The ALU result goes onto the bus; ld_reg and ld_cc write the destination and NZP.';
+      if(op===5)return 'AND: bitwise AND of SR1 and SR2/SEXT(imm5), with destination and NZP writeback.';
+      if(op===9)return 'NOT: bitwise invert SR1 and write the result and NZP.';
+      if(op===0)return 'BR: compare IR[11:9] against NZP. If any requested condition matches, PC receives PC + SEXT(offset9).';
+      if(op===12)return 'JMP: load PC from the register selected by BaseR.';
+      if(op===4)return 'JSR: save the incremented PC to R7, then PC ← PC + SEXT(offset11).';
+      if(op===6)return 'LDR: read memory at BaseR + SEXT(offset6), write the data to DR and update NZP.';
+      if(op===7)return 'STR: write SR to memory at BaseR + SEXT(offset6).';
+      if(op===13)return 'PAUSE: latch the 12-bit LED vector and wait for a Continue press. LED[11:10] are programmer-defined I/O cues.';
+      return 'Unsupported in this SLC-3.2 example.';
     };
-    const reset = (index:number) => {
-      pause();
-      programIndex=index;mem=new Map<number,number>();regs=Array(8).fill(0);
-      programs[index].words.forEach((w,i)=>mem.set(start+i,w));
-      Object.entries(programs[index].data).forEach(([addr,value])=>mem.set(Number(addr),value));
-      pc=start;mar=0;mdr=0;ir=0;bus=0;instrAddr=start;cc='Z';
-      cycles=0;instructions=0;phase='addr';halted=false;lastReg=-1;alu='ADD / AND';
-      description=programs[index].description + ' Press Step to advance one micro-operation.';
-      phaseTag='READY';signals=[];units=[];
-      render();
+    const showDetail=()=>{
+      const item=detail[selected]||detail.CONTROL;
+      write('inspect-title',item[0]);write('inspect-body',item[1]);write('inspect-subtitle',selected==='REG'?'R0–R7':selected);
+      root.querySelectorAll<SVGGElement>('[data-node]').forEach(node=>node.classList.toggle('selected',node.dataset.node===selected));
     };
-    const tick = () => {
-      if(halted) return;
-      cycles++;lastReg=-1;signals=[];units=[];
-      const op=ir>>>12, dr=(ir>>>9)&7, sr=(ir>>>6)&7, second=ir&7;
-      if(phase==='addr'){
-        instrAddr=pc;bus=pc;mar=pc;pc=mask(pc+1);
-        phase='read';phaseTag='FETCH / ADDRESS';units=['PC','MAR'];signals=['GATE_PC','LD_MAR','LD_PC'];
-        description='Place the current PC on the address path, latch it into MAR, and increment the PC.';
-      } else if(phase==='read'){
-        mdr=mem.get(mar)??0;bus=mdr;
-        phase='latch';phaseTag='FETCH / MEMORY';units=['MEM','MDR'];signals=['MEM_EN','LD_MDR'];
-        description='Read the 16-bit instruction at MAR into the Memory Data Register.';
-      } else if(phase==='latch'){
-        ir=mdr;bus=mdr;phase='execute';phaseTag='DECODE';units=['MDR'];signals=['GATE_MDR','LD_IR'];
-        description='Copy MDR into IR. The opcode and operand fields now determine the next operation.';
-      } else if(phase==='execute'){
-        const offset=sext(ir&511,9);
-        if(op===1 || op===5){
-          const rhs=(ir&0x20)?sext(ir&31,5):regs[second];
-          const result=mask(op===1?regs[sr]+rhs:regs[sr]&rhs);
-          regs[dr]=result;bus=result;lastReg=dr;setCC(result);alu=op===1?'ADD':'AND';
-          units=['REG','ALU'];signals=['GATE_ALU','LD_REG','LD_CC'];
-          phaseTag='EXECUTE / ALU';description=disassemble(ir)+' produced '+hex(result)+' (signed '+signed(result)+'). Destination and condition codes updated.';done();
-        }else if(op===9){
-          const result=mask(~regs[sr]);regs[dr]=result;bus=result;lastReg=dr;setCC(result);alu='NOT';
-          units=['REG','ALU'];signals=['GATE_ALU','LD_REG','LD_CC'];
-          phaseTag='EXECUTE / NOT';description='Invert '+hex(regs[sr])+' to get '+hex(result)+'. The result is written to R'+dr+'.';done();
-        }else if(op===14){
-          const addr=mask(pc+offset);regs[dr]=addr;bus=addr;lastReg=dr;setCC(addr);
-          units=['PC','REG'];signals=['ADDR_ADDER','LD_REG','LD_CC'];
-          phaseTag='EXECUTE / ADDRESS';description='Compute PC '+(offset>=0?'+ ':'- ')+Math.abs(offset)+' = '+hex(addr)+' and write the address into R'+dr+'.';done();
+    const complete=()=>{
+      completed++;stage='fetch-address';
+      if(pc>=programs[programIndex].words.length){halted=true;phase='COMPLETE';description+=' Example finished. Reset or select another program to explore more.';stop();}
+    };
+    const tick=()=>{
+      if(halted||stage==='pause-wait')return;
+      cycles++;lastReg=-1;activeNodes=[];activePaths=[];signals=[];
+      const op=ir>>>12,dr=(ir>>>9)&7,sr=(ir>>>6)&7,base=(ir>>>6)&7;
+      if(stage==='fetch-address'){
+        instructionAddress=pc;mar=pc;bus=pc;stage='fetch-memory';phase='FETCH / MAR';operation='ADDRESS';
+        activeNodes=['PC','MAR'];activePaths=['pc-bus','bus-mar'];
+        signals=['gate_pc','ld_mar'];description='The PC drives the 16-bit bus. MAR latches the instruction address '+hex(mar)+'.';
+      }else if(stage==='fetch-memory'){
+        mdr=readMem(mar);stage='fetch-latch';phase='FETCH / RAM';operation='READ';
+        activeNodes=['MAR','MEM','MDR'];activePaths=['mar-mem','mem-mdr'];
+        signals=['sram_mem_ena','ld_mdr'];description='The memory subsystem supplies '+hex(mdr)+' from '+hex(mar)+'. Hardware inserts extra wait-state cycles for synchronous RAM.';
+      }else if(stage==='fetch-latch'){
+        bus=mdr;ir=mdr;pc=mask(pc+1);stage='decode';phase='FETCH / IR';operation='LATCH';
+        activeNodes=['MDR','IR','PC','PCMUX'];activePaths=['mdr-bus','bus-ir','pc-inc'];
+        signals=['gate_mdr','ld_ir','ld_pc'];description='MDR drives the bus into IR, and the PC advances to '+hex(pc)+'.';
+      }else if(stage==='decode'){
+        stage='execute';phase='DECODE';operation='CONTROL';
+        activeNodes=['IR','CONTROL','SEXT'];activePaths=['ir-control','ir-sext'];
+        signals=op===0?['ld_ben']:['decode'];description='Control.sv interprets '+disassemble(ir)+' and chooses the next micro-operations.';
+      }else if(stage==='execute'){
+        const offset6=sext(ir&63,6);
+        if(op===1||op===5||op===9){
+          const rhs=(ir&0x20)?sext(ir&31,5):regs[ir&7];
+          const result=mask(op===9?~regs[sr]:op===1?regs[sr]+rhs:regs[sr]&rhs);
+          bus=result;regs[dr]=result;lastReg=dr;setCC(result);aluMode=op===9?'NOT':op===5?'AND':'ADD';
+          phase='EXECUTE / ALU';operation='WRITEBACK';
+          activeNodes=['REG','SR2','ALU','CC'];activePaths=['reg-alu','alu-bus','bus-reg','alu-cc'];
+          signals=['aluk','gate_alu','ld_reg','ld_cc'];description=disassemble(ir)+' writes '+hex(result)+' to R'+dr+'; NZP = '+cc+'.';complete();
+        }else if(op===6||op===7){
+          mar=mask(regs[base]+offset6);bus=mar;phase=op===6?'LDR / ADDRESS':'STR / ADDRESS';operation='ADDRESS';
+          activeNodes=['REG','SEXT','ADDR','MAR','ALU'];activePaths=['ir-sext','sext-addr','reg-alu','alu-bus','bus-mar'];
+          signals=['aluk','gate_alu','ld_mar','addr2mux'];
+          if(op===7){mdr=regs[dr];stage='store-write';activeNodes.push('MDR');activePaths.push('reg-mdr');signals.push('ld_mdr');description='BaseR '+hex(regs[base])+' + signed offset '+offset6+' = '+hex(mar)+'. MDR captures R'+dr+' = '+hex(mdr)+'.';}
+          else{stage='load-read';description='BaseR '+hex(regs[base])+' + signed offset '+offset6+' = '+hex(mar)+'. MAR captures the effective address.';}
         }else if(op===0){
-          const maskNZP=(ir>>>9)&7;
-          const matches=(cc==='N'&&Boolean(maskNZP&4))||(cc==='Z'&&Boolean(maskNZP&2))||(cc==='P'&&Boolean(maskNZP&1));
-          if(matches) pc=mask(pc+offset);
-          bus=pc;units=['PC'];signals=['LD_BEN','PCMUX'];
-          phaseTag='EXECUTE / BRANCH';description='Condition '+cc+' '+(matches?'matches':'does not match')+' the branch mask. '+(matches?'PC becomes '+hex(pc)+'.':'Execution continues sequentially.');done();
-        }else if(op===2 || op===3){
-          mar=mask(pc+offset);bus=mar;units=['PC','MAR'];signals=['ADDR_ADDER','LD_MAR'];
-          phaseTag='ADDRESS CALC';description='Compute the PC-relative effective address '+hex(mar)+' and latch it into MAR.';
-          phase=op===2?'load-read':'store-prep';
+          const requested=(ir>>>9)&7,match=(cc==='N'&&!!(requested&4))||(cc==='Z'&&!!(requested&2))||(cc==='P'&&!!(requested&1));
+          if(match)pc=mask(pc+sext(ir&511,9));
+          phase='EXECUTE / BR';operation=match?'BRANCH TAKEN':'NOT TAKEN';activeNodes=['CC','CONTROL','ADDR','PC'];
+          activePaths=['ir-control','ir-sext',...(match?['sext-addr','addr-pc']:[])];
+          signals=['ld_ben',...(match?['pcmux','ld_pc','addr1mux','addr2mux']:[])];
+          description='NZP = '+cc+', instruction mask = '+requested.toString(2).padStart(3,'0')+'. '+(match?'Branch to '+hex(pc)+'.':'Continue at '+hex(pc)+'.');complete();
+        }else if(op===12){
+          pc=regs[base];phase='EXECUTE / JMP';operation='CONTROL TRANSFER';
+          activeNodes=['REG','PCMUX','PC'];activePaths=['reg-pc'];
+          signals=['pcmux','ld_pc'];description='Jump to the address in R'+base+': '+hex(pc)+'.';complete();
+        }else if(op===4){
+          bus=pc;regs[7]=pc;lastReg=7;stage='jsr-target';phase='JSR / LINK';operation='SAVE RETURN';
+          activeNodes=['PC','REG'];activePaths=['pc-bus','bus-reg'];signals=['gate_pc','drmux','ld_reg'];
+          description='Save the return address '+hex(pc)+' in R7 before updating PC.';
+        }else if(op===13){
+          leds=ir&4095;stage='pause-wait';phase='PAUSE / WAIT';operation='CONTINUE REQUIRED';
+          activeNodes=['IR','CONTROL','IO'];activePaths=['ir-control'];signals=['ld_led'];
+          description='PAUSE presents LED vector '+hex(leds)+' and holds execution until Continue is pressed.';stop();
         }else{
-          halted=true;phaseTag='UNSUPPORTED';description='Unsupported opcode '+op.toString(16).toUpperCase()+'. Load a sample program to continue.';
+          halted=true;phase='UNSUPPORTED';description='Opcode '+op.toString(16)+' is outside this teaching model.';stop();
         }
-      } else if(phase==='load-read'){
-        mdr=mem.get(mar)??0;bus=mdr;units=['MEM','MDR'];signals=['MEM_EN','LD_MDR'];
-        phase='load-write';phaseTag='MEMORY / READ';description='Read memory['+hex(mar)+'] = '+hex(mdr)+' into MDR.';
-      } else if(phase==='load-write'){
-        const dest=(ir>>>9)&7;regs[dest]=mdr;bus=mdr;lastReg=dest;setCC(mdr);
-        units=['MDR','REG'];signals=['GATE_MDR','LD_REG','LD_CC'];
-        phaseTag='WRITEBACK';description='Write '+hex(mdr)+' into R'+dest+' and update the condition codes.';done();
-      } else if(phase==='store-prep'){
-        const source=(ir>>>9)&7;mdr=regs[source];bus=mdr;units=['REG','MDR'];signals=['LD_MDR'];
-        phaseTag='STORE / PREPARE';description='Copy the value in R'+source+' ('+hex(mdr)+') into MDR.';
-        phase='store-write';
-      } else if(phase==='store-write'){
-        mem.set(mar,mdr);bus=mdr;units=['MDR','MEM'];signals=['MEM_WR'];
-        phaseTag='MEMORY / WRITE';description='Store '+hex(mdr)+' into memory['+hex(mar)+'].';done();
+      }else if(stage==='jsr-target'){
+        pc=mask(pc+sext(ir&2047,11));phase='JSR / TARGET';operation='CONTROL TRANSFER';
+        activeNodes=['IR','SEXT','ADDR','PCMUX','PC'];activePaths=['ir-sext','sext-addr','addr-pc'];
+        signals=['addr1mux','addr2mux','pcmux','ld_pc'];
+        description='PC ← PC + SEXT(offset11) = '+hex(pc)+'. R7 still holds the return address.';complete();
+      }else if(stage==='load-read'){
+        mdr=readMem(mar);stage='load-write';phase='LDR / MEMORY';operation='READ';
+        activeNodes=['MAR',mar===65535?'IO':'MEM','MDR'];activePaths=['mar-mem','mem-mdr',...(mar===65535?['mem-io']:[])];
+        signals=['sram_mem_ena','ld_mdr'];description=(mar===65535?'CPU_TO_IO supplies the switch value ':'BRAM supplies ')+hex(mdr)+' into MDR.';
+      }else if(stage==='load-write'){
+        bus=mdr;regs[dr]=mdr;lastReg=dr;setCC(mdr);phase='LDR / WRITEBACK';operation='WRITEBACK';
+        activeNodes=['MDR','REG','CC'];activePaths=['mdr-bus','bus-reg'];
+        signals=['gate_mdr','ld_reg','ld_cc'];description='MDR drives '+hex(mdr)+' to R'+dr+'. NZP becomes '+cc+'.';complete();
+      }else if(stage==='store-write'){
+        writeMem(mar,mdr);phase='STR / MEMORY';operation='WRITE';
+        activeNodes=['MAR','MDR',mar===65535?'IO':'MEM'];activePaths=['mar-mem','mdr-mem',...(mar===65535?['mem-io']:[])];
+        signals=['sram_mem_ena','sram_wr_ena'];description=mar===65535?'CPU_TO_IO sends '+hex(mdr)+' to the HEX display.':'Write '+hex(mdr)+' into BRAM['+hex(mar)+'].';complete();
       }
     };
-    const render = () => {
-      const program=programs[programIndex];
-      setText('clock',String(cycles).padStart(3,'0'));
-      setText('pc',hex(pc));setText('mar',hex(mar));setText('mdr',hex(mdr));setText('ir',hex(ir));setText('bus',hex(bus));
-      setText('unit-pc',hex(pc));setText('unit-mar',hex(mar));setText('unit-mdr',hex(mdr));setText('alu',alu);
-      setText('phase-tag',phaseTag);setText('description',description);
-      setText('program-name',program.name);
-      setText('status',halted?'PROGRAM COMPLETE':'INSTRUCTION '+String(instructions+1).padStart(2,'0')+' / CYCLE '+String(cycles).padStart(3,'0'));
-      const activeAddr=(phase==='addr')?pc:instrAddr;
-      const instruction=mem.get(activeAddr)??ir;
-      setText('instruction',halted?'End of program':disassemble(instruction));
-      setText('decode',explanation(instruction));
-      setText('opcode','OPCODE '+bits(instruction).slice(0,4));
-      const binary=bits(instruction);
-      setText('binary',binary.slice(0,4)+' '+binary.slice(4,7)+' '+binary.slice(7,10)+' '+binary.slice(10));
-      root.querySelectorAll<HTMLElement>('[data-program]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.program)===programIndex)));
-      root.querySelectorAll<HTMLElement>('[data-unit]').forEach(node=>node.classList.toggle('active',units.includes(node.dataset.unit||'')));
-      root.querySelectorAll<HTMLElement>('[data-reg]').forEach(node=>{
-        const n=Number(node.dataset.reg);const val=node.querySelector('strong');
-        if(val) val.textContent=hex(regs[n]);node.classList.toggle('changed',n===lastReg);
+    const render=()=>{
+      const code=programs[programIndex],activeAddr=stage==='fetch-address'?pc:instructionAddress;
+      const word=stage==='fetch-address'?(memory.get(pc)??0):ir;
+      write('pc',hex(pc));write('ir',hex(ir));write('mar',hex(mar));write('mdr',hex(mdr));
+      write('bus',hex(bus));write('memvalue',hex(readMem(mar)));write('clock',String(cycles).padStart(3,'0'));
+      write('unit-pc',hex(pc));write('unit-ir',hex(ir));write('unit-mar',hex(mar));write('unit-mdr',hex(mdr));
+      write('unit-alu',aluMode);write('unit-cc',cc);write('hexout',hex(hexout).slice(1));write('leds',(leds&4095).toString(16).toUpperCase().padStart(3,'0'));
+      write('program-name',code.name);write('phase',phase);write('operation',operation);write('description',description);
+      write('status',halted?'PROGRAM COMPLETE':stage==='pause-wait'?'WAITING FOR CONTINUE':timer?'AUTO RUNNING':'STEP MODE');
+      write('instruction',halted?'Program complete':disassemble(word));write('decode',explain(word));write('opcode','OP '+bin(word).slice(0,4));
+      const b=bin(word);write('binary',b.slice(0,4)+' '+b.slice(4,7)+' '+b.slice(7,10)+' '+b.slice(10));
+      root.querySelectorAll<HTMLElement>('[data-program]').forEach(e=>e.setAttribute('aria-pressed',String(Number(e.dataset.program)===programIndex)));
+      root.querySelectorAll<SVGGElement>('[data-node]').forEach(e=>e.classList.toggle('active',activeNodes.includes(e.dataset.node||'')));
+      root.querySelectorAll<SVGPathElement>('[data-route]').forEach(e=>e.classList.toggle('active',activePaths.includes(e.dataset.route||'')));
+      root.querySelector<SVGPathElement>('.slc-bus')?.classList.toggle('active',activePaths.some(path=>path.includes('bus')));
+      root.querySelectorAll<HTMLButtonElement>('[data-reg]').forEach(e=>{
+        const i=Number(e.dataset.reg);const v=e.querySelector('strong');if(v)v.textContent=hex(regs[i]);e.classList.toggle('changed',i===lastReg);
       });
-      root.querySelectorAll<HTMLElement>('[data-flag]').forEach(node=>node.classList.toggle('active',node.dataset.flag===cc));
-      const bars=root.querySelectorAll<HTMLElement>('.cpu-bus-bars i');
-      bars.forEach((node,index)=>node.classList.toggle('on',Boolean(bus & (1 << (15-index)))));
-      const signalBox=el('[data-signals]');
-      if(signalBox){signalBox.replaceChildren();(signals.length?signals:['IDLE']).forEach(signal=>{
-        const span=document.createElement('span');span.textContent=signal;signalBox.append(span);
+      root.querySelectorAll<HTMLElement>('[data-flag]').forEach(e=>e.classList.toggle('active',e.dataset.flag===cc));
+      const signalBox=q('[data-signals]');if(signalBox){signalBox.replaceChildren();(signals.length?signals:['idle']).forEach(s=>{const badge=document.createElement('span');badge.textContent=s;signalBox.appendChild(badge);});}
+      const codeBox=q('[data-code]');if(codeBox){codeBox.replaceChildren();code.words.forEach((orig,i)=>{
+        const row=document.createElement('div');row.className='slc-code-row'+(i===activeAddr&&!halted?' active':'');
+        const a=document.createElement('span'),v=document.createElement('span'),d=document.createElement('strong'),w=memory.get(i)??orig;
+        a.textContent=hex(i);v.textContent=hex(w);d.textContent=disassemble(w);row.append(a,v,d);codeBox.appendChild(row);
       });}
-      const codeBox=el('[data-code]');
-      if(codeBox){
-        codeBox.replaceChildren();
-        program.words.forEach((word,index)=>{
-          const address=start+index;const row=document.createElement('div');
-          row.className='cpu-code-row'+(address===activeAddr&&!halted?' active':'')+(address<activeAddr?' past':'');
-          const addr=document.createElement('span'),value=document.createElement('span'),instr=document.createElement('strong');
-          addr.textContent=hex(address);value.textContent=hex(mem.get(address)??word);instr.textContent=disassemble(mem.get(address)??word);
-          row.append(addr,value,instr);codeBox.append(row);
-        });
-      }
-      const runBtn=el('[data-action=run]') as HTMLButtonElement|null;
-      const stepBtn=el('[data-action=step]') as HTMLButtonElement|null;
-      if(runBtn){runBtn.disabled=halted;runBtn.querySelector('span')!.textContent=timer?'Pause':'Run';runBtn.firstChild!.textContent=timer?'Ⅱ ':'▶ ';}
-      if(stepBtn)stepBtn.disabled=halted;
+      const step=q('[data-action=step]') as HTMLButtonElement|null,run=q('[data-action=run]') as HTMLButtonElement|null;
+      if(step)step.disabled=halted||stage==='pause-wait';
+      if(run)run.disabled=halted||stage==='pause-wait';
+      const runLabel=q('[data-run-label]');if(runLabel)runLabel.textContent=timer?'Pause':'Run';
+      showDetail();
     };
-    const pause=()=>{if(timer!==undefined){clearInterval(timer);timer=undefined;}};
-    const advance=()=>{tick();if(halted)pause();render();};
-    root.querySelectorAll<HTMLButtonElement>('[data-program]').forEach(button=>button.addEventListener('click',()=>reset(Number(button.dataset.program))));
-    root.querySelector('[data-action=step]')?.addEventListener('click',()=>{pause();advance();});
-    root.querySelector('[data-action=reset]')?.addEventListener('click',()=>reset(programIndex));
-    root.querySelector('[data-action=run]')?.addEventListener('click',()=>{
-      if(timer!==undefined){pause();render();return;}
-      if(halted)return;
-      timer=setInterval(advance,780);advance();
+    const reset=(index:number)=>{
+      stop();programIndex=index;memory=new Map();programs[index].words.forEach((w,i)=>memory.set(i,w));
+      Object.entries(programs[index].data).forEach(([addr,val])=>memory.set(Number(addr),val));
+      regs=Array(8).fill(0);pc=0;mar=0;mdr=0;ir=0;bus=0;cc='Z';hexout=0;leds=0;cycles=0;completed=0;instructionAddress=0;
+      stage='fetch-address';phase='READY';operation='FETCH';description=programs[index].intro+' Press Step to advance one operation.';
+      lastReg=-1;halted=false;aluMode='ADD / AND';activeNodes=[];activePaths=[];signals=[];
+      const io=q('[data-io-message]');if(io)io.textContent='';render();
+    };
+    const step=()=>{tick();if(halted||stage==='pause-wait')stop();render();};
+    const switchField=q('[data-switches]') as HTMLInputElement|null;
+    switchField?.addEventListener('change',()=>{
+      const value=switchField.value.trim().replace(/^x|^0x/i,'');
+      if(!/^[\da-f]{1,4}$/i.test(value)){switchField.setCustomValidity('Enter 1–4 hexadecimal digits.');switchField.reportValidity();return;}
+      switchField.setCustomValidity('');switches=parseInt(value,16);switchField.value=mask(switches).toString(16).toUpperCase().padStart(4,'0');
+      const msg=q('[data-io-message]');if(msg)msg.textContent='Switches set to '+hex(switches);render();
     });
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();render();}});
+    root.querySelectorAll<HTMLButtonElement>('[data-program]').forEach(button=>button.addEventListener('click',()=>reset(Number(button.dataset.program))));
+    q('[data-action=reset]')?.addEventListener('click',()=>reset(programIndex));
+    q('[data-action=step]')?.addEventListener('click',()=>{stop();step();});
+    q('[data-action=run]')?.addEventListener('click',()=>{
+      if(timer){stop();render();return;}
+      if(halted||stage==='pause-wait')return;
+      timer=setInterval(step,850);step();
+    });
+    q('[data-action=continue]')?.addEventListener('click',()=>{
+      const msg=q('[data-io-message]');
+      if(stage!=='pause-wait'){if(msg)msg.textContent='Continue is used only while a PAUSE instruction is active.';return;}
+      phase='PAUSE / RELEASED';operation='CONTINUE';signals=['continue_i'];description='Continue released this PAUSE. The next instruction may now be fetched.';activeNodes=['CONTROL'];activePaths=['ir-control'];
+      complete();if(msg)msg.textContent='PAUSE released.';render();
+    });
+    root.querySelectorAll<SVGGElement>('[data-node]').forEach(node=>{
+      const open=()=>{selected=node.dataset.node||'CONTROL';showDetail();};
+      node.addEventListener('click',open);
+      node.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-reg]').forEach(button=>button.addEventListener('click',()=>{
+      selected='REG';showDetail();const i=Number(button.dataset.reg);
+      write('inspect-title','Register R'+i+' / '+hex(regs[i]));
+      write('inspect-body','R'+i+' is a 16-bit general-purpose register. The register file exposes two read ports and a controlled write port. R7 is used for JSR return addresses.');
+    }));
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();render();}});
     reset(0);
   }
 </script>
