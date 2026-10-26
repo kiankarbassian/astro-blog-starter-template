@@ -27,7 +27,7 @@
     add:{name:'ADD immediate',steps:[...fetch,
       step('EXECUTE / ALU','DR ← SR1 + SEXT(imm5)',
         'The register file supplies SR1 to ALU input A. The sign-extended 5-bit immediate is selected by SR2MUX for input B. ALUK selects ADD; GateALU drives the result to the register file and NZP logic.',
-        ['IR','SEXT5','REG','SR2MUX','ALU','NZP'],['ir-sext','ir-immediate','sext5-sr2','reg-alu-a','sr2-alu','gate-alu','bus','bus-reg','alu-nzp'],['sr2mux_sel','aluk = ADD','gate_alu','ld_reg','ld_cc'])
+        ['IR','SEXT5','REG','SR2MUX','ALU','NZP'],['ir-sext5','sext5-sr2','reg-alu-a','sr2-alu','gate-alu','bus','bus-reg','alu-nzp'],['sr2mux_sel','aluk = ADD','gate_alu','ld_reg','ld_cc'])
     ]},
     and:{name:'AND register',steps:[...fetch,
       step('EXECUTE / ALU','DR ← SR1 AND SR2',
@@ -42,7 +42,7 @@
     ldr:{name:'LDR (register + offset)',steps:[...fetch,
       step('LDR / EFFECTIVE ADDRESS','MAR ← BaseR + SEXT(offset6)',
         'ADDR1MUX selects BaseR from the register file; ADDR2MUX selects sign-extended offset6. The address adder computes the effective address and the address-path gate drives it onto the bus for MAR.',
-        ['REG','SEXT6','ADDR1','ADDR2','ADDR','MAR'],['reg-addr1','ir-sext','sext6-addr2','addr1-adder','addr2-adder','addr-gate','gate-mar-mux','bus','bus-mar'],['addr1mux','addr2mux[1:0]','gate_mar','ld_mar']),
+        ['REG','SEXT6','ADDR1','ADDR2','ADDR','MAR'],['reg-addr1','ir-sext6','sext6-addr2','addr1-adder','addr2-adder','addr-gate','gate-mar-mux','bus','bus-mar'],['addr1mux','addr2mux[1:0]','gate_mar','ld_mar']),
       step('LDR / MEMORY READ','MDR ← M[MAR]',
         'cpu_to_io routes an ordinary address to BRAM, or a read at xFFFF to the physical switch input. The memory data is captured in MDR after the required RAM access state(s).',
         ['MAR','IO','BRAM','BOARD','MIO','MDR'],['mar-io','io-bram','io-board','mio-io','io-mdr'],['sram_mem_ena','ld_mdr']),
@@ -53,7 +53,7 @@
     str:{name:'STR (register + offset)',steps:[...fetch,
       step('STR / EFFECTIVE ADDRESS','MAR ← BaseR + SEXT(offset6)',
         'Address selection is the same as LDR: BaseR and sign-extended offset6 enter the address adder, and MAR captures the effective address.',
-        ['REG','SEXT6','ADDR1','ADDR2','ADDR','MAR'],['reg-addr1','ir-sext','sext6-addr2','addr1-adder','addr2-adder','addr-gate','gate-mar-mux','bus','bus-mar'],['addr1mux','addr2mux[1:0]','gate_mar','ld_mar']),
+        ['REG','SEXT6','ADDR1','ADDR2','ADDR','MAR'],['reg-addr1','ir-sext6','sext6-addr2','addr1-adder','addr2-adder','addr-gate','gate-mar-mux','bus','bus-mar'],['addr1mux','addr2mux[1:0]','gate_mar','ld_mar']),
       step('STR / STORE DATA','MDR ← SR',
         'The source register supplies the word to be stored. In this modified CPU, datapath gating places register data onto the bus so MDR can capture it.',
         ['REG','ALU','MDR'],['reg-alu-a','gate-alu','bus','bus-mdr'],['aluk = PASS','gate_alu','ld_mdr']),
@@ -67,7 +67,7 @@
         ['IR','CONTROL','NZP'],['ir-decode','control-nzp','nzp-control'],['ld_ben']),
       step('BR / PC SELECT','if BEN: PC ← PC + SEXT(offset9)',
         'If the condition matches, ADDR1MUX chooses the incremented PC and ADDR2MUX chooses offset9. The address adder feeds PCMUX, which loads the branch target into the PC; otherwise sequential execution continues.',
-        ['PC','IR','SEXT9','ADDR1','ADDR2','ADDR','PCMUX'],['pc-addr1','ir-sext','sext9-addr2','addr1-adder','addr2-adder','addr-pcmux','pc-mux-pc'],['addr1mux','addr2mux[1:0]','pcmux[1:0]','ld_pc (if BEN)'])
+        ['PC','IR','SEXT9','ADDR1','ADDR2','ADDR','PCMUX'],['pc-addr1','ir-sext9','sext9-addr2','addr1-adder','addr2-adder','addr-pcmux','pc-mux-pc'],['addr1mux','addr2mux[1:0]','pcmux[1:0]','ld_pc (if BEN)'])
     ]},
     jmp:{name:'JMP',steps:[...fetch,
       step('JMP / PC SELECT','PC ← BaseR',
@@ -80,7 +80,7 @@
         ['PC','REG'],['gate-pc','bus','bus-reg'],['gate_pc','drmux','ld_reg']),
       step('JSR / SUBROUTINE TARGET','PC ← PC + SEXT(offset11)',
         'The address path adds the signed 11-bit PC-relative offset to the current PC. PCMUX selects the address-adder result and loads the subroutine entry point.',
-        ['PC','IR','SEXT11','ADDR1','ADDR2','ADDR','PCMUX'],['pc-addr1','ir-sext','sext11-addr2','addr1-adder','addr2-adder','addr-pcmux','pc-mux-pc'],['addr1mux','addr2mux[1:0]','pcmux[1:0]','ld_pc'])
+        ['PC','IR','SEXT11','ADDR1','ADDR2','ADDR','PCMUX'],['pc-addr1','ir-sext11','sext11-addr2','addr1-adder','addr2-adder','addr-pcmux','pc-mux-pc'],['addr1mux','addr2mux[1:0]','pcmux[1:0]','ld_pc'])
     ]},
     pause:{name:'PAUSE / Continue',steps:[...fetch,
       step('PAUSE / LED CUE','LED register ← IR[11:0]',
