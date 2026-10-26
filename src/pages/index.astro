@@ -109,7 +109,7 @@ const skills = ['Python', 'C++', 'Go', 'TypeScript', 'Assembly', 'SystemVerilog'
   .cpu-project-details[open] .cpu-project-open{display:none}
   .cpu-project-details[open] .cpu-project-summary{padding-top:18px;padding-bottom:18px}
   .cpu-project-details[open] .cpu-project-cta{border-color:var(--accent);color:var(--accent)}
-  .cpu-project-details[open] .cpu-project-cta>span{transform:rotate(90deg)}
+  .cpu-project-details[open] .cpu-project-cta>span[aria-hidden="true"]{transform:rotate(90deg)}
   @media(max-width:700px){.cpu-project-summary{padding:20px;align-items:flex-start;flex-direction:column;gap:20px}.cpu-project-cta{width:100%;justify-content:space-between}}
 </style>
 <script>
