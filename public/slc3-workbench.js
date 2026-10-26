@@ -59,7 +59,7 @@
         ['REG','ALU','MDR'],['reg-alu-a','gate-alu','bus','bus-mdr'],['aluk = PASS','gate_alu','ld_mdr']),
       step('STR / MEMORY WRITE','M[MAR] ← MDR',
         'The CPU asserts memory write for the word in MDR. A write at xFFFF is redirected by cpu_to_io to the board HEX display instead of ordinary BRAM.',
-        ['MDR','MAR','IO','BRAM','BOARD'],['mdr-mio','mar-io','mio-io','io-bram','io-board'],['sram_mem_ena','sram_wr_ena'])
+        ['MDR','MAR','IO','BRAM','BOARD'],['mdr-io','mar-io','mio-io','io-bram','io-board'],['sram_mem_ena','sram_wr_ena'])
     ]},
     br:{name:'BR (conditional)',steps:[...fetch,
       step('BR / CONDITION CHECK','BEN ← IR[11:9] ∩ NZP',
