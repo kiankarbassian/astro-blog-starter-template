@@ -1,82 +1,85 @@
 ---
 const nodes = [
-  {id:'PC',x:520,y:118,w:140,h:62,title:'PC',value:'16-bit',role:'16-bit program counter'},
-  {id:'INC',x:702,y:137,w:72,h:43,title:'+1',value:'',role:'PC incrementer'},
-  {id:'PCMUX',x:534,y:219,w:116,h:52,title:'PCMUX',value:'',role:'next PC select',mux:true},
-  {id:'ADDR',x:490,y:307,w:135,h:56,title:'ADDRESS ADDER',value:'16-bit',role:'BaseR/PC + offset'},
-  {id:'ADDR1',x:659,y:393,w:128,h:53,title:'ADDR1MUX',value:'PC / BaseR',role:'address source',mux:true},
-  {id:'ADDR2',x:354,y:393,w:128,h:53,title:'ADDR2MUX',value:'0 / 6 / 9 / 11',role:'signed offset',mux:true},
-  {id:'SEXT11',x:144,y:347,w:112,h:43,title:'SEXT[10:0]',value:'offset11',role:'JSR offset'},
-  {id:'SEXT9',x:144,y:397,w:112,h:43,title:'SEXT[8:0]',value:'offset9',role:'BR offset'},
-  {id:'SEXT6',x:144,y:447,w:112,h:43,title:'SEXT[5:0]',value:'offset6',role:'LDR / STR offset'},
-  {id:'SEXT5',x:144,y:497,w:112,h:43,title:'SEXT[4:0]',value:'imm5',role:'ALU immediate'},
-  {id:'IR',x:147,y:572,w:154,h:56,title:'IR',value:'IR[15:0]',role:'instruction register'},
-  {id:'CONTROL',x:510,y:492,w:219,h:73,title:'CONTROL FSM',value:'control.sv',role:'instruction sequencer'},
-  {id:'REG',x:873,y:131,w:237,h:150,title:'REG FILE',value:'8 × 16 bits',role:'regs.sv'},
-  {id:'SR2MUX',x:787,y:376,w:142,h:50,title:'SR2MUX',value:'SR2 / imm5',role:'ALU B input',mux:true},
-  {id:'ALU',x:899,y:469,w:181,h:78,title:'ALU',value:'ADD / AND / NOT',role:'alu.sv'},
-  {id:'NZP',x:772,y:536,w:109,h:55,title:'NZP / BEN',value:'N Z P',role:'status and branch'},
-  {id:'MDR',x:139,y:676,w:148,h:61,title:'MDR',value:'16-bit',role:'memory data register'},
-  {id:'MAR',x:321,y:676,w:148,h:61,title:'MAR',value:'16-bit',role:'memory address register'},
-  {id:'MIO',x:512,y:671,w:131,h:48,title:'MIO.EN',value:'MDR input mux',role:'memory/CPU bus',mux:true},
-  {id:'IO',x:513,y:760,w:214,h:82,title:'cpu_to_io',value:'xFFFF I/O decode',role:'provided board interface'},
-  {id:'BRAM',x:794,y:758,w:168,h:85,title:'ON-CHIP BRAM',value:'synchronous memory',role:'block RAM'},
-  {id:'BOARD',x:1024,y:758,w:133,h:85,title:'URBANA I/O',value:'HEX / SW',role:'physical peripherals'}
+  {"id":"PC","x":480,"y":155,"w":170,"h":76,"title":"PC","value":"16-bit counter","role":"program counter"},
+  {"id":"INC","x":703,"y":163,"w":77,"h":54,"title":"PC + 1","value":"","role":"incrementer"},
+  {"id":"PCMUX","x":498,"y":281,"w":145,"h":62,"title":"PCMUX","value":"next PC","role":"next PC select","mux":true},
+  {"id":"ADDR","x":487,"y":428,"w":185,"h":70,"title":"ADDRESS ADDER","value":"16-bit result","role":"BaseR/PC + offset"},
+  {"id":"ADDR1","x":725,"y":523,"w":174,"h":64,"title":"ADDR1MUX","value":"PC / BaseR","role":"address source","mux":true},
+  {"id":"ADDR2","x":324,"y":523,"w":173,"h":64,"title":"ADDR2MUX","value":"0 / 6 / 9 / 11","role":"signed offset","mux":true},
+  {"id":"SEXT11","x":85,"y":440,"w":160,"h":48,"title":"SEXT[10:0]","value":"PCoffset11","role":"JSR offset"},
+  {"id":"SEXT9","x":85,"y":500,"w":160,"h":48,"title":"SEXT[8:0]","value":"PCoffset9","role":"BR offset"},
+  {"id":"SEXT6","x":85,"y":560,"w":160,"h":48,"title":"SEXT[5:0]","value":"offset6","role":"LDR / STR offset"},
+  {"id":"SEXT5","x":85,"y":620,"w":160,"h":48,"title":"SEXT[4:0]","value":"imm5","role":"ALU immediate"},
+  {"id":"IR","x":85,"y":324,"w":160,"h":75,"title":"IR","value":"IR[15:0]","role":"instruction register"},
+  {"id":"CONTROL","x":491,"y":619,"w":224,"h":74,"title":"CONTROL FSM","value":"control.sv","role":"instruction sequencer"},
+  {"id":"REG","x":1030,"y":156,"w":225,"h":165,"title":"REGISTER FILE","value":"8 × 16 bits","role":"regs.sv"},
+  {"id":"SR2MUX","x":918,"y":446,"w":158,"h":68,"title":"SR2MUX","value":"SR2 / imm5","role":"ALU B input","mux":true},
+  {"id":"ALU","x":1082,"y":567,"w":181,"h":90,"title":"16-BIT ALU","value":"ADD / AND / NOT","role":"alu.sv"},
+  {"id":"NZP","x":887,"y":613,"w":147,"h":66,"title":"NZP / BEN","value":"N · Z · P","role":"status and branch"},
+  {"id":"MDR","x":105,"y":805,"w":175,"h":75,"title":"MDR","value":"16-bit data","role":"memory data register"},
+  {"id":"MAR","x":360,"y":805,"w":175,"h":75,"title":"MAR","value":"16-bit address","role":"memory address register"},
+  {"id":"MIO","x":626,"y":805,"w":171,"h":75,"title":"MIO.EN","value":"bus / rdata","role":"memory/CPU bus","mux":true},
+  {"id":"IO","x":510,"y":951,"w":230,"h":78,"title":"cpu_to_io","value":"xFFFF decode","role":"provided board interface"},
+  {"id":"BRAM","x":870,"y":951,"w":210,"h":78,"title":"ON-CHIP BRAM","value":"synchronous RAM","role":"block RAM"},
+  {"id":"BOARD","x":1165,"y":951,"w":182,"h":78,"title":"URBANA BOARD","value":"HEX / switches","role":"physical peripherals"}
 ];
 const wires = [
-  {id:'bus',d:'M35 76 H1133 V643 H35',heavy:true},
-  {id:'gate-pc',d:'M590 118 V76'},
-  {id:'gate-mar-mux',d:'M490 337 H320 V76'},
-  {id:'gate-alu',d:'M990 547 V643'},
-  {id:'gate-mdr',d:'M212 676 V643'},
-  {id:'bus-pc',d:'M473 76 V247 H534'},
-  {id:'pc-increment',d:'M660 146 H702'},
-  {id:'inc-pcmux',d:'M739 180 V203 H611 V219'},
-  {id:'pc-mux-pc',d:'M573 219 V180 H573 V180'},
-  {id:'pc-addr1',d:'M606 180 V361 H728 V393'},
-  {id:'reg-addr1',d:'M873 230 H752 V393'},
-  {id:'addr1-adder',d:'M711 393 V336 H625'},
-  {id:'addr2-adder',d:'M426 393 V336 H490'},
-  {id:'addr-pcmux',d:'M560 307 V271'},
-  {id:'addr-gate',d:'M490 336 H320'},
-  {id:'sext11-addr2',d:'M256 367 H324 V404 H354'},
-  {id:'sext9-addr2',d:'M256 418 H338 V418 H354'},
-  {id:'sext6-addr2',d:'M256 468 H325 V433 H354'},
-  {id:'ir-immediate',d:'M181 572 V549 H144 V519'},
-  {id:'ir-decode',d:'M301 603 H510'},
-  {id:'ir-sext',d:'M144 583 H119 V369 H144 M119 419 H144 M119 469 H144 M119 519 H144'},
-  {id:'reg-alu-a',d:'M1018 281 V469'},
-  {id:'reg-sr2',d:'M902 281 V349 H864 V376'},
-  {id:'sext5-sr2',d:'M256 518 H751 V407 H787'},
-  {id:'sr2-alu',d:'M858 426 V452 H945 V469'},
-  {id:'alu-nzp',d:'M899 515 H851 V536'},
-  {id:'reg-bus',d:'M1024 131 V76'},
-  {id:'bus-reg',d:'M1133 167 H1110'},
-  {id:'bus-ir',d:'M317 643 V604 H301'},
-  {id:'bus-mar',d:'M393 643 V676'},
-  {id:'bus-mdr',d:'M234 643 V676'},
-  {id:'mdr-mio',d:'M212 737 V809 H513'},
-  {id:'io-mdr',d:'M512 691 H484 V660 H305 V703 H287'},
-  {id:'mar-io',d:'M395 737 V786 H513'},
-  {id:'mio-io',d:'M576 719 V760'},
-  {id:'io-bram',d:'M727 790 H794 M794 810 H727'},
-  {id:'io-board',d:'M962 790 H1024 M1024 811 H962'},
-  {id:'control-nzp',d:'M729 530 H772'},
-  {id:'nzp-control',d:'M776 570 H728'},
-  {id:'control-alu',d:'M729 503 H855 V484 H899'},
-  {id:'ir-pause',d:'M208 628 V651 H654 V760'},
-  {id:'control-mem',d:'M619 565 V651 H834 V758'}
+  {"id":"bus","d":"M40 87 H1350 V742 H40","heavy":true},
+  {"id":"gate-pc","d":"M565 155 V87"},
+  {"id":"gate-mar-mux","d":"M458 453 V87"},
+  {"id":"gate-alu","d":"M1172 657 V742"},
+  {"id":"gate-mdr","d":"M192 805 V742"},
+  {"id":"bus-pc","d":"M446 87 V313 H498"},
+  {"id":"pc-increment","d":"M650 196 H703"},
+  {"id":"inc-pcmux","d":"M742 217 V259 H608 V281"},
+  {"id":"pc-mux-pc","d":"M544 281 V231"},
+  {"id":"pc-addr1","d":"M650 222 H818 V523"},
+  {"id":"reg-addr1","d":"M1030 277 H907 V554 H899"},
+  {"id":"addr1-adder","d":"M796 523 V463 H672"},
+  {"id":"addr2-adder","d":"M413 523 V483 H487"},
+  {"id":"addr-pcmux","d":"M555 428 V343"},
+  {"id":"addr-gate","d":"M487 453 H458"},
+  {"id":"sext11-addr2","d":"M245 464 H280 V538 H324"},
+  {"id":"sext9-addr2","d":"M245 524 H292 V554 H324"},
+  {"id":"sext6-addr2","d":"M245 584 H305 V572 H324"},
+  {"id":"ir-immediate","d":"M245 382 H268 V644 H245"},
+  {"id":"ir-decode","d":"M245 357 H301 V398 H700 V649 H715"},
+  {"id":"ir-sext","d":"M85 369 H57 V464 H85 M57 464 V524 H85 M57 524 V584 H85 M57 584 V644 H85"},
+  {"id":"reg-alu-a","d":"M1193 321 V567"},
+  {"id":"reg-sr2","d":"M1030 304 H991 V446"},
+  {"id":"sext5-sr2","d":"M245 644 H271 V510 H906 V479 H918"},
+  {"id":"sr2-alu","d":"M991 514 V543 H1121 V567"},
+  {"id":"alu-nzp","d":"M1082 624 H1053 V646 H1034"},
+  {"id":"reg-bus","d":"M1130 156 V87"},
+  {"id":"bus-reg","d":"M1350 239 H1255"},
+  {"id":"bus-ir","d":"M72 742 V364 H85"},
+  {"id":"bus-mar","d":"M448 742 V805"},
+  {"id":"bus-mdr","d":"M187 742 V805"},
+  {"id":"mdr-mio","d":"M194 880 V890 H600 V840 H626"},
+  {"id":"io-mdr","d":"M626 825 H585 V904 H302 V825 H280"},
+  {"id":"mar-io","d":"M444 880 V925 H565 V951"},
+  {"id":"mio-io","d":"M681 880 V951"},
+  {"id":"io-bram","d":"M740 978 H870 M870 1007 H740"},
+  {"id":"io-board","d":"M740 1009 H775 V1040 H1130 V987 H1165"},
+  {"id":"control-nzp","d":"M715 649 H887"},
+  {"id":"nzp-control","d":"M887 672 H760 V675 H715"},
+  {"id":"control-alu","d":"M715 660 H739 V601 H1049 V584 H1082"},
+  {"id":"ir-pause","d":"M245 392 H267 V713 H1147 V985 H1165"},
+  {"id":"control-mem","d":"M612 693 V706 H843 V937 H937 V951"}
 ];
 const annotations = [
-  {text:'GatePC',x:586,y:107},{text:'GateMARMUX / gate_mar',x:323,y:107},
-  {text:'GateALU',x:999,y:613},{text:'GateMDR',x:225,y:664},
-  {text:'16',x:1098,y:61},{text:'LD.PC',x:519,y:110},
-  {text:'SR1',x:1036,y:311},{text:'SR2',x:908,y:321},
-  {text:'DR',x:1105,y:174},{text:'ALUK',x:839,y:474},
-  {text:'LD.IR',x:317,y:589},{text:'LD.MAR',x:416,y:671},
-  {text:'LD.MDR',x:219,y:672},{text:'LD.REG',x:1024,y:118},
-  {text:'LD.CC',x:880,y:567},{text:'addr',x:408,y:752},
-  {text:'rdata / wdata',x:743,y:782}
+  {"text":"gate_pc","x":585,"y":145},
+  {"text":"ld_pc","x":649,"y":145},
+  {"text":"gate_mar","x":377,"y":167},
+  {"text":"SR1","x":1199,"y":354},
+  {"text":"SR2","x":990,"y":343},
+  {"text":"gate_alu","x":1186,"y":712},
+  {"text":"gate_mdr","x":203,"y":782},
+  {"text":"ld_mar","x":459,"y":783},
+  {"text":"ld_ir","x":260,"y":345},
+  {"text":"ld_reg","x":1264,"y":216},
+  {"text":"ld_cc","x":1038,"y":677},
+  {"text":"rdata / wdata","x":766,"y":974}
 ];
 ---
 <div class="lab5-workbench" id="lab5-workbench">
@@ -102,26 +105,26 @@ const annotations = [
   <div class="lab5-progress"><div class="lab5-progress-title"><span data-trace-title>INSTRUCTION FETCH</span><span data-step-count>STEP 1 / 4</span></div><div class="lab5-progress-steps" data-timeline aria-label="Trace steps"></div></div>
   <div class="lab5-stage">
     <div class="lab5-canvas-wrap" tabindex="0" role="region" aria-label="Full SLC-3 datapath diagram. Scroll sideways on smaller screens.">
-      <svg class="lab5-svg" viewBox="0 0 1180 866" xmlns="http://www.w3.org/2000/svg" aria-labelledby="lab5-svg-title">
+      <svg class="lab5-svg" viewBox="0 0 1400 1070" xmlns="http://www.w3.org/2000/svg" aria-labelledby="lab5-svg-title">
         <title id="lab5-svg-title">Modified ECE 385 SLC-3 datapath with bus, muxes, address adder, control FSM, registers and I/O subsystem</title>
         <defs>
           <pattern id="lab5-grid" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M26 0H0V26" fill="none" stroke="#35463f" stroke-width=".55" opacity=".33"/></pattern>
           <marker id="lab5-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#758b7d" stroke-width="1.5"/></marker>
         </defs>
         <rect width="1180" height="866" fill="url(#lab5-grid)"/>
-        <text class="lab5-region-text" x="38" y="36">CPU.SV / INTERNAL 16-BIT DATAPATH</text>
-        <path class="lab5-separator" d="M30 746 H1150" />
-        <text class="lab5-region-text" x="37" y="765">PROCESSOR_TOP.SV / MEMORY + PHYSICAL I/O</text>
+        <text class="lab5-region-text" x="60" y="46">CPU.SV / INTERNAL 16-BIT DATAPATH</text>
+        <path class="lab5-separator" d="M40 921 H1360" />
+        <text class="lab5-region-text" x="60" y="940">PROCESSOR_TOP.SV / MEMORY + PHYSICAL I/O</text>
         {wires.map(w => <path data-wire={w.id} class:list={['lab5-wire',w.heavy && 'lab5-global-bus']} d={w.d}/>)}
-        <g class="lab5-bus-label"><rect x="738" y="60" width="130" height="32" rx="3"/><text x="803" y="81" text-anchor="middle">16-BIT CPU BUS</text></g>
+        <g class="lab5-bus-label"><rect x="793" y="67" width="176" height="39" rx="4"/><text x="881" y="92" text-anchor="middle">16-BIT CPU BUS</text></g>
         {annotations.map(a=><text class="lab5-annotation" x={a.x} y={a.y}>{a.text}</text>)}
         {nodes.map(n=><g class:list={['lab5-node',n.mux && 'lab5-mux']} data-module={n.id} tabindex="0" role="button" aria-label={'Inspect ' + n.title + ': ' + n.role}>
           {n.mux ? <polygon points={n.x+','+n.y+' '+(n.x+n.w)+','+n.y+' '+(n.x+n.w-13)+','+(n.y+n.h)+' '+(n.x+13)+','+(n.y+n.h)}/> : <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="3"/>}
-          <text class="lab5-node-title" x={n.x+13} y={n.y+22}>{n.title}</text>
-          {n.value && <text class="lab5-node-value" x={n.x+13} y={n.y+(n.h>85?62:43)}>{n.value}</text>}
+          <text class="lab5-node-title" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=90?30:22)}>{n.title}</text>
+          {n.value && <text class="lab5-node-value" x={n.x+(n.mux?24:16)} y={n.y+(n.h>=90?83:n.h-13)}>{n.value}</text>}
         </g>)}
-        <g class="lab5-pins" aria-hidden="true"><circle cx="590" cy="76" r="3"/><circle cx="990" cy="643" r="3"/><circle cx="212" cy="643" r="3"/><circle cx="1133" cy="643" r="3"/></g>
-        <text class="lab5-caption" x="1160" y="856" text-anchor="end">SCHEMATIC ADAPTED FROM LAB 5, FIGURE ON P. 5.8. SIMPLIFIED FOR THE WEB.</text>
+        <g class="lab5-pins" aria-hidden="true"><circle cx="565" cy="87" r="3"/><circle cx="1172" cy="742" r="3"/><circle cx="192" cy="742" r="3"/><circle cx="1350" cy="742" r="3"/></g>
+        <text class="lab5-caption" x="1356" y="1058" text-anchor="end">SCHEMATIC ADAPTED FROM LAB 5, FIGURE ON P. 5.8. SIMPLIFIED FOR THE WEB.</text>
       </svg>
     </div>
     <div class="lab5-diagram-key"><span><i class="lab5-key-on"></i> Active data/control path</span><span><i></i> Unselected connection</span><span>Click a block to inspect it</span></div>
