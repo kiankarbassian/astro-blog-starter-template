@@ -32,11 +32,11 @@
 .lab5-progress-steps button:focus-visible{outline-offset:3px}
 .lab5-stage{padding:20px 28px 0;background:#111a17}
 .lab5-canvas-wrap{width:100%;overflow-x:auto;scrollbar-color:#526658 #15201b;scrollbar-width:thin;overscroll-behavior-x:contain;border:1px solid var(--l5-border);border-radius:3px;background:#15201c}
-.lab5-svg{display:block;width:100%;min-width:1200px;height:auto}
-.lab5-wire{fill:none;stroke:#698274;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;opacity:.57;transition:stroke .22s,opacity .22s,stroke-width .22s}
-.lab5-global-bus{stroke:#95ab9b;stroke-width:3.5;opacity:.9}
-.lab5-wire.active{stroke:var(--l5-accent);stroke-width:3.2;opacity:1;stroke-dasharray:8 6;animation:lab5-signal-flow 1.15s linear infinite}
-.lab5-global-bus.active{stroke:#a9bdb0;stroke-width:4;stroke-dasharray:none;animation:none;filter:none;opacity:1}
+.lab5-svg{display:block;width:100%;min-width:1280px;height:auto}
+.lab5-wire{fill:none;stroke:#698274;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;opacity:0;pointer-events:none;transition:stroke .22s,opacity .22s,stroke-width .22s}
+.lab5-global-bus{stroke:#92a999;stroke-width:3;opacity:.72}
+.lab5-wire.active:not(.lab5-global-bus){stroke:var(--l5-accent);stroke-width:3.2;opacity:1;stroke-dasharray:9 8;animation:lab5-signal-flow 1.3s linear infinite}
+.lab5-global-bus.active{stroke:#a9bdb0;stroke-width:3.4;stroke-dasharray:none;animation:none;filter:none;opacity:.95}
 .lab5-region-text{font:13px var(--mono);fill:#b2c5b5;letter-spacing:.055em}
 .lab5-separator{stroke:#3e5745;stroke-width:1;stroke-dasharray:5 6}
 .lab5-annotation{font:11px var(--mono);fill:#b4c6b5;paint-order:stroke;stroke:#15201c;stroke-width:5px;stroke-linejoin:round}
@@ -74,5 +74,9 @@
 .lab5-foot span{color:#97ab9b;font:11px/1.7 var(--mono)}
 @keyframes lab5-signal-flow{to{stroke-dashoffset:-28}}
 @media(max-width:850px){.lab5-head{align-items:start;flex-direction:column;gap:20px}.lab5-meta{max-width:none;justify-content:start}.lab5-toolbar{align-items:stretch;flex-direction:column}.lab5-select-group{min-width:0}.lab5-actions{justify-content:flex-start}.lab5-readouts{grid-template-columns:1fr}.lab5-microstep{border-right:0;border-bottom:1px solid var(--l5-border)}}
-@media(max-width:600px){.lab5-head{padding:25px 20px}.lab5-head h3{font-size:26px}.lab5-toolbar{padding:17px 17px}.lab5-actions{display:grid;grid-template-columns:45px 1fr 1fr 58px;gap:6px}.lab5-actions button{padding:0 8px;font-size:10px}.lab5-progress{padding:19px}.lab5-stage{padding:12px 10px 0}.lab5-svg{min-width:1200px}.lab5-diagram-key{font-size:10px;padding-left:4px}.lab5-microstep,.lab5-module-panel{padding:23px 19px}.lab5-foot{padding:20px;grid-template-columns:1fr}}
+@media(max-width:600px){.lab5-head{padding:25px 20px}.lab5-head h3{font-size:26px}.lab5-toolbar{padding:17px 17px}.lab5-actions{display:grid;grid-template-columns:45px 1fr 1fr 58px;gap:6px}.lab5-actions button{padding:0 8px;font-size:10px}.lab5-progress{padding:19px}.lab5-stage{padding:12px 10px 0}.lab5-svg{min-width:1280px}.lab5-diagram-key{font-size:10px;padding-left:4px}.lab5-microstep,.lab5-module-panel{padding:23px 19px}.lab5-foot{padding:20px;grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.lab5-wire.active{animation:none}.lab5-workbench button,.lab5-wire,.lab5-node rect,.lab5-node polygon{transition:none}}
+
+/* Intentional progressive disclosure: nonparticipating nets are hidden, not ghosted. */
+.lab5-wire:not(.active):not(.lab5-global-bus){opacity:0}
+.lab5-workbench .lab5-diagram-key{padding-top:17px}
