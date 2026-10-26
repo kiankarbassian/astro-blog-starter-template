@@ -1,6 +1,6 @@
 ---
 const nodes = [
-  {id:'PC',x:520,y:118,w:140,h:62,title:'PC',value:'x0000',role:'16-bit program counter'},
+  {id:'PC',x:520,y:118,w:140,h:62,title:'PC',value:'16-bit',role:'16-bit program counter'},
   {id:'INC',x:702,y:137,w:72,h:43,title:'+1',value:'',role:'PC incrementer'},
   {id:'PCMUX',x:534,y:219,w:116,h:52,title:'PCMUX',value:'',role:'next PC select',mux:true},
   {id:'ADDR',x:490,y:307,w:135,h:56,title:'ADDRESS ADDER',value:'16-bit',role:'BaseR/PC + offset'},
@@ -10,14 +10,14 @@ const nodes = [
   {id:'SEXT9',x:144,y:397,w:112,h:43,title:'SEXT[8:0]',value:'offset9',role:'BR offset'},
   {id:'SEXT6',x:144,y:447,w:112,h:43,title:'SEXT[5:0]',value:'offset6',role:'LDR / STR offset'},
   {id:'SEXT5',x:144,y:497,w:112,h:43,title:'SEXT[4:0]',value:'imm5',role:'ALU immediate'},
-  {id:'IR',x:147,y:572,w:154,h:56,title:'IR',value:'x0000',role:'instruction register'},
+  {id:'IR',x:147,y:572,w:154,h:56,title:'IR',value:'IR[15:0]',role:'instruction register'},
   {id:'CONTROL',x:510,y:492,w:219,h:73,title:'CONTROL FSM',value:'control.sv',role:'instruction sequencer'},
   {id:'REG',x:873,y:131,w:237,h:150,title:'REG FILE',value:'8 × 16 bits',role:'regs.sv'},
   {id:'SR2MUX',x:787,y:376,w:142,h:50,title:'SR2MUX',value:'SR2 / imm5',role:'ALU B input',mux:true},
   {id:'ALU',x:899,y:469,w:181,h:78,title:'ALU',value:'ADD / AND / NOT',role:'alu.sv'},
   {id:'NZP',x:772,y:536,w:109,h:55,title:'NZP / BEN',value:'N Z P',role:'status and branch'},
-  {id:'MDR',x:139,y:676,w:148,h:61,title:'MDR',value:'x0000',role:'memory data register'},
-  {id:'MAR',x:321,y:676,w:148,h:61,title:'MAR',value:'x0000',role:'memory address register'},
+  {id:'MDR',x:139,y:676,w:148,h:61,title:'MDR',value:'16-bit',role:'memory data register'},
+  {id:'MAR',x:321,y:676,w:148,h:61,title:'MAR',value:'16-bit',role:'memory address register'},
   {id:'MIO',x:512,y:671,w:131,h:48,title:'MIO.EN',value:'MDR input mux',role:'memory/CPU bus',mux:true},
   {id:'IO',x:513,y:760,w:214,h:82,title:'cpu_to_io',value:'xFFFF I/O decode',role:'provided board interface'},
   {id:'BRAM',x:794,y:758,w:168,h:85,title:'ON-CHIP BRAM',value:'synchronous memory',role:'block RAM'},
@@ -111,8 +111,8 @@ const annotations = [
         </defs>
         <rect width="1180" height="866" fill="url(#lab5-grid)"/>
         <text class="lab5-region-text" x="38" y="36">CPU.SV / INTERNAL 16-BIT DATAPATH</text>
-        <path class="lab5-separator" d="M30 656 H1150" />
-        <text class="lab5-region-text" x="37" y="662">PROCESSOR_TOP.SV / MEMORY + PHYSICAL I/O</text>
+        <path class="lab5-separator" d="M30 746 H1150" />
+        <text class="lab5-region-text" x="37" y="765">PROCESSOR_TOP.SV / MEMORY + PHYSICAL I/O</text>
         {wires.map(w => <path data-wire={w.id} class:list={['lab5-wire',w.heavy && 'lab5-global-bus']} d={w.d}/>)}
         <g class="lab5-bus-label"><rect x="738" y="60" width="130" height="32" rx="3"/><text x="803" y="81" text-anchor="middle">16-BIT CPU BUS</text></g>
         {annotations.map(a=><text class="lab5-annotation" x={a.x} y={a.y}>{a.text}</text>)}
