@@ -69,10 +69,10 @@ const skills = ['Python', 'C++', 'Go', 'TypeScript', 'Assembly', 'SystemVerilog'
         <summary class="cpu-project-summary">
           <div class="cpu-project-summary-text">
             <span class="cpu-project-eyebrow">PROJECT 01 / INTERACTIVE DEMONSTRATION</span>
-            <strong>Explore the SLC-3.2 datapath.</strong>
-            <p>Trace instructions, control signals, registers, and the xFFFF I/O interface.</p>
+            <strong>SLC-3.2 on the Spartan-7.</strong>
+            <p>Explore the actual Lab 5 architecture, from internal bus gating to the control FSM and memory-mapped I/O.</p>
           </div>
-          <span class="cpu-project-cta">Open workbench <span aria-hidden="true">↗</span></span>
+          <span class="cpu-project-cta"><span class="cpu-project-open">Open schematic</span><span class="cpu-project-close">Close schematic</span><span aria-hidden="true">↗</span></span>
         </summary>
         <CPUWorkbench />
       </details>
@@ -104,6 +104,10 @@ const skills = ['Python', 'C++', 'Go', 'TypeScript', 'Assembly', 'SystemVerilog'
   .cpu-project-summary strong{display:block;font:500 clamp(20px,2.3vw,30px)/1.25 var(--sans);letter-spacing:-.04em}
   .cpu-project-summary p{font-size:13px;color:var(--muted);margin:7px 0 0}
   .cpu-project-cta{display:flex;align-items:center;gap:25px;white-space:nowrap;border:1px solid var(--line);padding:13px 16px;border-radius:4px;font:12px var(--mono)}
+  .cpu-project-close{display:none}
+  .cpu-project-details[open] .cpu-project-close{display:inline}
+  .cpu-project-details[open] .cpu-project-open{display:none}
+  .cpu-project-details[open] .cpu-project-summary{padding-top:18px;padding-bottom:18px}
   .cpu-project-details[open] .cpu-project-cta{border-color:var(--accent);color:var(--accent)}
   .cpu-project-details[open] .cpu-project-cta>span{transform:rotate(90deg)}
   @media(max-width:700px){.cpu-project-summary{padding:20px;align-items:flex-start;flex-direction:column;gap:20px}.cpu-project-cta{width:100%;justify-content:space-between}}
