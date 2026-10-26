@@ -32,24 +32,25 @@
 .lab5-progress-steps button:focus-visible{outline-offset:3px}
 .lab5-stage{padding:20px 28px 0;background:#111a17}
 .lab5-canvas-wrap{width:100%;overflow-x:auto;scrollbar-color:#526658 #15201b;scrollbar-width:thin;overscroll-behavior-x:contain;border:1px solid var(--l5-border);border-radius:3px;background:#15201c}
-.lab5-svg{display:block;width:100%;min-width:960px;height:auto}
-.lab5-wire{fill:none;stroke:#4b6054;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;opacity:.72;transition:stroke .22s,opacity .22s,stroke-width .22s}
-.lab5-global-bus{stroke:#97ab99;stroke-width:7;opacity:.8}
-.lab5-wire.active{stroke:var(--l5-accent);stroke-width:3;opacity:1;stroke-dasharray:8 6;animation:lab5-signal-flow 1.15s linear infinite}
-.lab5-global-bus.active{stroke-width:8;stroke-dasharray:0;animation:none;filter:drop-shadow(0 0 6px #f58b6344)}
-.lab5-region-text{font:11px var(--mono);fill:#93aa98;letter-spacing:.06em}
+.lab5-svg{display:block;width:100%;min-width:1200px;height:auto}
+.lab5-wire{fill:none;stroke:#698274;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;opacity:.57;transition:stroke .22s,opacity .22s,stroke-width .22s}
+.lab5-global-bus{stroke:#95ab9b;stroke-width:3.5;opacity:.9}
+.lab5-wire.active{stroke:var(--l5-accent);stroke-width:3.2;opacity:1;stroke-dasharray:8 6;animation:lab5-signal-flow 1.15s linear infinite}
+.lab5-global-bus.active{stroke:#a9bdb0;stroke-width:4;stroke-dasharray:none;animation:none;filter:none;opacity:1}
+.lab5-region-text{font:13px var(--mono);fill:#b2c5b5;letter-spacing:.055em}
 .lab5-separator{stroke:#3e5745;stroke-width:1;stroke-dasharray:5 6}
-.lab5-annotation{font:9.5px var(--mono);fill:#91a594;paint-order:stroke;stroke:#15201c;stroke-width:3px}
-.lab5-bus-label rect{fill:#15201c;stroke:#617568;stroke-width:1}
-.lab5-bus-label text{fill:#d0ddcb;font:11px var(--mono);letter-spacing:.04em}
+.lab5-annotation{font:11px var(--mono);fill:#b4c6b5;paint-order:stroke;stroke:#15201c;stroke-width:5px;stroke-linejoin:round}
+.lab5-bus-label rect{fill:#203128;stroke:#869b88;stroke-width:1.3}
+.lab5-bus-label text{fill:#eff6ec;font:13px var(--mono);letter-spacing:.03em}
 .lab5-node{cursor:pointer}
-.lab5-node rect,.lab5-node polygon{fill:#1d3026;stroke:#587161;stroke-width:1.5;transition:fill .22s,stroke .22s,filter .22s}
+.lab5-node rect,.lab5-node polygon{fill:#21362b;stroke:#76917b;stroke-width:1.7;transition:fill .22s,stroke .22s,filter .22s}
 .lab5-node:hover rect,.lab5-node:hover polygon,.lab5-node.selected rect,.lab5-node.selected polygon{fill:#2a3e31;stroke:#aabb9f}
 .lab5-node.active rect,.lab5-node.active polygon{fill:#51392d;stroke:var(--l5-accent);stroke-width:2.4;filter:drop-shadow(0 0 8px #f58b632e)}
-.lab5-node-title{fill:#c7d5c5;font:13px var(--mono);letter-spacing:.025em;pointer-events:none}
-.lab5-node-value{fill:#eff6eb;font:15px var(--mono);letter-spacing:-.01em;pointer-events:none}
+.lab5-node-title{fill:#deebdb;font:15px var(--mono);letter-spacing:.012em;pointer-events:none}
+.lab5-node-value{fill:#f4f8f1;font:17px var(--mono);letter-spacing:-.015em;pointer-events:none}
+.lab5-node-detail{fill:#b0c5b2;font:12px var(--mono);letter-spacing:.01em;pointer-events:none}
 .lab5-node.active .lab5-node-title{fill:#ffbd9c}
-.lab5-caption{font:9px var(--mono);fill:#7d9986;letter-spacing:.03em}
+.lab5-caption{font:10.5px var(--mono);fill:#9fb4a4;letter-spacing:.035em}
 .lab5-pins{fill:#819886}
 .lab5-diagram-key{padding:14px 7px 19px;display:flex;flex-wrap:wrap;gap:14px 25px;color:var(--l5-muted);font:11px var(--mono)}
 .lab5-diagram-key span{display:flex;align-items:center;gap:9px}
@@ -73,5 +74,5 @@
 .lab5-foot span{color:#97ab9b;font:11px/1.7 var(--mono)}
 @keyframes lab5-signal-flow{to{stroke-dashoffset:-28}}
 @media(max-width:850px){.lab5-head{align-items:start;flex-direction:column;gap:20px}.lab5-meta{max-width:none;justify-content:start}.lab5-toolbar{align-items:stretch;flex-direction:column}.lab5-select-group{min-width:0}.lab5-actions{justify-content:flex-start}.lab5-readouts{grid-template-columns:1fr}.lab5-microstep{border-right:0;border-bottom:1px solid var(--l5-border)}}
-@media(max-width:600px){.lab5-head{padding:25px 20px}.lab5-head h3{font-size:26px}.lab5-toolbar{padding:17px 17px}.lab5-actions{display:grid;grid-template-columns:45px 1fr 1fr 58px;gap:6px}.lab5-actions button{padding:0 8px;font-size:10px}.lab5-progress{padding:19px}.lab5-stage{padding:12px 10px 0}.lab5-svg{min-width:1040px}.lab5-diagram-key{font-size:10px;padding-left:4px}.lab5-microstep,.lab5-module-panel{padding:23px 19px}.lab5-foot{padding:20px;grid-template-columns:1fr}}
+@media(max-width:600px){.lab5-head{padding:25px 20px}.lab5-head h3{font-size:26px}.lab5-toolbar{padding:17px 17px}.lab5-actions{display:grid;grid-template-columns:45px 1fr 1fr 58px;gap:6px}.lab5-actions button{padding:0 8px;font-size:10px}.lab5-progress{padding:19px}.lab5-stage{padding:12px 10px 0}.lab5-svg{min-width:1200px}.lab5-diagram-key{font-size:10px;padding-left:4px}.lab5-microstep,.lab5-module-panel{padding:23px 19px}.lab5-foot{padding:20px;grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.lab5-wire.active{animation:none}.lab5-workbench button,.lab5-wire,.lab5-node rect,.lab5-node polygon{transition:none}}
