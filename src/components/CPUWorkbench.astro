@@ -1,11 +1,11 @@
 ---
 const nodes = [
-  {"id":"PC","x":480,"y":155,"w":170,"h":76,"title":"PC","value":"16-bit counter","role":"program counter"},
-  {"id":"INC","x":703,"y":163,"w":77,"h":54,"title":"PC + 1","value":"","role":"incrementer"},
+  {"id":"PC","x":480,"y":155,"w":170,"h":76,"title":"PC","value":"16-bit PC","role":"program counter"},
+  {"id":"INC","x":703,"y":163,"w":77,"h":54,"title":"+1","value":"","role":"incrementer"},
   {"id":"PCMUX","x":498,"y":281,"w":145,"h":62,"title":"PCMUX","value":"next PC","role":"next PC select","mux":true},
   {"id":"ADDR","x":487,"y":428,"w":185,"h":70,"title":"ADDRESS ADDER","value":"16-bit result","role":"BaseR/PC + offset"},
   {"id":"ADDR1","x":725,"y":523,"w":174,"h":64,"title":"ADDR1MUX","value":"PC / BaseR","role":"address source","mux":true},
-  {"id":"ADDR2","x":324,"y":523,"w":173,"h":64,"title":"ADDR2MUX","value":"0 / 6 / 9 / 11","role":"signed offset","mux":true},
+  {"id":"ADDR2","x":324,"y":523,"w":173,"h":64,"title":"ADDR2MUX","value":"0, 6, 9, 11","role":"signed offset","mux":true},
   {"id":"SEXT11","x":85,"y":426,"w":160,"h":56,"title":"SEXT[10:0]","value":"PCoffset11","role":"JSR offset"},
   {"id":"SEXT9","x":85,"y":491,"w":160,"h":56,"title":"SEXT[8:0]","value":"PCoffset9","role":"BR offset"},
   {"id":"SEXT6","x":85,"y":556,"w":160,"h":56,"title":"SEXT[5:0]","value":"offset6","role":"LDR / STR offset"},
@@ -14,7 +14,7 @@ const nodes = [
   {"id":"CONTROL","x":491,"y":619,"w":224,"h":74,"title":"CONTROL FSM","value":"control.sv","role":"instruction sequencer"},
   {"id":"REG","x":1030,"y":156,"w":225,"h":165,"title":"REGISTER FILE","value":"8 × 16 bits","role":"regs.sv"},
   {"id":"SR2MUX","x":918,"y":446,"w":158,"h":68,"title":"SR2MUX","value":"SR2 / imm5","role":"ALU B input","mux":true},
-  {"id":"ALU","x":1082,"y":567,"w":181,"h":90,"title":"16-BIT ALU","value":"ADD / AND / NOT","role":"alu.sv"},
+  {"id":"ALU","x":1082,"y":567,"w":181,"h":90,"title":"16-BIT ALU","value":"ADD, AND, NOT","role":"alu.sv"},
   {"id":"NZP","x":887,"y":613,"w":147,"h":66,"title":"NZP / BEN","value":"N · Z · P","role":"status and branch"},
   {"id":"MDR","x":105,"y":805,"w":175,"h":75,"title":"MDR","value":"16-bit data","role":"memory data register"},
   {"id":"MAR","x":360,"y":805,"w":175,"h":75,"title":"MAR","value":"16-bit address","role":"memory address register"},
