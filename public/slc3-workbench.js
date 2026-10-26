@@ -71,8 +71,8 @@
     ]},
     jmp:{name:'JMP',steps:[...fetch,
       step('JMP / PC SELECT','PC ← BaseR',
-        'The register file supplies BaseR, and the PC selection path loads that register value as the next instruction address. A JMP is unconditional and does not update NZP.',
-        ['REG','PCMUX','PC'],['reg-addr1','addr1-adder','addr-pcmux','pc-mux-pc'],['sr1mux','pcmux[1:0]','ld_pc'])
+        'The ALU pass-through path puts BaseR onto the internal bus. PCMUX selects the bus value and loads PC. JMP is unconditional and does not alter NZP.',
+        ['REG','ALU','PCMUX','PC'],['reg-alu-a','gate-alu','bus','bus-pc','pc-mux-pc'],['sr1mux','aluk = PASS','gate_alu','pcmux[1:0]','ld_pc'])
     ]},
     jsr:{name:'JSR',steps:[...fetch,
       step('JSR / LINK REGISTER','R7 ← PC',
